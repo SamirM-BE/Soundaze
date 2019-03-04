@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Soundaze</string>
+    <string name="test_button">LOAD FILE</string>
+    <string name="workspace">WORKSPACE</string>
+    <string name="button_play">PLAY</string>
+    <string name="button_pause">PAUSE</string>
+    <string name="button_reset">RESET</string>
+</resources>
