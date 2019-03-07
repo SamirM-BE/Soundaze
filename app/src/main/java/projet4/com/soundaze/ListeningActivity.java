@@ -101,7 +101,7 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
 
         //on retourne sur l'écran précédent de la main
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, WorkspaceActivity.class);
         startActivity(intent);
 
     }
