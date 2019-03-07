@@ -1,61 +1,19 @@
 package projet4.com.soundaze;
 
-import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.widget.Button;
-import android.media.MediaRecorder;
-import android.media.MediaPlayer;
-import android.os.Environment;
-import android.view.View;
-import android.widget.Toast;
-import java.io.IOException;
-import android.content.Intent;
-
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.media.AudioManager;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
-import android.net.Uri;
+import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.provider.MediaStore;
-import android.provider.OpenableColumns;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Button;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 public class MicrophoneActivity extends AppCompatActivity {
 
@@ -143,6 +101,21 @@ public class MicrophoneActivity extends AppCompatActivity {
             {
                 try
                 {
+                    if(myMicrophoneRecorder == null){
+                        myMicrophoneRecorder = new MediaRecorder();
+                        try
+                        {
+                            myMicrophoneRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                        }
+                        catch(Exception e)
+                        {
+                            openPermissionComfirmation();
+                        }
+                        myMicrophoneRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                        myMicrophoneRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+                        myMicrophoneRecorder.setOutputFile(outputFile);
+                    }
+                    Toast.makeText(MicrophoneActivity.this,"val de my" + myMicrophoneRecorder.toString(), Toast.LENGTH_SHORT).show();
                     myMicrophoneRecorder.prepare();
                     myMicrophoneRecorder.start();
                 }

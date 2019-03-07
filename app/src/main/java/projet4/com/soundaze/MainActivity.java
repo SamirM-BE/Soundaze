@@ -5,44 +5,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.media.AudioManager;
-import android.media.MediaMetadataRetriever;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -400,7 +384,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //Clique sur reset
+    //Clique sur une musiqu pour l'écouter
     public void onClickMusic(Uri uri)
     {
 
@@ -410,6 +394,16 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
 
+    }
+
+    //s'il click sur l'option pour le recorder audio
+    protected void onRecord(View view) {
+
+        Toast.makeText(MainActivity.this,"inch", Toast.LENGTH_SHORT).show();
+
+
+        Intent intent = new Intent(this, MicrophoneActivity.class); //On prépare l'intent pour le passage à l'écran suivant
+        startActivity(intent);
     }
 
     //on récupère le nom de la musique via son uri
