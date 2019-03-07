@@ -90,7 +90,7 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
     }
 
     //s'il click sur l'option back, on relance la main qui va ouvrir l'explorateur de fichier
-    protected void onBack(View view) {
+    public void onBack(View view) {
 
         //on arrête le médiaplayer courant
         //mediaPlayer.reset();
