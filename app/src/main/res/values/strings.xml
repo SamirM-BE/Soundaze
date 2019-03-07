@@ -12,7 +12,7 @@
          liste de String utilisé par Djafarou
         -->
     <string name="info">A propos</string>
-    <string name="load">Load files</string>
+    <string name="load">IMPORT</string>
     <string name="workSpace">My workspace</string>
     <string name="record">Voice recorder</string>
     <!--
@@ -20,6 +20,11 @@
         -->
     <string name="back">Back</string>
     <string name="add">add it to my workspace</string>
+
+    <string name="btn_micro">MICRO</string>
+
+
+
 
 
 </resources>
