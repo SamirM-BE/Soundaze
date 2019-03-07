@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/workspace"
+        android:layout_width="match_parent"
+        android:layout_height="34sp"
+        android:text="@string/workspace"
+        android:textSize="18sp" />
+
+
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        />
+
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="wrap_content"
+        android:layout_height="269dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="59dp"
+        android:visibility="visible">
+
+    </ListView>
+
+
+    <Button
+        android:id="@+id/LoadFile_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="490dp"
+        android:background="@drawable/btn_bg"
+        android:onClick="onClickLoadFile"
+        android:text="@string/test_button" />
+
+
+    <Button
+        android:id="@+id/Microphone_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="127dp"
+        android:layout_marginTop="490dp"
+        android:layout_toRightOf="@id/LoadFile_button"
+        android:background="@drawable/btn_bg"
+        android:text="@string/record" />
+
+
+
+
+</RelativeLayout>

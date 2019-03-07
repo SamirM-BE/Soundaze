@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+    fichier de couleur modifié par Djafarou ce 20/02/2019, ajout couleur rouge
+    -->
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#2196F3</color>
+    <color name="colorTextView">#03A9F4</color>
+    <color name="noir">#000000</color>
+    <color name="blanc">#FEFEFE</color>
+    <color name="mauve">#7B1FA2</color>
+    <color name="vert">#004D40</color>
+    <color name="primaryDark">#292b3d</color>
+    <color name="graylight">#fafafa</color>
+    <color name="startblue">#09c6df</color>
+    <color name="endblue">#0bcce6</color>
+    <color name="transparent">#00000000</color>
+    <color name="gradStart">#19AA8B</color>
+    <color name="gradStop">#23A7D8</color>
+    <color name="noiraud">#2F1E0E</color>
+    <color name="gris">#606060</color>
+    <color name="rouge">#6d071a</color>
+    <color name="skyblue">#87CEEB</color>
+    <color name="grisClair">#3d3d3d</color>
+    <color name="grisFonce">#2e2e2e</color>
+</resources>

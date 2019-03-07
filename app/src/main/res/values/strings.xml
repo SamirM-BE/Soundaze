@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Soundaze</string>
+    <string name="test_button">LOAD FILE</string>
+    <string name="workspace">WORKSPACE</string>
+    <string name="button_play">PLAY</string>
+    <string name="button_pause">PAUSE</string>
+    <string name="button_reset">RESET</string>
+    <string name="image">image</string>
+
+
+    <!--
+         liste de String utilisé par Djafarou
+        -->
+    <string name="info">A propos</string>
+    <string name="load">Load files</string>
+    <string name="workSpace">My workspace</string>
+    <string name="record">Voice recorder</string>
+    <!--
+         liste de String utilisé pour l'activité xml activity_listening.xml
+        -->
+    <string name="back">Back</string>
+    <string name="add">add it to my workspace</string>
+
+
+</resources>
