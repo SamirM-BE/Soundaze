@@ -56,12 +56,5 @@
         android:layout_toRightOf="@id/LoadFile_button"
         android:background="@drawable/btn_bg"
         android:text="@string/record" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Samir" />
-
-
+    
 </RelativeLayout>
