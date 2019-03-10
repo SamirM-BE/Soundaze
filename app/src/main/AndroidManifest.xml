@@ -49,10 +49,14 @@
             <grant-uri-permission android:path="com.android.providers.media.MediaDocumentsProvider" />
         </provider>
 
-        <activity android:name=".WorkspaceActivity">
+        <activity android:name=".WorkspaceActivity" />
+        <activity
+            android:name=".AudioTrimmerActivity"
+            android:theme="@style/Theme.Transparent"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
-        </activity>
         <activity android:name=".ListeningActivity" />
+
     </application>
 
 </manifest>
