@@ -56,15 +56,6 @@
                 android:orientation="vertical"
                 android:visibility="visible">
 
-                <TextView
-                    android:id="@+id/txtAudioRecordTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="00:01:00"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="16sp"
-                    android:visibility="invisible" />
             </LinearLayout>
 
             <RelativeLayout
@@ -150,15 +141,6 @@
 
                     </RelativeLayout>
 
-
-                    <TextView
-                        android:id="@+id/txtAudioRecordTimeUpdate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:text="00:01:00"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="16sp" />
                 </LinearLayout>
 
                 <LinearLayout
