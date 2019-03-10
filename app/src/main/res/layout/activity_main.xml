@@ -29,12 +29,12 @@
         android:orientation="horizontal" >
 
         <ImageButton
-            android:id="@+id/btn_load"
+            android:id="@+id/btn_trim"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/holo_blue_light"
             android:layout_weight="1.0"
-            android:src="@drawable/download" />
+            android:src="@drawable/trim" />
 
         <ImageButton
             android:id="@+id/btn_micro"

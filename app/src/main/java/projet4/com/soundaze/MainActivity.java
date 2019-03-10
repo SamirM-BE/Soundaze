@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnAudioTrim = findViewById(R.id.btn_load);
+        btnAudioTrim = findViewById(R.id.btn_trim);
         btnAudioTrim.setOnClickListener(this);
     }
 
