@@ -30,7 +30,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.RandomAccessFile;
@@ -261,11 +260,11 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             double endTime = audioWaveform.pixelsToSeconds(mEndPos);
             double difference = endTime - startTime;
 
-            if (difference <= 0) {
+            /*if (difference <= 0) {
                 Toast.makeText(AudioTrimmerActivity.this, "Trim seconds should be greater than 0 seconds", Toast.LENGTH_SHORT).show();
             } else if (difference > 60) {
                 Toast.makeText(AudioTrimmerActivity.this, "Trim seconds should be less than 1 minute", Toast.LENGTH_SHORT).show();
-            } else {
+            } else {*/
                 if (mIsPlaying) {
                     handlePause();
                 }
@@ -281,7 +280,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
                 txtStartPosition.setVisibility(View.INVISIBLE);
                 txtEndPosition.setVisibility(View.INVISIBLE);
                 Log.e("Tests", "test1");
-            }
+            //}
 
         } else if (view == txtAudioReset) {
             audioWaveform.setIsDrawBorder(true);
