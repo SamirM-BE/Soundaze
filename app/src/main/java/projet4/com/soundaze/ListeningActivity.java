@@ -9,11 +9,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.provider.OpenableColumns;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class ListeningActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -42,7 +43,7 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
         yourRealPath = getFileName(uri);
 
 
-        TextView text_title = (TextView) findViewById(R.id.text_title);
+        TextView text_title = findViewById(R.id.text_title);
         text_title.setText(yourRealPath);
         btnPlay = findViewById(R.id.btnPlay);
         btnBack = findViewById(R.id.btnBack);
@@ -152,7 +153,7 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
                     mediaPlayer.pause();
                     btnPlay.setText(">");
                 }else{
-                    mediaPlayer.start();;
+                    mediaPlayer.start();
                     btnPlay.setText("||");
                     changeSeekbar();
                 }

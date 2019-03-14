@@ -9,9 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.OpenableColumns;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,6 +24,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 
 public class WorkspaceActivity extends AppCompatActivity {
@@ -130,7 +131,7 @@ public class WorkspaceActivity extends AppCompatActivity {
             }
 
 
-            listView = (ListView) findViewById(R.id.listView);
+            listView = findViewById(R.id.listView);
 
             arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, arrayListUri);
 
@@ -306,7 +307,7 @@ public class WorkspaceActivity extends AppCompatActivity {
 
                 //on gère la listview
 
-                listView = (ListView) findViewById(R.id.listView);
+                listView = findViewById(R.id.listView);
 
 
 
@@ -452,7 +453,7 @@ public class WorkspaceActivity extends AppCompatActivity {
     //méthode pour lire dans un fichier interne au téléphone l'arraylist d'uri
 
 
-    public ArrayList<String> readInternal() throws IOException {
+    public ArrayList<String> readInternal() {
         //on crée l'arraylist destinée à contenir les uri
         ArrayList<String> uri = new ArrayList<>();
         try {
@@ -487,7 +488,7 @@ public class WorkspaceActivity extends AppCompatActivity {
 
     //on fait une méthode contains pour voir si un son souhaitant être ajouté par l'user n'est pas déjà dans le fichier interne
     //return true si il contien et false sinon
-    public boolean containsInternal(Uri uri) throws IOException {
+    public boolean containsInternal(Uri uri) {
         try {
             FileInputStream fis = openFileInput(filename);
             BufferedReader reader = new BufferedReader(new InputStreamReader(fis));

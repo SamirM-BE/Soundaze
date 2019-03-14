@@ -4,12 +4,13 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -38,6 +39,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 requestStoragePermission();
             }
         }
+    }
+
+    public void onClickWorkspace(View view) {
+        Intent intent = new Intent(this, WorkspaceActivity.class);
+        startActivity(intent);
     }
 
     private void requestStoragePermission() {
@@ -81,9 +87,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void onClickWorkspace(View view)
-    {
-        Intent intent = new Intent(this, WorkspaceActivity.class);
-        startActivity(intent);
-    }
+
 }

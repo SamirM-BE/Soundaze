@@ -22,22 +22,29 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.jaiselrahman.filepicker.activity.FilePickerActivity;
+import com.jaiselrahman.filepicker.config.Configurations;
+import com.jaiselrahman.filepicker.model.MediaFile;
+
 import java.io.File;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import projet4.com.soundaze.customAudioViews.MarkerView;
 import projet4.com.soundaze.customAudioViews.SamplePlayer;
 import projet4.com.soundaze.customAudioViews.SoundFile;
 import projet4.com.soundaze.customAudioViews.WaveformView;
 import projet4.com.soundaze.utils.Utility;
+
 
 public class AudioTrimmerActivity extends AppCompatActivity implements View.OnClickListener,
         MarkerView.MarkerListener,
@@ -97,6 +104,10 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
     private boolean mLoadingKeepGoing;
     private File mFile;
 
+    private final static int AUDIO_REQUEST_CODE = 1;
+    //Filer picker Library
+    private ArrayList<MediaFile> mediaFiles = new ArrayList<>();
+
 
     private Runnable mTimerRunnable = new Runnable() {
         public void run() {
@@ -119,6 +130,14 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
     public AudioTrimmerActivity() {
     }
 
+    public static void setMargins(View v, int l, int t, int r, int b) {
+        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            p.setMargins(l, t, r, b);
+            v.requestLayout();
+        }
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,7 +146,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
         mHandler = new Handler();
 
         txtAudioCancel = findViewById(R.id.txtAudioCancel);
-        txtAudioUpload = findViewById(R.id.txtAudioUpload);
+        txtAudioUpload = findViewById(R.id.btn_upload);
         txtStartPosition = findViewById(R.id.txtStartPosition);
         txtEndPosition = findViewById(R.id.txtEndPosition);
         rlAudioEdit = findViewById(R.id.rlAudioEdit);
@@ -191,33 +210,35 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
 
     //Bouton "load file"
     public void onClickLoadFile(View view) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT); //Un intent de type ACTION_GET_CONTENT permet à l'utilisateur de sélectionner des fichiers
-        intent.setType("audio/*"); //On veut des fichiers audio
-        intent.addCategory(Intent.CATEGORY_OPENABLE); //On veut des fichiers qui sont ouvrable
-
-        Intent finalIntent = Intent.createChooser(intent, "Choisissez un fichier audio"); //Normalement la nouvelle fenetre doit s'appeler "Choisissez .. " mais je vois aucune diff
-
-        startActivityForResult(finalIntent, AUDIO_SELECTED); //ForResult = quand on attend un résultat sinon juste StartActivity()
+        Intent intent = new Intent(AudioTrimmerActivity.this, FilePickerActivity.class);
+        MediaFile file = null;
+        for (int i = 0; i < mediaFiles.size(); i++) {
+            if (mediaFiles.get(i).getMediaType() == MediaFile.TYPE_AUDIO) {
+                file = mediaFiles.get(i);
+            }
+        }
+        intent.putExtra(FilePickerActivity.CONFIGS, new Configurations.Builder()
+                .setCheckPermission(true)
+                .setShowImages(false)
+                .setShowVideos(false)
+                .setShowAudios(true)
+                .setSingleChoiceMode(true)
+                .setSelectedMediaFile(file)
+                .build());
+        startActivityForResult(intent, AUDIO_REQUEST_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
-        if (requestCode == AUDIO_SELECTED) {
+        if (requestCode == AUDIO_REQUEST_CODE) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                audio = data.getData();
-                audioPath = audio.getPath();
-                //getPath sur un uri nous donne un path du style : /document/0000-0000:Musique/[GkTorrent.com] Disiz la Peste - Disizilla/1 Kaïju.mp3
-                //Hors, il nous faut un path du style : /storage/0000-0000/Musique/[GkTorrent.com] Disiz la Peste - Disizilla/1 Kaïju.mp3
-                //Donc les étapes suivantes servent à formater le texte
+                mediaFiles.clear();
+                mediaFiles.addAll(data.<MediaFile>getParcelableArrayListExtra(FilePickerActivity.MEDIA_FILES));
 
-                audioPath = audioPath.substring(10);
-                if (audioPath.charAt(0) != '/') {
-                    audioPath = audioPath.replaceFirst(":", "/");
-                    audioPath = "/storage/" + audioPath;
-                }
-                loadFromFile(audioPath);
+                MediaFile mediaFile = mediaFiles.get(0);
+                loadFromFile(mediaFile.getPath());
 
                 btnLoadFile.setVisibility(View.GONE);
                 txtStartPosition.setVisibility(View.VISIBLE);
@@ -228,7 +249,6 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-
     @Override
     public void onClick(View view) {
         if (view == txtAudioCancel) { //Bouton cancel
@@ -237,7 +257,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             if (!mIsPlaying) {
                 txtAudioPlay.setBackgroundResource(R.drawable.ic_pause_btn);
             } else {
-                txtAudioPlay.setBackgroundResource(R.drawable.ic_play_btn);
+                txtAudioPlay.setBackgroundResource(R.drawable.play);
             }
             onPlay(mStartPos);
         } else if (view == txtAudioDone) { //Rognage
@@ -266,6 +286,8 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             markerEnd.setVisibility(View.INVISIBLE);
             txtStartPosition.setVisibility(View.INVISIBLE);
             txtEndPosition.setVisibility(View.INVISIBLE);
+            txtAudioUpload.setVisibility(View.VISIBLE);
+            setMargins(txtAudioReset, 0, 0, 100, 0);
 
             //}
         } else if (view == txtAudioReset) { //Reset les bornes du rognage
@@ -301,26 +323,6 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
 
 
         }
-    }
-
-    /**
-     * Ecran principal
-     */
-    private void setInitialScreen() {
-        Runnable runnable = new Runnable() {
-            public void run() {
-                audioWaveform.setIsDrawBorder(true);
-                audioWaveform.setVisibility(View.GONE);
-                txtStartPosition.setVisibility(View.GONE);
-                txtEndPosition.setVisibility(View.GONE);
-                markerEnd.setVisibility(View.GONE);
-                markerStart.setVisibility(View.GONE);
-                rlAudioEdit.setVisibility(View.VISIBLE);
-                txtAudioCrop.setVisibility(View.GONE);
-                txtAudioDone.setVisibility(View.VISIBLE);
-            }
-        };
-        mHandler.post(runnable);
     }
 
 
@@ -755,13 +757,25 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
     public void waveformTouchEnd() {
     }
 
-    private synchronized void handlePause() {
-        txtAudioPlay.setBackgroundResource(R.drawable.ic_play_btn);
-        if (mPlayer != null && mPlayer.isPlaying()) {
-            mPlayer.pause();
-        }
-        audioWaveform.setPlayback(-1);
-        mIsPlaying = false;
+    /**
+     * Ecran principal
+     */
+    private void setInitialScreen() {
+        Runnable runnable = new Runnable() {
+            public void run() {
+                audioWaveform.setIsDrawBorder(true);
+                audioWaveform.setVisibility(View.GONE);
+                txtStartPosition.setVisibility(View.GONE);
+                txtEndPosition.setVisibility(View.GONE);
+                markerEnd.setVisibility(View.GONE);
+                markerStart.setVisibility(View.GONE);
+                rlAudioEdit.setVisibility(View.VISIBLE);
+                txtAudioCrop.setVisibility(View.GONE);
+                txtAudioDone.setVisibility(View.VISIBLE);
+                txtAudioUpload.setVisibility(View.GONE);
+            }
+        };
+        mHandler.post(runnable);
     }
 
     private synchronized void onPlay(int startPosition) {
@@ -1040,6 +1054,15 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             }
         };
         mLoadSoundFileThread.start();
+    }
+
+    private synchronized void handlePause() {
+        txtAudioPlay.setBackgroundResource(R.drawable.play);
+        if (mPlayer != null && mPlayer.isPlaying()) {
+            mPlayer.pause();
+        }
+        audioWaveform.setPlayback(-1);
+        mIsPlaying = false;
     }
 
 }

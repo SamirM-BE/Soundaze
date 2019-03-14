@@ -15,7 +15,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorBg"
+            android:background="@color/colorBlack"
             android:orientation="horizontal">
 
             <TextView
@@ -71,7 +71,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
                     android:text="Edit Audio"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/blanc"
                     android:textSize="14sp" />
 
                 <LinearLayout
@@ -188,28 +188,33 @@
                             android:id="@+id/txtAudioPlay"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/ic_play_btn" />
+                            android:background="@drawable/play" />
 
                         <TextView
                             android:id="@+id/txtAudioCrop"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="20dp"
-                            android:background="@drawable/ic_edit_btn" />
+                            android:background="@drawable/edit" />
 
                         <TextView
                             android:id="@+id/txtAudioDone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="20dp"
-                            android:background="@drawable/ic_crop_btn_fill"
+                            android:background="@drawable/scissors"
                             android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/txtAudioReset"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/ic_refresh_btn" />
+                            android:background="@drawable/reset" />
+
+
+                        <Button
+                            android:id="@+id/btn_upload"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="UPLOAD" />
                     </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>

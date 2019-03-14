@@ -7,13 +7,14 @@ import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.IOException;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MicrophoneActivity extends AppCompatActivity {
 
@@ -70,9 +71,9 @@ public class MicrophoneActivity extends AppCompatActivity {
         /**************/
         /****Buttons***/
         /**************/
-        play = (Button) findViewById(R.id.play);
-        stop = (Button) findViewById(R.id.stop);
-        record = (Button) findViewById(R.id.record);
+        play = findViewById(R.id.play);
+        stop = findViewById(R.id.stop);
+        record = findViewById(R.id.record);
         stop.setEnabled(false);
         play.setEnabled(false);
         /**************************/

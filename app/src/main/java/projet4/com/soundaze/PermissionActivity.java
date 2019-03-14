@@ -1,22 +1,11 @@
 package projet4.com.soundaze;
 
-import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.media.MediaRecorder;
-import android.media.MediaPlayer;
-import android.os.Environment;
 import android.view.View;
-import android.widget.Toast;
-import java.io.IOException;
-import android.content.Intent;
+import android.widget.Button;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class PermissionActivity extends AppCompatActivity
 {
@@ -28,7 +17,7 @@ public class PermissionActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permission);
-        confirmButton = (Button) findViewById(R.id.accept);
+        confirmButton = findViewById(R.id.accept);
         confirmButton.setOnClickListener(confirmButtonListener);
     }
 
