@@ -108,12 +108,8 @@ public class WorkspaceActivity extends AppCompatActivity {
             // Permission has already been granted
         }
 
+        arrayListUriVal = readInternal();
 
-        try {
-            arrayListUriVal = readInternal();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         //on fait tout ceci seulement si le readinternal renvoit une arraylist remplie de musique
 
@@ -261,13 +257,11 @@ public class WorkspaceActivity extends AppCompatActivity {
 
                 //on ajoute l'élément dans mon arraylist contenant les uri sous forme de string, seulement si l'uri n'y est pas déjà
                 //on s'assure de ne pas avoir de doublon dans notre fichier, double check pour le containsInternal
-                try {
-                    if(!containsInternal(uri)) {
+
+                if(!containsInternal(uri)) {
                         arrayListVr.add(uri.toString()); //juste pour l'interne
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
 
                 //on récupère le nom de a musique à partir de son uri
 
@@ -278,16 +272,14 @@ public class WorkspaceActivity extends AppCompatActivity {
                 //on rempli déjà l'arraylist visuelle afin que lorsque l'user choisit une musique
                 //la musique vienne s'ajouter à une autre liste de musique déjà existante
 
-                try {
-                    ArrayList<String> gg = readInternal();
+
+                ArrayList<String> gg = readInternal();
                     for(int j = 0; j<gg.size();j++){
                         if(!containsInternal(Uri.parse(gg.get(j)))) { // on triple check
                             arrayList.add(getFileName(Uri.parse(gg.get(j))));
                         }
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
 
                 //on ajoute la suite d'uri, mais avant d'ajouter, on vérifie si l'elem est pas déjà dans l'arraylist de ceux récemment ajouté
                 if(!(arrayList.contains(yourRealPath))) {
@@ -296,14 +288,12 @@ public class WorkspaceActivity extends AppCompatActivity {
                 }
 
                 //on save l'uri seulement s'il n'est pas déjà dans le fichier, double check
-                try {
-                    if(!containsInternal(uri)){
+
+                if(!containsInternal(uri)){
 
                         save(uri.toString());
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
 
                 //on gère la listview
 
@@ -516,13 +506,10 @@ public class WorkspaceActivity extends AppCompatActivity {
         ArrayList<String> ch = new ArrayList<>();
 
 
-        try {
-            ch = readInternal();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ch = readInternal();
 
-      //on ajoute le nouveau string à ajouter à ceux déjà existant
+
+        //on ajoute le nouveau string à ajouter à ceux déjà existant
         ch.add(string);
 
 
