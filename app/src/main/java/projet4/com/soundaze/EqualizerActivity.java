@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
+import projet4.com.soundaze.VisualizerView;
 
 public class EqualizerActivity extends AppCompatActivity
 {
