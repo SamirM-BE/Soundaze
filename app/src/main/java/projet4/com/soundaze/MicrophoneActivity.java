@@ -22,6 +22,7 @@ public class MicrophoneActivity extends AppCompatActivity {
     private Button play, stop, record;
     private MediaRecorder myMicrophoneRecorder;
     private String outputFile;
+    private int isRecording = 0;
 
     /************************************************************/
     /***********************PERMISSIONS STRINGS******************/
@@ -120,6 +121,7 @@ public class MicrophoneActivity extends AppCompatActivity {
                     myMicrophoneRecorder.prepare();
                     myMicrophoneRecorder.start();
                     Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
+                    isRecording = 1;
                 }
                 catch (IllegalStateException ise)
                 {
@@ -156,6 +158,7 @@ public class MicrophoneActivity extends AppCompatActivity {
                 stop.setEnabled(false);
                 play.setEnabled(true);
                 Toast.makeText(getApplicationContext(), "Audio Recorder stopped", Toast.LENGTH_LONG).show();
+                isRecording = 0;
             }
         });
         /**********************/
@@ -199,7 +202,8 @@ public class MicrophoneActivity extends AppCompatActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            myMicrophoneRecorder.stop();
+            if (isRecording == 1) myMicrophoneRecorder.stop();
+
             myMicrophoneRecorder.release();
             myMicrophoneRecorder = null;
         }
