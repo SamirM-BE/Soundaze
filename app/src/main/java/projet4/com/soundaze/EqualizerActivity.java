@@ -23,7 +23,6 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-
 public class EqualizerActivity extends AppCompatActivity
 {
 
