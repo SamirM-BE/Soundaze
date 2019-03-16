@@ -180,4 +180,11 @@ public class MicrophoneActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
+    //click sur le bouton back
+    public void onBack(View view){
+
+        Intent intent = new Intent(this, MainActivity.class); //On prépare l'intent pour le passage à l'écran suivant
+        startActivity(intent);
+    }
 }

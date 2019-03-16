@@ -228,11 +228,6 @@ public class WorkspaceActivity extends AppCompatActivity {
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE); //On veut des fichiers qui sont ouvrable
 
-        final int takeFlags = intent.getFlags()
-                & (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
-
 
         Intent finalIntent = Intent.createChooser(intent, "Choisissez un fichier audio"); //Normalement la nouvelle fenetre doit s'appeler "Choisissez .. " mais je vois aucune diff
 
@@ -387,15 +382,13 @@ public class WorkspaceActivity extends AppCompatActivity {
 
     }
 
-    //s'il click sur l'option pour le recorder audio
-    protected void onRecord(View view) {
+    //click sur le bouton back
+    public void onBack(View view){
 
-        Toast.makeText(WorkspaceActivity.this,"inch", Toast.LENGTH_SHORT).show();
-
-
-        Intent intent = new Intent(this, MicrophoneActivity.class); //On prépare l'intent pour le passage à l'écran suivant
+        Intent intent = new Intent(this, MainActivity.class); //On prépare l'intent pour le passage à l'écran suivant
         startActivity(intent);
     }
+
 
     //on récupère le nom de la musique via son uri
     public String getFileName(Uri uri) {

@@ -40,22 +40,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="490dp"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="420dp"
         android:background="@drawable/btn_bg"
         android:onClick="onClickLoadFile"
         android:text="@string/test_button" />
 
-
     <Button
-        android:id="@+id/Microphone_button"
+        android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onRecord"
-        android:layout_marginLeft="127dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="150dp"
         android:layout_marginTop="490dp"
-        android:layout_toRightOf="@id/LoadFile_button"
         android:background="@drawable/btn_bg"
-        android:text="@string/record" />
+        android:onClick="onBack"
+        android:text="@string/back" />
+
 
 </RelativeLayout>

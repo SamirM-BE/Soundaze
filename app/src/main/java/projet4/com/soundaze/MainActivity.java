@@ -42,8 +42,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void onClickWorkspace(View view) {
-        Intent intent = new Intent(this, WorkspaceActivity.class);
-        startActivity(intent);
+            Intent intent = new Intent(this, WorkspaceActivity.class);
+            intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+            startActivity(intent);
+            requestAudioPermission();
+
+    }
+
+    //click pour record un audio
+    public void onClickAudio(View view){
+
+        Intent intent = new Intent(this, MicrophoneActivity.class);
+        intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+
+        if(checkAudioPermission()) {
+            startActivity(intent);
+        }else {
+            requestAudioPermission();
+            //startActivity(intent);
+       }
     }
 
     private void requestStoragePermission() {
@@ -58,6 +75,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(MainActivity.this,
                         Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private boolean checkAudioPermission() {
+        return (ActivityCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(MainActivity.this,
+                        Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void requestAudioPermission() {
+        ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.RECORD_AUDIO},
+                REQUEST_ID_PERMISSIONS);
     }
 
     @Override
