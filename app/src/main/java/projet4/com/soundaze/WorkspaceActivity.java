@@ -396,6 +396,13 @@ public class WorkspaceActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //clique sur le bouton equalizer, TEMPORAIRE
+    public void onEqual(View view){
+
+        Intent intent = new Intent(this, EqualizerActivity.class); //On prépare l'intent pour le passage à l'écran suivant
+        startActivity(intent);
+    }
+
 
     //on récupère le nom de la musique via son uri
     public String getFileName(Uri uri) {
