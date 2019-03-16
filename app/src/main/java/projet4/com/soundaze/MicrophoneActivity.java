@@ -192,6 +192,18 @@ public class MicrophoneActivity extends AppCompatActivity {
     //click sur le bouton back
     public void onBack(View view){
 
+        if(!(myMicrophoneRecorder == null)){
+            //on fait attendre 1 sec ici avant de stop le tout
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            myMicrophoneRecorder.stop();
+            myMicrophoneRecorder.release();
+            myMicrophoneRecorder = null;
+        }
+
         Intent intent = new Intent(this, MainActivity.class); //On prépare l'intent pour le passage à l'écran suivant
         startActivity(intent);
     }
