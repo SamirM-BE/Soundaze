@@ -1,4 +1,4 @@
-package projet4.com.soundaze;
+package projet4.com.soundaze.utils;
 
 
 import android.content.Context;
@@ -14,7 +14,7 @@ import static android.media.audiofx.Visualizer.OnDataCaptureListener;
  * A simple class that draws waveform data received from a
  * {@link OnDataCaptureListener#onWaveFormDataCapture }
  */
-class VisualizerView extends View {
+public class VisualizerView extends View {
     private byte[] mBytes;
     private float[] mPoints;
     private Rect mRect = new Rect();
