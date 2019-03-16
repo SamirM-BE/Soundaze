@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -116,9 +117,9 @@ public class MicrophoneActivity extends AppCompatActivity {
                         myMicrophoneRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
                         myMicrophoneRecorder.setOutputFile(outputFile);
                     }
-                    Toast.makeText(MicrophoneActivity.this,"val de my" + myMicrophoneRecorder.toString(), Toast.LENGTH_SHORT).show();
                     myMicrophoneRecorder.prepare();
                     myMicrophoneRecorder.start();
+                    Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
                 }
                 catch (IllegalStateException ise)
                 {
@@ -129,8 +130,15 @@ public class MicrophoneActivity extends AppCompatActivity {
                     // make something
                 }
                 record.setEnabled(false);
+                play.setEnabled(false);
+                //on fait attendre 1 sec ici avant de rendre pause enable pour faire éviter de bugger
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 stop.setEnabled(true);
-                Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
+
             }
         });
         /**********************/
@@ -187,4 +195,5 @@ public class MicrophoneActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class); //On prépare l'intent pour le passage à l'écran suivant
         startActivity(intent);
     }
+
 }

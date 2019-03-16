@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -60,18 +61,24 @@ public class WorkspaceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workspace);
 
+        //on check les permission
+        checkPermission();
+
+        //on lit le contenu di fichier qu'on vient mettre dans l'arraylist
+
+        try {
+            arrayListUriVal = readInternal();
+        }catch(FileNotFoundException e){
+            //Toast.makeText(WorkspaceActivity.this,"file app has been removed", Toast.LENGTH_SHORT).show();
+        }
+
+        //va venir configurer le display avec les musique déjà présente en interne
+        setItem();
+    }
 
 
-
-
-
-        Intent intent = new Intent(); //Un intent de type ACTION_GET_CONTENT permet à l'utilisateur de sélectionner des fichiers
-        intent.setType("audio/*"); //On veut des fichiers audio
-        intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-        intent.setFlags(Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
-        intent.setFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+    //cette méthode check les permission pour les uri
+    public void checkPermission(){
 
         //check if we have the permission
 
@@ -107,9 +114,10 @@ public class WorkspaceActivity extends AppCompatActivity {
         } else {
             // Permission has already been granted
         }
+    }
 
-        arrayListUriVal = readInternal();
-
+    //méthode pour set la listview et lire le fichier en interne
+    public void setItem(){
 
         //on fait tout ceci seulement si le readinternal renvoit une arraylist remplie de musique
 
@@ -203,9 +211,7 @@ public class WorkspaceActivity extends AppCompatActivity {
             });
 
         }
-
     }
-
 
 
 
@@ -244,10 +250,6 @@ public class WorkspaceActivity extends AppCompatActivity {
                 // The user picked an audio
                 uri = data.getData(); // The Intent's data Uri identifies which audio was selected. (audio = URI)
 
-
-
-
-
                 alreadyLoaded = 1;
 
                 //on ajoute l'élément dans mon arraylist contenant les uri sous forme de string, seulement si l'uri n'y est pas déjà
@@ -255,7 +257,7 @@ public class WorkspaceActivity extends AppCompatActivity {
 
                 if(!containsInternal(uri)) {
                         arrayListVr.add(uri.toString()); //juste pour l'interne
-                    }
+                }
 
 
                 //on récupère le nom de a musique à partir de son uri
@@ -268,18 +270,21 @@ public class WorkspaceActivity extends AppCompatActivity {
                 //la musique vienne s'ajouter à une autre liste de musique déjà existante
 
 
-                ArrayList<String> gg = readInternal();
-                    for(int j = 0; j<gg.size();j++){
-                        if(!containsInternal(Uri.parse(gg.get(j)))) { // on triple check
+                try {
+                    ArrayList<String> gg = readInternal();
+                    for (int j = 0; j < gg.size(); j++) {
+                        if (! arrayList.contains(getFileName(Uri.parse(gg.get(j)))) && containsInternal(Uri.parse(gg.get(j)))) { // on triple check
                             arrayList.add(getFileName(Uri.parse(gg.get(j))));
                         }
                     }
+                }catch(FileNotFoundException e){
+                    //Toast.makeText(WorkspaceActivity.this,"file app has been removed", Toast.LENGTH_SHORT).show();
+                }
 
 
                 //on ajoute la suite d'uri, mais avant d'ajouter, on vérifie si l'elem est pas déjà dans l'arraylist de ceux récemment ajouté
                 if(!(arrayList.contains(yourRealPath))) {
                     arrayList.add(yourRealPath); // on ajoute le son dans la liste
-
                 }
 
                 //on save l'uri seulement s'il n'est pas déjà dans le fichier, double check
@@ -347,7 +352,9 @@ public class WorkspaceActivity extends AppCompatActivity {
                         //je remove de mon arraylist de noms de musique
                         arrayList.remove(position); // du pure visuel
                         //je remove de mon arraylist de nom d'uri sous forme de String
-                        arrayListVr.remove(position);//du pure interne
+                        if(!(arrayListVr.get(position)==null)) {
+                            arrayListVr.remove(position);//du pure interne
+                        }
 
                         arrayAdapter.notifyDataSetChanged();
 
@@ -434,9 +441,10 @@ public class WorkspaceActivity extends AppCompatActivity {
     }
 
     //méthode pour lire dans un fichier interne au téléphone l'arraylist d'uri
+    //lance une file not foud exeption si le fichier aurait été supprimé
 
 
-    public ArrayList<String> readInternal() {
+    public ArrayList<String> readInternal() throws FileNotFoundException {
         //on crée l'arraylist destinée à contenir les uri
         ArrayList<String> uri = new ArrayList<>();
         try {
@@ -451,6 +459,7 @@ public class WorkspaceActivity extends AppCompatActivity {
             return uri;
         }catch(FileNotFoundException e){
             e.printStackTrace();
+            throw new FileNotFoundException();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -499,7 +508,11 @@ public class WorkspaceActivity extends AppCompatActivity {
         ArrayList<String> ch = new ArrayList<>();
 
 
-        ch = readInternal();
+        try {
+            ch = readInternal();
+        }catch(FileNotFoundException e){
+            //Toast.makeText(WorkspaceActivity.this,"file app has been removed", Toast.LENGTH_SHORT).show();
+        }
 
 
         //on ajoute le nouveau string à ajouter à ceux déjà existant
