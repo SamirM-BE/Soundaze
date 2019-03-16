@@ -8,7 +8,6 @@ import android.media.MediaPlayer;
 import android.media.audiofx.Equalizer;
 import android.media.audiofx.Visualizer;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import projet4.com.soundaze.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 
 public class EqualizerActivity extends AppCompatActivity
@@ -116,7 +116,7 @@ public class EqualizerActivity extends AppCompatActivity
 
     private void setupVisualizerFXandUI()
     {
-        myLinearLayout = (LinearLayout) findViewById(R.id.linearLayoutVisual);
+        myLinearLayout = findViewById(R.id.linearLayoutVisual);
 
         // Create a VisualizerView to display the audio waveform for the current settings
         myVisualizerView = new VisualizerView(this);
@@ -147,7 +147,7 @@ public class EqualizerActivity extends AppCompatActivity
 
     private void setupEqualizerFXandUI()
     {
-        myLinearLayout = (LinearLayout) findViewById(R.id.linearLayoutEqual);
+        myLinearLayout = findViewById(R.id.linearLayoutEqual);
 
         //HEADING TITLE OF EQUALIZER
         TextView equalHeading = new TextView(this);
@@ -252,7 +252,7 @@ public class EqualizerActivity extends AppCompatActivity
                 equalizerPresetNames);
         equalizerPresetSpinnerAdapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner equalizerPresetSpinner = (Spinner) findViewById(R.id.spinner);
+        Spinner equalizerPresetSpinner = findViewById(R.id.spinner);
 
 //        get list of the device's equalizer presets
         for (short i = 0; i < myEqualizer.getNumberOfPresets(); i++) {
@@ -277,7 +277,7 @@ public class EqualizerActivity extends AppCompatActivity
 //                set seekBar indicators according to selected preset
                 for (short i = 0; i < numberFrequencyBands; i++) {
                     short equalizerBandIndex = i;
-                    SeekBar seekBar = (SeekBar) findViewById(equalizerBandIndex);
+                    SeekBar seekBar = findViewById(equalizerBandIndex);
 //                    get current gain setting for this equalizer band
 //                    set the progress indicator of this seekBar to indicate the current gain value
                     seekBar.setProgress(myEqualizer
