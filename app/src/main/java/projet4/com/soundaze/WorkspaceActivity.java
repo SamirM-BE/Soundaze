@@ -43,7 +43,8 @@ public class WorkspaceActivity extends AppCompatActivity {
     ArrayList<String> arrayListUriVal = new ArrayList<>(); // pour contenir les uri sous forme de string
     int done = 0; // variable pour ne pas recréer une nouvelle arraylist pour chaque son sélectionné
     ArrayAdapter arrayAdapter;
-    String filename = "fileApp.txt"; // le nom de notre fichier intern qui va contenir les uri des musiques choisies par l'user
+    //je mets le filename en public pour pouvoir l'utiliser dans mon activity microphone
+    public static String filename = "fileApp.txt"; // le nom de notre fichier intern qui va contenir les uri des musiques choisies par l'user
     int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
 
     //ensembles de variables utilisées pour gérer le double click
@@ -256,7 +257,7 @@ public class WorkspaceActivity extends AppCompatActivity {
                 //on s'assure de ne pas avoir de doublon dans notre fichier, double check pour le containsInternal
 
                 if(!containsInternal(uri)) {
-                        arrayListVr.add(uri.toString()); //juste pour l'interne
+                    arrayListVr.add(uri.toString()); //juste pour l'interne
                 }
 
 
@@ -290,9 +291,8 @@ public class WorkspaceActivity extends AppCompatActivity {
                 //on save l'uri seulement s'il n'est pas déjà dans le fichier, double check
 
                 if(!containsInternal(uri)){
-
-                        save(uri.toString());
-                    }
+                    save(uri.toString());
+                }
 
 
                 //on gère la listview
@@ -486,7 +486,6 @@ public class WorkspaceActivity extends AppCompatActivity {
     }
 
     //on fait une méthode contains pour voir si un son souhaitant être ajouté par l'user n'est pas déjà dans le fichier interne
-    //return true si il contien et false sinon
     public boolean containsInternal(Uri uri) {
         try {
             FileInputStream fis = openFileInput(filename);
@@ -507,6 +506,7 @@ public class WorkspaceActivity extends AppCompatActivity {
         return false;
     }
 
+    //return true si il contien et false sinon
     //pour sauvegarder lign par ligne les uri dans le fichier
 
     public void save(String string) {
@@ -527,24 +527,24 @@ public class WorkspaceActivity extends AppCompatActivity {
 
 
 
-            try {
+        try {
 
-                FileOutputStream fos = openFileOutput(filename, Context.MODE_PRIVATE);
-                PrintWriter writer = new PrintWriter(new OutputStreamWriter(fos), true);
-                //on écrit l'arraylist dans le fichier
+            FileOutputStream fos = openFileOutput(filename, Context.MODE_PRIVATE);
+            PrintWriter writer = new PrintWriter(new OutputStreamWriter(fos), true);
+            //on écrit l'arraylist dans le fichier
 
-                for(int i = 0; i<ch.size();i++) {
+            for(int i = 0; i<ch.size();i++) {
 
-                    writer.println(ch.get(i));
+                writer.println(ch.get(i));
 
-                }
-                //on ferme le writer
-                writer.close();
-
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             }
+            //on ferme le writer
+            writer.close();
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
 
 

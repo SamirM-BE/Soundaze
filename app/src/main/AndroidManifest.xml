@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".EqualizerActivity"/>
-            
+
 
         <activity android:name=".MicrophoneActivity" />
         <activity
