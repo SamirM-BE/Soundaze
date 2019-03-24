@@ -22,7 +22,7 @@
         />
 
 
-    <ListView
+    <com.baoyz.swipemenulistview.SwipeMenuListView
         android:id="@+id/listView"
         android:layout_width="wrap_content"
         android:layout_height="269dp"
@@ -32,7 +32,7 @@
         android:layout_marginTop="59dp"
         android:visibility="visible">
 
-    </ListView>
+    </com.baoyz.swipemenulistview.SwipeMenuListView>
 
 
     <Button
@@ -56,17 +56,6 @@
         android:background="@drawable/btn_bg"
         android:onClick="onBack"
         android:text="@string/back" />
-
-    <!-- Temporaire -->
-    <Button
-        android:id="@+id/btn_equal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="150dp"
-        android:layout_marginTop="550dp"
-        android:background="@drawable/btn_bg"
-        android:onClick="onEqual"
-        android:text="EQUALIZER" />
 
 
 </RelativeLayout>

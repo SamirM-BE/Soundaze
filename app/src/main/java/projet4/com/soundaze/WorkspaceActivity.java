@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -14,6 +16,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,7 +40,7 @@ import androidx.core.content.ContextCompat;
 
 public class WorkspaceActivity extends AppCompatActivity {
 
-    ListView listView;
+    SwipeMenuListView listView;
     private static String yourRealPath;//va être utilisée pour le nom de la musique
     //les 2 ici pour la séletion de musiques
     ArrayList<String>  arrayList = new ArrayList<>(); // pour contenir les noms des musiques
@@ -136,82 +143,118 @@ public class WorkspaceActivity extends AppCompatActivity {
             }
 
 
-            listView = findViewById(R.id.listView);
+            //listView = findViewById(R.id.listView);
+
+            //on utilise mnt la swipemenulistview
+            listView = (SwipeMenuListView) findViewById(R.id.listView);
 
             arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, arrayListUri);
 
 
             listView.setAdapter(arrayAdapter);
 
+            /******************nouvelle partie test swipeListView***********************/
 
 
+            SwipeMenuCreator creator = new SwipeMenuCreator() {
 
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                public void create(SwipeMenu menu) {
+                    // create "open" item
+                    SwipeMenuItem openItem = new SwipeMenuItem(
+                            getApplicationContext());
+                    // set item background
+                    openItem.setBackground(new ColorDrawable(Color.rgb(0x00, 0x66,
+                            0xff)));
+                    // set item width
+                    openItem.setWidth(170);
+                    // set item title
+                    openItem.setTitle("equalizer");
+                    // set item title fontsize
+                    openItem.setTitleSize(18);
+                    // set item title font color
+                    openItem.setTitleColor(Color.WHITE);
+                    // add to menu
+                    menu.addMenuItem(openItem);
 
-                    // @TODO check and catch the double click event
-                    synchronized(this) {
-                        if(firstClickTime == 0) {
-                            firstClickTime = SystemClock.elapsedRealtime();
-                            nonDoubleClick = true;
-                        } else {
-                            long deltaTime = SystemClock.elapsedRealtime() - firstClickTime;
-                            firstClickTime = 0;
-                            if(deltaTime < DOUBLE_CLICK_TIMEOUT) {
-                                nonDoubleClick = false;
-                                this.onItemDoubleClick(adapterView, view, i, l);
-                                return;
-                            }
-                        }
-
-                        final Uri vr = Uri.parse(arrayListUriVal.get(i));
-
-                        view.postDelayed(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                if(nonDoubleClick) {
-                                    //Uri vr = Uri.parse(arrayListUriVal.get(i));
-
-                                    //on appelle la méthode qui part sur l'activité du player avec un intent
-
-                                    onClickMusic(vr);
-                                }
-                            }
-
-                        }, DOUBLE_CLICK_TIMEOUT);
-                    }
-
-
+                    // create "delete" item
+                    SwipeMenuItem deleteItem = new SwipeMenuItem(
+                            getApplicationContext());
+                    // set item background
+                    deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                            0x3F, 0x25)));
+                    // set item width
+                    deleteItem.setWidth(170);
+                    // set a icon
+                    deleteItem.setIcon(R.drawable.ic_delete_swipe);
+                    // add to menu
+                    menu.addMenuItem(deleteItem);
                 }
+            };
 
-                //méthode pour check le double click
-                public void onItemDoubleClick(AdapterView<?> adapterView, View view, int position, long l) {
-                    //on doit supprimer de l'arraylist et du fichier l'élément sur lequel on a double click
+            listView.setMenuCreator(creator);
 
-                    arrayListUri.remove(position);
+            listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                    switch (index) {
+                        case 0:
+                            Toast.makeText(WorkspaceActivity.this, "clické sur equalizer", Toast.LENGTH_SHORT).show();
 
-                    arrayListUriVal.remove(position);//en interne
-                    arrayAdapter.notifyDataSetChanged();
+                            //on passe dans l'activité de l'qualizer
+                            onEqual(null);
+                            break;
+                        case 1:
+                            Toast.makeText(WorkspaceActivity.this, "clické sur delete", Toast.LENGTH_SHORT).show();
+
+                            //on doit supprimer de l'arraylist et du fichier l'élément sur lequel on a double click
+
+                            arrayListUri.remove(position);
+
+                            arrayListUriVal.remove(position);//en interne
+                            arrayAdapter.notifyDataSetChanged();
 
 
-                    Toast.makeText(WorkspaceActivity.this,"song deleted", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(WorkspaceActivity.this,"song deleted", Toast.LENGTH_SHORT).show();
 
-                    //restera pour demain qu'à supprimer dans le fichier
+                            //restera pour demain qu'à supprimer dans le fichier
 
-                    //en 1, je delete mon file existant
-                    deleteInternal();
-                    //ensuite, je recrée mon file avec la nouvelle arraylist mise à jour
-                    for(int i = 0;i<arrayListUriVal.size(); i++){
-                        save(arrayListUriVal.get(i)); // du pûre interne
+                            //en 1, je delete mon file existant
+                            deleteInternal();
+                            //ensuite, je recrée mon file avec la nouvelle arraylist mise à jour
+                            for(int i = 0;i<arrayListUriVal.size(); i++){
+                                save(arrayListUriVal.get(i)); // du pûre interne
+                            }
+
+                            break;
                     }
-
-                    //restera pour demain qu'à supprimer dans le fichier
+                    // false : close the menu; true : not close the menu
+                    return false;
                 }
             });
 
+
+
+
+
+
+            /*****************fin nouvelle partie test swipeListview*********************/
+
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    //je récupère la musique sélectionnée et je la lance dans le lecteur
+                    final Uri vr = Uri.parse(arrayListUriVal.get(position));
+                    onClickMusic(vr);
+                }
+            });
+
+
         }
+
     }
 
 
@@ -256,7 +299,7 @@ public class WorkspaceActivity extends AppCompatActivity {
                 //on ajoute l'élément dans mon arraylist contenant les uri sous forme de string, seulement si l'uri n'y est pas déjà
                 //on s'assure de ne pas avoir de doublon dans notre fichier, double check pour le containsInternal
 
-                if(!containsInternal(uri)) {
+                if (!containsInternal(uri)) {
                     arrayListVr.add(uri.toString()); //juste pour l'interne
                 }
 
@@ -274,108 +317,141 @@ public class WorkspaceActivity extends AppCompatActivity {
                 try {
                     ArrayList<String> gg = readInternal();
                     for (int j = 0; j < gg.size(); j++) {
-                        if (! arrayList.contains(getFileName(Uri.parse(gg.get(j)))) && containsInternal(Uri.parse(gg.get(j)))) { // on triple check
+                        if (!arrayList.contains(getFileName(Uri.parse(gg.get(j)))) && containsInternal(Uri.parse(gg.get(j)))) { // on triple check
                             arrayList.add(getFileName(Uri.parse(gg.get(j))));
                         }
                     }
-                }catch(FileNotFoundException e){
+                } catch (FileNotFoundException e) {
                     //Toast.makeText(WorkspaceActivity.this,"file app has been removed", Toast.LENGTH_SHORT).show();
                 }
 
 
                 //on ajoute la suite d'uri, mais avant d'ajouter, on vérifie si l'elem est pas déjà dans l'arraylist de ceux récemment ajouté
-                if(!(arrayList.contains(yourRealPath))) {
+                if (!(arrayList.contains(yourRealPath))) {
                     arrayList.add(yourRealPath); // on ajoute le son dans la liste
                 }
 
                 //on save l'uri seulement s'il n'est pas déjà dans le fichier, double check
 
-                if(!containsInternal(uri)){
+                if (!containsInternal(uri)) {
                     save(uri.toString());
                 }
 
+                /******************intermed***************/
 
-                //on gère la listview
-
-                listView = findViewById(R.id.listView);
-
-
-
-
-
-                //Toast.makeText(WorkspaceActivity.this,uri.toString(), Toast.LENGTH_SHORT).show();
+                //on utilise mnt la swipemenulistview
+                listView = (SwipeMenuListView) findViewById(R.id.listView);
 
                 arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, arrayList);
 
+
                 listView.setAdapter(arrayAdapter);
+
+                SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+                    @Override
+                    public void create(SwipeMenu menu) {
+                        // create "open" item
+                        SwipeMenuItem openItem = new SwipeMenuItem(
+                                getApplicationContext());
+                        // set item background
+                        openItem.setBackground(new ColorDrawable(Color.rgb(0x00, 0x66,
+                                0xff)));
+                        // set item width
+                        openItem.setWidth(170);
+                        // set item title
+                        openItem.setTitle("equalizer");
+                        // set item title fontsize
+                        openItem.setTitleSize(18);
+                        // set item title font color
+                        openItem.setTitleColor(Color.WHITE);
+                        // add to menu
+                        menu.addMenuItem(openItem);
+
+                        // create "delete" item
+                        SwipeMenuItem deleteItem = new SwipeMenuItem(
+                                getApplicationContext());
+                        // set item background
+                        deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                                0x3F, 0x25)));
+                        // set item width
+                        deleteItem.setWidth(170);
+                        // set a icon
+                        deleteItem.setIcon(R.drawable.ic_delete_swipe);
+                        // add to menu
+                        menu.addMenuItem(deleteItem);
+                    }
+                };
+
+                listView.setMenuCreator(creator);
+
+                listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                        switch (index) {
+                            case 0:
+                                Toast.makeText(WorkspaceActivity.this, "clické sur equalizer", Toast.LENGTH_SHORT).show();
+
+                                //on passe dans l'activité de l'qualizer
+                                onEqual(null);
+                                break;
+                            case 1:
+                                Toast.makeText(WorkspaceActivity.this, "clické sur delete", Toast.LENGTH_SHORT).show();
+
+                                //on doit supprimer de l'arraylist et du fichier l'élément sur lequel on a double click
+
+                                //on doit supprimer de l'arraylist et du fichier l'élément sur lequel on a double click
+
+                                //je remove de mon arraylist de noms de musique
+                                arrayList.remove(position); // du pure visuel
+                                //je remove de mon arraylist de nom d'uri sous forme de String
+                                if (!(arrayListVr.get(position) == null)) {
+                                    arrayListVr.remove(position);//du pure interne
+                                }
+
+                                arrayAdapter.notifyDataSetChanged();
+
+
+                                Toast.makeText(WorkspaceActivity.this, "song deleted", Toast.LENGTH_SHORT).show();
+
+                                //restera pour demain qu'à supprimer dans le fichier
+
+                                //en 1, je delete mon file existant
+                                deleteInternal();
+                                //ensuite, je recrée mon file avec la nouvelle arraylist mise à jour
+                                for (int i = 0; i < arrayListVr.size(); i++) {
+                                    save(arrayListVr.get(i)); // du pûre interne
+                                }
+
+                                break;
+                        }
+                        // false : close the menu; true : not close the menu
+                        return false;
+                    }
+                });
 
 
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                        // @TODO check and catch the double click event
-                        synchronized(this) {
-                            if(firstClickTime == 0) {
-                                firstClickTime = SystemClock.elapsedRealtime();
-                                nonDoubleClick = true;
-                            } else {
-                                long deltaTime = SystemClock.elapsedRealtime() - firstClickTime;
-                                firstClickTime = 0;
-                                if(deltaTime < DOUBLE_CLICK_TIMEOUT) {
-                                    nonDoubleClick = false;
-                                    this.onItemDoubleClick(adapterView, view, i, l);
-                                    return;
-                                }
-                            }
-
-                            view.postDelayed(new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    if(nonDoubleClick) {
-                                        onClickMusic(uri);
-                                    }
-                                }
-
-                            }, DOUBLE_CLICK_TIMEOUT);
-                        }
-
-
-
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+                        onClickMusic(uri);
                     }
-
-                    //méthode pour check le double click
-                    public void onItemDoubleClick(AdapterView<?> adapterView, View view, int position, long l) {
-                        //on doit supprimer de l'arraylist et du fichier l'élément sur lequel on a double click
-
-                        //je remove de mon arraylist de noms de musique
-                        arrayList.remove(position); // du pure visuel
-                        //je remove de mon arraylist de nom d'uri sous forme de String
-                        if(!(arrayListVr.get(position)==null)) {
-                            arrayListVr.remove(position);//du pure interne
-                        }
-
-                        arrayAdapter.notifyDataSetChanged();
-
-
-                        Toast.makeText(WorkspaceActivity.this,"song deleted", Toast.LENGTH_SHORT).show();
-
-                        //restera pour demain qu'à supprimer dans le fichier
-
-                        //en 1, je delete mon file existant
-                        deleteInternal();
-                        //ensuite, je recrée mon file avec la nouvelle arraylist mise à jour
-                        for(int i = 0;i<arrayListVr.size(); i++){
-                            save(arrayListVr.get(i)); // du pûre interne
-                        }
-                    }
-
                 });
 
+
             }
+
+
+            /****************fin intermed**************/
+
+
+            //on gère la listview
+
+
         }
-    }
+        }
+
 
     //Clique sur une musiqu pour l'écouter
     public void onClickMusic(Uri uri)
