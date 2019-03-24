@@ -202,7 +202,9 @@ public class WorkspaceActivity extends AppCompatActivity {
                             Toast.makeText(WorkspaceActivity.this, "clické sur equalizer", Toast.LENGTH_SHORT).show();
 
                             //on passe dans l'activité de l'qualizer
-                            onEqual(null);
+                            //je récupère la musique sélectionnée et je la lance dans le lecteur
+                            final Uri vr = Uri.parse(arrayListUriVal.get(position));
+                            onEqual(vr);
                             break;
                         case 1:
                             Toast.makeText(WorkspaceActivity.this, "clické sur delete", Toast.LENGTH_SHORT).show();
@@ -393,7 +395,7 @@ public class WorkspaceActivity extends AppCompatActivity {
                                 Toast.makeText(WorkspaceActivity.this, "clické sur equalizer", Toast.LENGTH_SHORT).show();
 
                                 //on passe dans l'activité de l'qualizer
-                                onEqual(null);
+                                onEqual(uri);
                                 break;
                             case 1:
                                 Toast.makeText(WorkspaceActivity.this, "clické sur delete", Toast.LENGTH_SHORT).show();
@@ -473,9 +475,10 @@ public class WorkspaceActivity extends AppCompatActivity {
     }
 
     //clique sur le bouton equalizer, TEMPORAIRE
-    public void onEqual(View view){
+    public void onEqual(Uri uri){
 
         Intent intent = new Intent(this, EqualizerActivity.class); //On prépare l'intent pour le passage à l'écran suivant
+        intent.putExtra("tab", uri);
         startActivity(intent);
     }
 

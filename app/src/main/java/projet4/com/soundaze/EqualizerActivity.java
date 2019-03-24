@@ -1,13 +1,17 @@
 package projet4.com.soundaze;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.audiofx.Equalizer;
 import android.media.audiofx.Visualizer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +38,8 @@ public class EqualizerActivity extends AppCompatActivity
     private LinearLayout myLinearLayout;
     private Visualizer myVisualizer;
     private VisualizerView myVisualizerView;
+    private Uri uri; //pour la récup de l'uri en intent
+    private static String yourRealPath;//va être utilisée pour le nom de la musique
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -41,6 +47,21 @@ public class EqualizerActivity extends AppCompatActivity
         /**************LAUNCH ACTIVITY*****************/
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_equalizer);
+        //on récupère l'intent pour le son qu'on sélectionné
+        Intent intent = getIntent();
+        intent.setFlags(Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
+        intent.setFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        uri = intent.getParcelableExtra("tab");
+
+        //on récupère le nom de a musique à partir de son uri
+
+        if(uri!=null) {
+
+            yourRealPath = getFileName(uri);
+        }
+
 
         /************************************************************/
         /***********************PERMISSIONS**************************/
@@ -77,7 +98,8 @@ public class EqualizerActivity extends AppCompatActivity
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         /************Creating MediaPlayer Object*****************/
-        myMediaPlayer = MediaPlayer.create(this, R.raw.test_audio_file);
+        //myMediaPlayer = MediaPlayer.create(this, R.raw.test_audio_file);
+        myMediaPlayer = MediaPlayer.create(this, this.uri);
         myMediaPlayer.start();
         /**********Creating Equalizer Engine*****************/
         myEqualizer = new Equalizer(0, myMediaPlayer.getAudioSessionId());
@@ -151,7 +173,7 @@ public class EqualizerActivity extends AppCompatActivity
 
         //HEADING TITLE OF EQUALIZER
         TextView equalHeading = new TextView(this);
-        equalHeading.setText("EQUALIZER");
+        equalHeading.setText(yourRealPath); //partie djaf on affiche le nom de la musique
         equalHeading.setTextSize(20);
         equalHeading.setTextColor(Color.parseColor("#3b31c4"));
         equalHeading.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -304,6 +326,29 @@ public class EqualizerActivity extends AppCompatActivity
             myMediaPlayer.release();
             myMediaPlayer = null;
         }
+    }
+
+    //on récupère le nom de la musique via son uri
+    public String getFileName(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
     }
 
 }
