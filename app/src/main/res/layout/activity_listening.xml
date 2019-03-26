@@ -77,4 +77,35 @@
         android:layout_toEndOf="@+id/btnBack"
         />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/btn_eql"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_eql" />
+
+        <Button
+            android:id="@+id/btn_rog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClickTrim"
+            android:text="@string/btn_trim" />
+
+        <Button
+            android:id="@+id/btn_conv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_conv" />
+    </LinearLayout>
+
 </RelativeLayout>

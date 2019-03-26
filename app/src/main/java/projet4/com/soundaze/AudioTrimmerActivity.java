@@ -130,6 +130,27 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
     public AudioTrimmerActivity() {
     }
 
+
+    /**
+     * Ecran principal
+     */
+    private void setInitialScreen() {
+        Runnable runnable = new Runnable() {
+            public void run() {
+                audioWaveform.setIsDrawBorder(true);
+                audioWaveform.setVisibility(View.GONE);
+                txtStartPosition.setVisibility(View.GONE);
+                txtEndPosition.setVisibility(View.GONE);
+                markerEnd.setVisibility(View.GONE);
+                markerStart.setVisibility(View.GONE);
+                rlAudioEdit.setVisibility(View.VISIBLE);
+                txtAudioCrop.setVisibility(View.GONE);
+                txtAudioDone.setVisibility(View.VISIBLE);
+                txtAudioUpload.setVisibility(View.GONE);
+            }
+        };
+        mHandler.post(runnable);
+    }
     public static void setMargins(View v, int l, int t, int r, int b) {
         if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
@@ -205,6 +226,23 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
 
         mHandler.postDelayed(mTimerRunnable, 100);
 
+        //Intent listenningIntent = getIntent();
+        if (getIntent().hasExtra("audio_player")) {
+            Intent listenningIntent = getIntent();
+            Uri audio_player = listenningIntent.getParcelableExtra("audio_player");
+            Log.e("SAMIR", "Avant l'erreur");
+            Log.e("SAMIR", audio_player.getPath());
+            loadFromFile(audio_player.getPath());
+            Log.e("SAMIR", "Après l'erreur");
+
+
+            rlAudioEdit.setVisibility(View.VISIBLE);
+            btnLoadFile.setVisibility(View.GONE);
+            txtStartPosition.setVisibility(View.VISIBLE);
+            txtEndPosition.setVisibility(View.VISIBLE);
+            markerEnd.setVisibility(View.VISIBLE);
+            markerStart.setVisibility(View.VISIBLE);
+        }
         setInitialScreen();
     }
 
@@ -757,26 +795,6 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
     public void waveformTouchEnd() {
     }
 
-    /**
-     * Ecran principal
-     */
-    private void setInitialScreen() {
-        Runnable runnable = new Runnable() {
-            public void run() {
-                audioWaveform.setIsDrawBorder(true);
-                audioWaveform.setVisibility(View.GONE);
-                txtStartPosition.setVisibility(View.GONE);
-                txtEndPosition.setVisibility(View.GONE);
-                markerEnd.setVisibility(View.GONE);
-                markerStart.setVisibility(View.GONE);
-                rlAudioEdit.setVisibility(View.VISIBLE);
-                txtAudioCrop.setVisibility(View.GONE);
-                txtAudioDone.setVisibility(View.VISIBLE);
-                txtAudioUpload.setVisibility(View.GONE);
-            }
-        };
-        mHandler.post(runnable);
-    }
 
     private synchronized void onPlay(int startPosition) {
         if (mIsPlaying) {

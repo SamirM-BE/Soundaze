@@ -166,4 +166,10 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
                 break;
         }
     }
+
+    public void onClickTrim(View view) {
+        Intent intent = new Intent(this, AudioTrimmerActivity.class); //On prépare l'intent pour le passage à l'écran suivant
+        intent.putExtra("audio_player", uri);
+        startActivity(intent);
+    }
 }

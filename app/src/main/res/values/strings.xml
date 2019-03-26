@@ -22,6 +22,9 @@
     <string name="add">add it to my workspace</string>
 
     <string name="btn_micro">MICRO</string>
+    <string name="btn_trim">TRIM</string>
+    <string name="btn_eql">EQUALIZE</string>
+    <string name="btn_conv">CONVERSION</string>
 
 
 
