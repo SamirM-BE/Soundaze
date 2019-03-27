@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class ListeningActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button btnPlay, btnBack, btnFor;
+    private Button btnEql;
     private SeekBar seekBar;
     private MediaPlayer mediaPlayer;
     private Runnable runnable;
@@ -48,6 +49,9 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
         btnPlay = findViewById(R.id.btnPlay);
         btnBack = findViewById(R.id.btnBack);
         btnFor = findViewById(R.id.btnFor);
+
+        btnEql = findViewById(R.id.btn_eql);
+
         handler = new Handler();
         seekBar = findViewById(R.id.seekbar);
 
@@ -59,6 +63,9 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
         btnFor.setOnClickListener(this);
         btnBack.setOnClickListener(this);
         btnPlay.setOnClickListener(this);
+        btnEql.setOnClickListener(this);
+
+        btnEql.setOnClickListener(btn_EqlListener);
 
 
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -170,6 +177,21 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
     public void onClickTrim(View view) {
         Intent intent = new Intent(this, AudioTrimmerActivity.class); //On prépare l'intent pour le passage à l'écran suivant
         intent.putExtra("audio_player", uri);
+        startActivity(intent);
+    }
+
+    private View.OnClickListener btn_EqlListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v)
+        {
+            openEqualizer();
+
+        }
+    };
+
+    public void openEqualizer()
+    {
+        Intent intent = new Intent(this,EqualizerActivity.class);
         startActivity(intent);
     }
 }

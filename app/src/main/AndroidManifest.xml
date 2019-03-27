@@ -29,10 +29,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EqualizerActivity"/>
+        <activity android:name=".EqualizerActivity"
+            android:parentActivityName=".WorkspaceActivity" />
 
 
-        <activity android:name=".MicrophoneActivity" />
+        <activity android:name=".MicrophoneActivity"/>
         <activity
             android:name=".PermissionActivity"
             android:parentActivityName=".MicrophoneActivity" />
