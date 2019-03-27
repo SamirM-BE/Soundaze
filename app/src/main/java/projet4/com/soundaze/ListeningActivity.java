@@ -29,6 +29,7 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listening);
         // Get a Uri from an Intent
@@ -180,18 +181,37 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
         startActivity(intent);
     }
 
+
+
     private View.OnClickListener btn_EqlListener = new View.OnClickListener() {
         @Override
         public void onClick(View v)
         {
-            openEqualizer();
+            if(mediaPlayer.isPlaying())
+            {
+                mediaPlayer.stop();
+            }
+            onEqual(uri);
 
         }
     };
 
-    public void openEqualizer()
-    {
-        Intent intent = new Intent(this,EqualizerActivity.class);
+    public void onEqual(Uri uri){
+
+        Intent intent = new Intent(this, EqualizerActivity.class); //On prépare l'intent pour le passage à l'écran suivant
+        intent.putExtra("tab", uri);
+        //mediaPlayer.release();
         startActivity(intent);
     }
+
+    /*public void openEqualizer()
+    {
+
+        //on passe dans l'activité de l'qualizer
+        //je récupère la musique sélectionnée et je la lance dans le lecteur
+        final Uri vr = Uri.parse(arrayListUriVal.get(position));
+        onEqual(vr);
+        Intent intent = new Intent(this,EqualizerActivity.class);
+        startActivity(intent);
+    }*/
 }
