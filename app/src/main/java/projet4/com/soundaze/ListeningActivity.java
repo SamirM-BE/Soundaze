@@ -118,6 +118,7 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
     //on récupère le nom de la musique via son uri
     public String getFileName(Uri uri) {
         String result = null;
+        //TODO: "content" changé en "song"
         if (uri.getScheme().equals("content")) {
             Cursor cursor = getContentResolver().query(uri, null, null, null, null);
             try {
@@ -199,7 +200,7 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
     public void onEqual(Uri uri){
 
         Intent intent = new Intent(this, EqualizerActivity.class); //On prépare l'intent pour le passage à l'écran suivant
-        intent.putExtra("tab", uri);
+        intent.putExtra("song", uri);
         //mediaPlayer.release();
         startActivity(intent);
     }

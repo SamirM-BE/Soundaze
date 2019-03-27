@@ -40,7 +40,20 @@
         android:padding="5dp">
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="101dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginRight="20dp"
+        android:layout_toLeftOf="@+id/btnPlay"
+        android:background="@drawable/btn_bg"
+        android:text="@string/back"
+        android:textSize="20dp" />
+
 </LinearLayout>
+
+
 
 
 

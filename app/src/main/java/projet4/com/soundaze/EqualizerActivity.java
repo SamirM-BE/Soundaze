@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -41,24 +42,29 @@ public class EqualizerActivity extends AppCompatActivity
     private Uri uri; //pour la récup de l'uri en intent
     private static String yourRealPath;//va être utilisée pour le nom de la musique
 
+    private Button btnBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         /**************LAUNCH ACTIVITY*****************/
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_equalizer);
+
+        btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(btn_BackListener);
         //on récupère l'intent pour le son qu'on sélectionné
         Intent intent = getIntent();
         intent.setFlags(Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
         intent.setFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        uri = intent.getParcelableExtra("tab");
+        uri = intent.getParcelableExtra("song");
 
         //on récupère le nom de a musique à partir de son uri
 
-        if(uri!=null) {
-
+        if(uri!=null)
+        {
             yourRealPath = getFileName(uri);
         }
 
@@ -350,6 +356,24 @@ public class EqualizerActivity extends AppCompatActivity
             }
         }
         return result;
+    }
+
+    private View.OnClickListener btn_BackListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v)
+        {
+            myMediaPlayer.stop();
+            exitEqualizer();
+
+        }
+    };
+
+    public void exitEqualizer(){
+
+        Intent intent = new Intent(this, ListeningActivity.class); //On prépare l'intent pour le passage à l'écran suivant
+        intent.putExtra("song", uri);
+        //mediaPlayer.release();
+        startActivity(intent);
     }
 
 }

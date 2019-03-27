@@ -11,15 +11,15 @@
     <!--
          liste de String utilisé par Djafarou
         -->
-    <string name="info">A propos</string>
+    <string name="info">A Propos</string>
     <string name="load">IMPORT</string>
-    <string name="workSpace">My workspace</string>
-    <string name="record">Voice recorder</string>
+    <string name="workSpace">My Workspace</string>
+    <string name="record">Voice Recorder</string>
     <!--
          liste de String utilisé pour l'activité xml activity_listening.xml
         -->
     <string name="back">Back</string>
-    <string name="add">add it to my workspace</string>
+    <string name="add">Add it to my workspace</string>
 
     <string name="btn_micro">MICRO</string>
     <string name="btn_trim">TRIM</string>
