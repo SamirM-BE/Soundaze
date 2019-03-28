@@ -1,6 +1,8 @@
 package projet4.com.soundaze;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -13,8 +15,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 public class ListeningActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -25,7 +29,10 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
     private Runnable runnable;
     private Handler handler;
     private Uri uri;
-    private static String yourRealPath;//va être utilisée pour le nom de la musique
+    private static final int TRIMER = 1004;
+    private static final int REQUEST_ID_PERMISSIONS = 1;
+    private static String musicName;//va être utilisée pour le nom de la musique
+    String pickedAudioPath; //Musique qui a été choisi dans le workspace
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +46,14 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         uri = intent.getParcelableExtra("song");
-
+        pickedAudioPath = intent.getStringExtra("pickedAudioPath");
         //on récupère le nom de a musique à partir de son uri
 
-        yourRealPath = getFileName(uri);
+        musicName = getFileName(uri);
 
 
         TextView text_title = findViewById(R.id.text_title);
-        text_title.setText(yourRealPath);
+        text_title.setText(musicName);
         btnPlay = findViewById(R.id.btnPlay);
         btnBack = findViewById(R.id.btnBack);
         btnFor = findViewById(R.id.btnFor);
@@ -178,11 +185,46 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
 
     public void onClickTrim(View view) {
         Intent intent = new Intent(this, AudioTrimmerActivity.class); //On prépare l'intent pour le passage à l'écran suivant
-        intent.putExtra("audio_player", uri);
-        startActivity(intent);
+        intent.putExtra("pickedAudioPath", pickedAudioPath);
+        //check storage permission before start trimming
+        if (checkStoragePermission()) {
+            startActivityForResult(intent, TRIMER);
+            overridePendingTransition(0, 0);
+        } else {
+            requestStoragePermission();
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == TRIMER) {
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    //audio trim result will be saved at below path
+                    String path = data.getExtras().getString("INTENT_AUDIO_FILE");
+                    Toast.makeText(ListeningActivity.this, "Audio stored at " + path, Toast.LENGTH_LONG).show();
+                }
+            }
+        }
     }
 
 
+    ////CES DEUX METHODES SONT REPETITIVES, IL FAUT LES METTRE DANS UNE CLASSE
+    private boolean checkStoragePermission() {
+        return (ActivityCompat.checkSelfPermission(ListeningActivity.this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(ListeningActivity.this,
+                        Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void requestStoragePermission() {
+        ActivityCompat.requestPermissions(ListeningActivity.this,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.RECORD_AUDIO},
+                REQUEST_ID_PERMISSIONS);
+    }
 
     private View.OnClickListener btn_EqlListener = new View.OnClickListener() {
         @Override

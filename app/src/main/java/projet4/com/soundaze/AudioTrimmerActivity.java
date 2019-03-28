@@ -107,6 +107,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
     private final static int AUDIO_REQUEST_CODE = 1;
     //Filer picker Library
     private ArrayList<MediaFile> mediaFiles = new ArrayList<>();
+    String pickedAudioPath;
 
 
     private Runnable mTimerRunnable = new Runnable() {
@@ -130,27 +131,6 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
     public AudioTrimmerActivity() {
     }
 
-
-    /**
-     * Ecran principal
-     */
-    private void setInitialScreen() {
-        Runnable runnable = new Runnable() {
-            public void run() {
-                audioWaveform.setIsDrawBorder(true);
-                audioWaveform.setVisibility(View.GONE);
-                txtStartPosition.setVisibility(View.GONE);
-                txtEndPosition.setVisibility(View.GONE);
-                markerEnd.setVisibility(View.GONE);
-                markerStart.setVisibility(View.GONE);
-                rlAudioEdit.setVisibility(View.VISIBLE);
-                txtAudioCrop.setVisibility(View.GONE);
-                txtAudioDone.setVisibility(View.VISIBLE);
-                txtAudioUpload.setVisibility(View.GONE);
-            }
-        };
-        mHandler.post(runnable);
-    }
     public static void setMargins(View v, int l, int t, int r, int b) {
         if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
@@ -227,23 +207,42 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
         mHandler.postDelayed(mTimerRunnable, 100);
 
         //Intent listenningIntent = getIntent();
-        if (getIntent().hasExtra("audio_player")) {
+        if (getIntent().hasExtra("pickedAudioPath")) {
             Intent listenningIntent = getIntent();
-            Uri audio_player = listenningIntent.getParcelableExtra("audio_player");
-            Log.e("SAMIR", "Avant l'erreur");
-            Log.e("SAMIR", audio_player.getPath());
-            loadFromFile(audio_player.getPath());
-            Log.e("SAMIR", "Après l'erreur");
+            pickedAudioPath = listenningIntent.getStringExtra("pickedAudioPath");
+            loadFromFile(pickedAudioPath);
 
-
+            audioWaveform.setIsDrawBorder(true);
+            audioWaveform.setVisibility(View.GONE);
             rlAudioEdit.setVisibility(View.VISIBLE);
+            txtAudioCrop.setVisibility(View.GONE);
+            txtAudioDone.setVisibility(View.VISIBLE);
+            txtAudioUpload.setVisibility(View.GONE);
             btnLoadFile.setVisibility(View.GONE);
-            txtStartPosition.setVisibility(View.VISIBLE);
-            txtEndPosition.setVisibility(View.VISIBLE);
-            markerEnd.setVisibility(View.VISIBLE);
-            markerStart.setVisibility(View.VISIBLE);
+        } else {
+            setInitialScreen();
         }
-        setInitialScreen();
+    }
+
+    /**
+     * Ecran principal
+     */
+    private void setInitialScreen() {
+        Runnable runnable = new Runnable() {
+            public void run() {
+                audioWaveform.setIsDrawBorder(true);
+                audioWaveform.setVisibility(View.GONE);
+                txtStartPosition.setVisibility(View.GONE);
+                txtEndPosition.setVisibility(View.GONE);
+                markerEnd.setVisibility(View.GONE);
+                markerStart.setVisibility(View.GONE);
+                rlAudioEdit.setVisibility(View.VISIBLE);
+                txtAudioCrop.setVisibility(View.GONE);
+                txtAudioDone.setVisibility(View.VISIBLE);
+                txtAudioUpload.setVisibility(View.GONE);
+            }
+        };
+        mHandler.post(runnable);
     }
 
     //Bouton "load file"
@@ -1054,7 +1053,6 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
                     }
                     mPlayer = new SamplePlayer(mLoadedSoundFile);
                 } catch (final Exception e) {
-                    Log.e("ERREURS", "test4");
                     mProgressDialog.dismiss();
                     e.printStackTrace();
                     return;

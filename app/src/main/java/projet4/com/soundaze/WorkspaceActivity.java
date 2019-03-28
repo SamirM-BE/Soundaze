@@ -9,18 +9,19 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.provider.OpenableColumns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.jaiselrahman.filepicker.activity.FilePickerActivity;
+import com.jaiselrahman.filepicker.config.Configurations;
+import com.jaiselrahman.filepicker.model.MediaFile;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -58,7 +59,8 @@ public class WorkspaceActivity extends AppCompatActivity {
     private boolean nonDoubleClick = true;
     private long firstClickTime = 0L;
     private final int DOUBLE_CLICK_TIMEOUT = 200;//ViewConfiguration.getDoubleTapTimeout();
-
+    String pickedAudioPath;
+    private ArrayList<MediaFile> mediaFiles = new ArrayList<>();
 
 
 
@@ -146,7 +148,7 @@ public class WorkspaceActivity extends AppCompatActivity {
             //listView = findViewById(R.id.listView);
 
             //on utilise mnt la swipemenulistview
-            listView = (SwipeMenuListView) findViewById(R.id.listView);
+            listView = findViewById(R.id.listView);
 
             arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, arrayListUri);
 
@@ -270,20 +272,22 @@ public class WorkspaceActivity extends AppCompatActivity {
 
     public void onClickLoadFile(View view)
     {
-        //if(alreadyLoaded==1) mMediaPlayer.reset(); //on reset le player si un fichier a déjà été chargé, évite la superposition de sons différents
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT); //Un intent de type ACTION_GET_CONTENT permet à l'utilisateur de sélectionner des fichiers
-        intent.setType("audio/*"); //On veut des fichiers audio
-        intent.setFlags(Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
-        intent.setFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE); //On veut des fichiers qui sont ouvrable
-
-
-        Intent finalIntent = Intent.createChooser(intent, "Choisissez un fichier audio"); //Normalement la nouvelle fenetre doit s'appeler "Choisissez .. " mais je vois aucune diff
-
-        startActivityForResult(finalIntent, AUDIO_SELECTED); //ForResult = quand on attend un résultat sinon juste StartActivity()
+        Intent intent = new Intent(WorkspaceActivity.this, FilePickerActivity.class);
+        MediaFile file = null;
+        for (int i = 0; i < mediaFiles.size(); i++) {
+            if (mediaFiles.get(i).getMediaType() == MediaFile.TYPE_AUDIO) {
+                file = mediaFiles.get(i);
+            }
+        }
+        intent.putExtra(FilePickerActivity.CONFIGS, new Configurations.Builder()
+                .setCheckPermission(true)
+                .setShowImages(false)
+                .setShowVideos(false)
+                .setShowAudios(true)
+                .setSingleChoiceMode(true)
+                .setSelectedMediaFile(file)
+                .build());
+        startActivityForResult(intent, AUDIO_SELECTED);
 
     }
 
@@ -293,8 +297,16 @@ public class WorkspaceActivity extends AppCompatActivity {
         if (requestCode == AUDIO_SELECTED) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
+                mediaFiles.clear();
+                mediaFiles.addAll(data.<MediaFile>getParcelableArrayListExtra(FilePickerActivity.MEDIA_FILES));
+
+                MediaFile mediaFile = mediaFiles.get(0);
+                pickedAudioPath = mediaFile.getPath();
+
+                uri = Uri.fromFile(new File(pickedAudioPath));
+
                 // The user picked an audio
-                uri = data.getData(); // The Intent's data Uri identifies which audio was selected. (audio = URI)
+                //uri = data.getData(); // The Intent's data Uri identifies which audio was selected. (audio = URI)
 
                 alreadyLoaded = 1;
 
@@ -342,7 +354,7 @@ public class WorkspaceActivity extends AppCompatActivity {
                 /******************intermed***************/
 
                 //on utilise mnt la swipemenulistview
-                listView = (SwipeMenuListView) findViewById(R.id.listView);
+                listView = findViewById(R.id.listView);
 
                 arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, arrayList);
 
@@ -438,6 +450,7 @@ public class WorkspaceActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
                         onClickMusic(uri);
+
                     }
                 });
 
@@ -458,10 +471,13 @@ public class WorkspaceActivity extends AppCompatActivity {
     //Clique sur une musiqu pour l'écouter
     public void onClickMusic(Uri uri)
     {
-
         Intent intent = new Intent(this, ListeningActivity.class); //On prépare l'intent pour le passage à l'écran suivant
         // Add a Uri instance to an Intent
         intent.putExtra("song", uri);
+        if (containsInternal(uri)) {
+            pickedAudioPath = uri.getPath();
+        }
+        intent.putExtra("pickedAudioPath", pickedAudioPath);
         startActivity(intent);
 
 
