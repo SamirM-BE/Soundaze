@@ -477,7 +477,6 @@ public class SoundFile {
             throws IOException {
         float startTime = (float) startFrame * getSamplesPerFrame() / mSampleRate;
         float endTime = (float) (startFrame + numFrames) * getSamplesPerFrame() / mSampleRate;
-        Log.e("writefile", "NO");
         WriteFile(outputFile, startTime, endTime);
     }
 
