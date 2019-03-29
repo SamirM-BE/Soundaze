@@ -219,8 +219,6 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             txtAudioDone.setVisibility(View.VISIBLE);
             txtAudioUpload.setVisibility(View.GONE);
             btnLoadFile.setVisibility(View.GONE);
-        } else {
-            setInitialScreen();
         }
     }
 
@@ -240,6 +238,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
                 txtAudioCrop.setVisibility(View.GONE);
                 txtAudioDone.setVisibility(View.VISIBLE);
                 txtAudioUpload.setVisibility(View.GONE);
+                btnLoadFile.setVisibility(View.GONE);
             }
         };
         mHandler.post(runnable);

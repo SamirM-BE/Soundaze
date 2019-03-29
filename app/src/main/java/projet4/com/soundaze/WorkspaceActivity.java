@@ -267,8 +267,6 @@ public class WorkspaceActivity extends AppCompatActivity {
     static final int AUDIO_SELECTED = 1; //Cette variable sert à vérifier si l'user a choisi un son
     Uri uri; //URI de l'audio séléctionné par l'user
     int alreadyLoaded = 0;
-    Intent intent;
-
 
     public void onClickLoadFile(View view)
     {

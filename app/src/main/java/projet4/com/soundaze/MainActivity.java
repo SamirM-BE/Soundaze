@@ -10,6 +10,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.jaiselrahman.filepicker.activity.FilePickerActivity;
+import com.jaiselrahman.filepicker.config.Configurations;
+import com.jaiselrahman.filepicker.model.MediaFile;
+
+import java.util.ArrayList;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,17 +42,62 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnAudioTrim.setOnClickListener(this);
     }
 
+    static final int AUDIO_SELECTED = 1;
+    String pickedAudioPath;
+    private ArrayList<MediaFile> mediaFiles = new ArrayList<>();
+
     //Clique sur le bouton "crop"
     @Override
     public void onClick(View view) {
         if (view == btnAudioTrim) {
             //check storage permission before start trimming
             if (checkStoragePermission()) {
-                startActivityForResult(new Intent(MainActivity.this, AudioTrimmerActivity.class), ADD_AUDIO); //écran suivant
-                overridePendingTransition(0, 0);
+                //startActivityForResult(new Intent(MainActivity.this, AudioTrimmerActivity.class), ADD_AUDIO); //écran suivant
+                Intent intent = new Intent(MainActivity.this, FilePickerActivity.class);
+                MediaFile file = null;
+                for (int i = 0; i < mediaFiles.size(); i++) {
+                    if (mediaFiles.get(i).getMediaType() == MediaFile.TYPE_AUDIO) {
+                        file = mediaFiles.get(i);
+                    }
+                }
+                intent.putExtra(FilePickerActivity.CONFIGS, new Configurations.Builder()
+                        .setCheckPermission(true)
+                        .setShowImages(false)
+                        .setShowVideos(false)
+                        .setShowAudios(true)
+                        .setSingleChoiceMode(true)
+                        .setSelectedMediaFile(file)
+                        .build());
+                startActivityForResult(intent, AUDIO_SELECTED);
+                //overridePendingTransition(0, 0);
             } else {
                 requestStoragePermission();
             }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADD_AUDIO) {
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    //audio trim result will be saved at below path
+                    String path = data.getExtras().getString("INTENT_AUDIO_FILE");
+                    Toast.makeText(MainActivity.this, "Audio stored at " + path, Toast.LENGTH_LONG).show();
+                }
+            }
+        } else if (requestCode == AUDIO_SELECTED) {
+            mediaFiles.clear();
+            mediaFiles.addAll(data.<MediaFile>getParcelableArrayListExtra(FilePickerActivity.MEDIA_FILES));
+
+            MediaFile mediaFile = mediaFiles.get(0);
+            pickedAudioPath = mediaFile.getPath();
+
+            Intent intent = new Intent(this, AudioTrimmerActivity.class); //On prépare l'intent pour le passage à l'écran suivant
+            intent.putExtra("pickedAudioPath", pickedAudioPath);
+            startActivityForResult(intent, ADD_AUDIO);
+
         }
     }
 
@@ -149,20 +200,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_AUDIO) {
-            if (resultCode == RESULT_OK) {
-                if (data != null) {
-                    //audio trim result will be saved at below path
-                    String path = data.getExtras().getString("INTENT_AUDIO_FILE");
-                    Toast.makeText(MainActivity.this, "Audio stored at " + path, Toast.LENGTH_LONG).show();
-                }
-            }
-        }
-    }
 
     //méthode pour gérer une boite de dialogu
 
