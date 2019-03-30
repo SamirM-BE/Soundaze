@@ -111,6 +111,7 @@ public class EqualizerActivity extends AppCompatActivity
         myEqualizer = new Equalizer(0, myMediaPlayer.getAudioSessionId());
         myEqualizer.setEnabled(true);
 
+
         setupVisualizerFXandUI();
         setupEqualizerFXandUI();
 

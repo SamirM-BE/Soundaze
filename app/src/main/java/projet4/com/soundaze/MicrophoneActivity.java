@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -113,13 +114,25 @@ public class MicrophoneActivity extends AppCompatActivity {
         /**************************/
 
 
+
+
         String tmp = "/"+easyPuzzle;
 
+        Toast.makeText(getApplicationContext(), "name :" + tmp, Toast.LENGTH_LONG).show();
 
-        outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + tmp;
+
+        outputFile = Environment.getExternalStorageDirectory().getAbsolutePath()+tmp;
+
+        Toast.makeText(getApplicationContext(), "name2 :" + outputFile, Toast.LENGTH_LONG).show();
 
 
-        ff = getAudioContentUri(this);
+        //ff = getAudioContentUri(this); je crois que cette méthode pose problème
+
+        ff = Uri.fromFile(new File(outputFile));
+
+        boolean so = ff==null;
+
+        String f = ff.toString();
 
 
         myMicrophoneRecorder = new MediaRecorder();
