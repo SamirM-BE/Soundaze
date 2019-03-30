@@ -183,6 +183,9 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    //on met la méthode en com pour la présentation de mardi
+
+    /*
     public void onClickTrim(View view) {
         Intent intent = new Intent(this, AudioTrimmerActivity.class); //On prépare l'intent pour le passage à l'écran suivant
         intent.putExtra("pickedAudioPath", pickedAudioPath);
@@ -195,6 +198,8 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
         }
 
     }
+
+    */
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

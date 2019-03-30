@@ -125,51 +125,48 @@ public class MainActivity extends AppCompatActivity /*implements View.OnClickLis
         final Intent intent = new Intent(this, MicrophoneActivity.class);
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
 
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        if(checkExternalStoragePermission()) {
 
-        alert.setTitle("What name do you wanna give to your audio");
-        alert.setMessage("Be creative!");
-        final String string;
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-        //on gère la boite de dialogue
+            alert.setTitle("What name do you wanna give to your audio");
+            alert.setMessage("Be creative!");
+            final String string;
 
-        // Set an EditText view to get user input
-        final EditText input = new EditText(this);
-        alert.setView(input);
+            //on gère la boite de dialogue
 
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
+            // Set an EditText view to get user input
+            final EditText input = new EditText(this);
+            alert.setView(input);
 
-                // Do something with value!
+            alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+
+                    // Do something with value!
 
 
+                    dia = input.getText().toString();
 
-
-                dia = input.getText().toString();
-
-                if(checkExternalStoragePermission() /*&& clickedOk*/) {
                     intent.putExtra("epuzzle", dia);
                     startActivity(intent);
-                }else {
-                    //requestAudioPermission();
-                    requestExternalStoragePermission();
-                    //startActivity(intent);
+                    clickedOk = true;
+
+
                 }
+            });
 
-                clickedOk = true;
+            alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    // Canceled.
+                    clickedCancel = true;
+                }
+            });
 
+            alert.show();
 
-            }
-        });
-
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                // Canceled.
-                clickedCancel = true;
-            }
-        });
-
-        alert.show();
+        }else{
+            requestExternalStoragePermission();
+        }
 
     }
 

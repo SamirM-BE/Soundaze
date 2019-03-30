@@ -118,15 +118,8 @@ public class MicrophoneActivity extends AppCompatActivity {
 
         String tmp = "/"+easyPuzzle;
 
-        Toast.makeText(getApplicationContext(), "name :" + tmp, Toast.LENGTH_LONG).show();
-
 
         outputFile = Environment.getExternalStorageDirectory().getAbsolutePath()+tmp;
-
-        Toast.makeText(getApplicationContext(), "name2 :" + outputFile, Toast.LENGTH_LONG).show();
-
-
-        //ff = getAudioContentUri(this); je crois que cette méthode pose problème
 
         ff = Uri.fromFile(new File(outputFile));
 
@@ -279,32 +272,6 @@ public class MicrophoneActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class); //On prépare l'intent pour le passage à l'écran suivant
         startActivity(intent);
     }
-
-    //méthode pour pour avoir un uri sur base d'un file path audio
-
-    public Uri getAudioContentUri(Context context) {
-        String filePath = outputFile;
-        Cursor cursor = context.getContentResolver().query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                new String[] { MediaStore.Audio.Media._ID },
-                MediaStore.Audio.Media.DATA + "=? ",
-                new String[] { filePath }, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
-            cursor.close();
-            return Uri.withAppendedPath(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, "" + id);
-        } else {
-            //if (imageFile.exists()) {
-            ContentValues values = new ContentValues();
-            values.put(MediaStore.Audio.Media.DATA, filePath);
-            return context.getContentResolver().insert(
-                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, values);
-            //} else {
-            // return null;
-            //}
-        }
-    }
-
 
     //cette méthode check les permission pour les uri
     public void checkPermission(){
