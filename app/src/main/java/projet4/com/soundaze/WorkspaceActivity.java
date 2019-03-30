@@ -463,7 +463,7 @@ public class WorkspaceActivity extends AppCompatActivity {
 
 
         }
-        }
+    }
 
 
     //Clique sur une musiqu pour l'écouter

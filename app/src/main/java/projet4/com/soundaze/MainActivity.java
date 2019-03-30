@@ -21,7 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity /*implements View.OnClickListener*/ {
 
     private static final int ADD_AUDIO = 1001;
     private static final int REQUEST_ID_PERMISSIONS = 1;
@@ -38,13 +38,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnAudioTrim = findViewById(R.id.btn_trim);
-        btnAudioTrim.setOnClickListener(this);
+        /*partie liée au trim momentanément effacée
+        //btnAudioTrim = findViewById(R.id.btn_trim);
+        //btnAudioTrim.setOnClickListener(this);
+
+        */
     }
 
     static final int AUDIO_SELECTED = 1;
     String pickedAudioPath;
     private ArrayList<MediaFile> mediaFiles = new ArrayList<>();
+
+
+    /* partie éliminée de la mainactivity pour le moment pour éviter que le prof click dessus
 
     //Clique sur le bouton "crop"
     @Override
@@ -76,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -101,6 +109,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    */
+
     public void onClickWorkspace(View view) {
         Intent intent = new Intent(this, WorkspaceActivity.class);
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
@@ -112,38 +122,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //click pour record un audio
     public void onClickAudio(View view){
 
-        Intent intent = new Intent(this, MicrophoneActivity.class);
+        final Intent intent = new Intent(this, MicrophoneActivity.class);
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
 
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("What name do you wanna give to your audio");
+        alert.setMessage("Be creative!");
+        final String string;
+
+        //on gère la boite de dialogue
+
+        // Set an EditText view to get user input
+        final EditText input = new EditText(this);
+        alert.setView(input);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                // Do something with value!
 
 
-        //on réalise l'appel à hand seulement une fois
-        //obligé de faire ça à cause du message de permission qui oblie à
-        //reclicker une deuxième fois
-        if(!hand) {
-
-            handle();
-            hand = true;
-        }
-
-        //on check s'il a click sur canceled
-        if(clickedCancel){
-            //on reste sur la mainActivity
-            Intent in = new Intent(this, MainActivity.class);
-            startActivity(in);
-        }
 
 
+                dia = input.getText().toString();
+
+                if(checkExternalStoragePermission() /*&& clickedOk*/) {
+                    intent.putExtra("epuzzle", dia);
+                    startActivity(intent);
+                }else {
+                    //requestAudioPermission();
+                    requestExternalStoragePermission();
+                    //startActivity(intent);
+                }
+
+                clickedOk = true;
 
 
-        if(checkExternalStoragePermission() && clickedOk) {
-            intent.putExtra("epuzzle", dia);
-            startActivity(intent);
-        }else {
-            //requestAudioPermission();
-            requestExternalStoragePermission();
-            //startActivity(intent);
-        }
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+                clickedCancel = true;
+            }
+        });
+
+        alert.show();
+
     }
 
     private void requestStoragePermission() {
@@ -199,46 +226,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
-
-
-    //méthode pour gérer une boite de dialogu
-
-    public void handle() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-        alert.setTitle("What name do you wanna give to your audio");
-        alert.setMessage("Be creative!");
-        final String string;
-
-        // Set an EditText view to get user input
-        final EditText input = new EditText(this);
-        alert.setView(input);
-
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-
-                // Do something with value!
-
-
-
-
-                dia = input.getText().toString();
-
-                clickedOk = true;
-
-
-            }
-        });
-
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                // Canceled.
-                clickedCancel = true;
-            }
-        });
-
-        alert.show();
-    }
-
-
 }
