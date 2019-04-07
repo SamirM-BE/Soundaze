@@ -15,10 +15,11 @@
             android:id="@+id/btn_workspace"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/white"
             android:layout_weight="1.0"
-            android:text="@string/workspace"
-            android:onClick="onClickWorkspace"/>
+            android:background="@color/blanc"
+            android:backgroundTint="@color/colorTextGray"
+            android:onClick="onClickWorkspace"
+            android:text="@string/workspace" />
 
     </LinearLayout>
 
@@ -43,11 +44,11 @@
 
         <ImageButton
             android:id="@+id/btn_micro"
-            android:onClick="onClickAudio"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/holo_red_light"
             android:layout_weight="1.0"
+            android:background="@color/colorBg"
+            android:onClick="onClickAudio"
             android:src="@drawable/microphone" />
 
     </LinearLayout>

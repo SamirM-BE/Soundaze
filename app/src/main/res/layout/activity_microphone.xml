@@ -3,36 +3,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blanc"
     tools:context=".MicrophoneActivity">
+
     <Button
+        android:id="@+id/record"
+        style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Record"
-        android:textSize="20sp"
-        android:id="@+id/record"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        />
+        android:backgroundTint="@color/colorAccent"
+        android:text="Record"
+        android:textSize="20sp" />
+
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Stop"
-        android:textSize="20sp"
         android:id="@+id/stop"
-        android:layout_below="@id/record"
-        android:layout_marginTop="10dp"
-        android:layout_centerHorizontal="true"
-        />
-    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Play"
-        android:textSize="20sp"
-        android:id="@+id/play"
-        android:layout_below="@id/stop"
-        android:layout_marginTop="10dp"
+        android:layout_below="@id/record"
         android:layout_centerHorizontal="true"
-        />
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/colorAccent"
+        android:text="Stop"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/stop"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/colorAccent"
+        android:text="Play"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/btnBack"
@@ -42,6 +47,7 @@
         android:layout_marginLeft="150dp"
         android:layout_marginTop="490dp"
         android:background="@drawable/btn_bg"
+        android:backgroundTint="@color/colorAccent"
         android:onClick="onBack"
         android:text="@string/back" />
 </RelativeLayout>

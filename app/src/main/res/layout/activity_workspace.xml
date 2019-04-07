@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blanc"
     android:orientation="vertical"
     tools:context=".WorkspaceActivity">
 
@@ -11,15 +12,17 @@
         android:layout_width="match_parent"
         android:layout_height="34sp"
         android:text="@string/workspace"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/colorBg"
         android:textSize="18sp" />
-
 
 
     <TextView
         android:id="@+id/text_title"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        />
+        android:textColor="@color/colorAccent" />
 
 
     <com.baoyz.swipemenulistview.SwipeMenuListView
@@ -43,6 +46,7 @@
         android:layout_marginLeft="150dp"
         android:layout_marginTop="420dp"
         android:background="@drawable/btn_bg"
+        android:backgroundTint="@color/colorBg"
         android:onClick="onClickLoadFile"
         android:text="@string/test_button" />
 
@@ -54,6 +58,7 @@
         android:layout_marginLeft="150dp"
         android:layout_marginTop="490dp"
         android:background="@drawable/btn_bg"
+        android:backgroundTint="@color/colorBg"
         android:onClick="onBack"
         android:text="@string/back" />
 
