@@ -17,9 +17,11 @@
             android:layout_height="match_parent"
             android:layout_weight="1.0"
             android:background="@color/blanc"
-            android:backgroundTint="@color/colorTextGray"
+            android:backgroundTint="@color/blanc"
             android:onClick="onClickWorkspace"
-            android:text="@string/workspace" />
+            android:text="@string/workspace"
+            android:textColor="@color/colorBg"
+            android:textColorLink="@color/blanc" />
 
     </LinearLayout>
 
@@ -47,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1.0"
-            android:background="@color/colorBg"
+            android:background="@color/colorAccent"
             android:onClick="onClickAudio"
             android:src="@drawable/microphone" />
 

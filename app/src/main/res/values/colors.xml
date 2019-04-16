@@ -6,10 +6,10 @@
     -->
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#2196F3</color>
+    <color name="colorAccent">#FF7839</color>
     <color name="colorTextView">#03A9F4</color>
     <color name="noir">#000000</color>
-    <color name="blanc">#737272</color>
+    <color name="blanc">#303030</color>
     <color name="mauve">#7B1FA2</color>
     <color name="vert">#004D40</color>
     <color name="primaryDark">#292b3d</color>
@@ -33,7 +33,7 @@ AudioTrimmer
     <color name="colorGrayAlpha">#737272</color>
     <color name="colorBlue">#0e1f2f</color>
     <color name="colorTextGray">#737272</color>
-    <color name="colorBg">#3BE3E3</color>
+    <color name="colorBg">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
     <color name="colorGridLine">#00ed1b24</color>
     <color name="colorSelectionBorder">#9c41bc</color>

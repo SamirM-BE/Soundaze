@@ -46,9 +46,10 @@
         android:layout_marginLeft="150dp"
         android:layout_marginTop="420dp"
         android:background="@drawable/btn_bg"
-        android:backgroundTint="@color/colorBg"
+        android:backgroundTint="@color/colorAccent"
         android:onClick="onClickLoadFile"
-        android:text="@string/test_button" />
+        android:text="@string/test_button"
+        android:textColor="@color/colorBg" />
 
     <Button
         android:id="@+id/btnBack"
@@ -58,9 +59,10 @@
         android:layout_marginLeft="150dp"
         android:layout_marginTop="490dp"
         android:background="@drawable/btn_bg"
-        android:backgroundTint="@color/colorBg"
+        android:backgroundTint="@color/colorAccent"
         android:onClick="onBack"
-        android:text="@string/back" />
+        android:text="@string/back"
+        android:textColor="@color/colorBg" />
 
 
 </RelativeLayout>
