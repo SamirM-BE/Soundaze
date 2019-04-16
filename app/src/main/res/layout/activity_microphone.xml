@@ -8,46 +8,62 @@
 
     <Button
         android:id="@+id/record"
-        style="@style/Widget.AppCompat.Button"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="103dp"
+        android:layout_marginEnd="145dp"
         android:backgroundTint="@color/colorAccent"
         android:text="Record"
+        android:textAlignment="textStart"
+        android:textColor="@color/colorAccent"
         android:textSize="20sp" />
 
     <Button
         android:id="@+id/stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/record"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="54dp"
+        android:layout_marginBottom="326dp"
+        android:background="@android:drawable/alert_light_frame"
         android:backgroundTint="@color/colorAccent"
+        android:radius="100dp"
         android:text="Stop"
+        android:textColor="@color/blanc"
         android:textSize="20sp" />
 
     <Button
         android:id="@+id/play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/stop"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="265dp"
+        android:layout_marginBottom="327dp"
+        android:background="@android:drawable/alert_dark_frame"
         android:backgroundTint="@color/colorAccent"
         android:text="Play"
+        android:textColor="@color/blanc"
         android:textSize="20sp" />
 
     <Button
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_gravity="center"
         android:layout_marginLeft="150dp"
         android:layout_marginTop="490dp"
+        android:layout_marginEnd="156dp"
         android:background="@drawable/btn_bg"
         android:backgroundTint="@color/colorAccent"
         android:onClick="onBack"
-        android:text="@string/back" />
+        android:text="@string/back"
+        android:textAllCaps="false"
+        android:textColor="@color/blanc" />
+
 </RelativeLayout>

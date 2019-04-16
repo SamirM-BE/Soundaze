@@ -47,6 +47,7 @@
         android:layout_marginTop="420dp"
         android:background="@drawable/btn_bg"
         android:backgroundTint="@color/colorAccent"
+        android:elevation="0dp"
         android:onClick="onClickLoadFile"
         android:text="@string/test_button"
         android:textColor="@color/colorBg" />
