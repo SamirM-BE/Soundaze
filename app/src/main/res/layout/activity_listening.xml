@@ -116,7 +116,10 @@
             android:onClick="onClickConvert"
             android:text="@string/btn_conv"
             android:textAlignment="center"
+            android:layout_marginLeft="10dp"
             android:textColorLink="@color/blanc" />
+
+
 
 
     </LinearLayout>
