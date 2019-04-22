@@ -83,6 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/colorBg"
         android:gravity="bottom"
         android:orientation="horizontal">
 
@@ -109,6 +110,7 @@
             android:id="@+id/btn_conv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:background="@color/colorAccent"
             android:backgroundTint="@color/colorAccent"
@@ -116,10 +118,7 @@
             android:onClick="onClickConvert"
             android:text="@string/btn_conv"
             android:textAlignment="center"
-            android:layout_marginLeft="10dp"
             android:textColorLink="@color/blanc" />
-
-
 
 
     </LinearLayout>
