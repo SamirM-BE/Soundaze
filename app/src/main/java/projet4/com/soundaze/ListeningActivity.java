@@ -201,6 +201,12 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
 
     */
 
+    public void onClickConvert(View view) {
+        Intent intent = new Intent(this, AudioConversionActivity.class);
+        intent.putExtra("uriListenning", uri);
+        startActivity(intent);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

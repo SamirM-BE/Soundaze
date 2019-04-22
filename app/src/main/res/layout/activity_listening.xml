@@ -104,15 +104,16 @@
             android:layout_weight="1"
             android:onClick="onClickTrim"
             android:text="@string/btn_trim" />
-
+-->
         <Button
             android:id="@+id/btn_conv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="onClickConvert"
             android:text="@string/btn_conv" />
 
-            -->
+
     </LinearLayout>
 
 </RelativeLayout>

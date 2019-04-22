@@ -27,6 +27,14 @@
     <string name="btn_conv">CONVERSION</string>
 
 
+    <string-array name="types_array">
+        <item>ACC</item>
+        <item>MP3</item>
+        <item>M4A</item>
+        <item>WMA</item>
+        <item>WAV</item>
+        <item>FLAC</item>
+    </string-array>
 
 
 
