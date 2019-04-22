@@ -182,7 +182,7 @@ public class EqualizerActivity extends AppCompatActivity
         TextView equalHeading = new TextView(this);
         equalHeading.setText(yourRealPath); //partie djaf on affiche le nom de la musique
         equalHeading.setTextSize(20);
-        equalHeading.setTextColor(Color.parseColor("#3b31c4"));
+        equalHeading.setTextColor(Color.parseColor("#000000"));
         equalHeading.setGravity(Gravity.CENTER_HORIZONTAL);
         myLinearLayout.addView(equalHeading);
 

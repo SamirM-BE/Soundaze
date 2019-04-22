@@ -13,8 +13,9 @@
         android:layout_height="34sp"
         android:text="@string/workspace"
         android:textAlignment="center"
+        android:layout_centerHorizontal="true"
         android:textAllCaps="false"
-        android:textColor="@color/colorBg"
+        android:textColor="@color/noir"
         android:textSize="18sp" />
 
 
@@ -22,7 +23,7 @@
         android:id="@+id/text_title"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:textColor="@color/colorAccent" />
+        android:textColor="@color/blanc" />
 
 
     <com.baoyz.swipemenulistview.SwipeMenuListView
@@ -33,11 +34,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="59dp"
-        android:backgroundTint="@color/colorAccent"
-        android:cacheColorHint="@color/colorAccent"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/blanc"
         android:visibility="visible">
-
     </com.baoyz.swipemenulistview.SwipeMenuListView>
 
 
@@ -48,12 +46,13 @@
         android:layout_gravity="center"
         android:layout_marginLeft="150dp"
         android:layout_marginTop="420dp"
-        android:background="@drawable/btn_bg"
-        android:backgroundTint="@color/colorAccent"
         android:elevation="0dp"
+        android:background="@color/colorAccent"
+        android:backgroundTint="@color/colorAccent"
+        android:fontFamily="sans-serif-medium"
         android:onClick="onClickLoadFile"
         android:text="@string/test_button"
-        android:textColor="@color/blanc" />
+        android:textColor="@color/noir" />
 
     <Button
         android:id="@+id/btnBack"
@@ -62,11 +61,12 @@
         android:layout_gravity="center"
         android:layout_marginLeft="150dp"
         android:layout_marginTop="490dp"
-        android:background="@drawable/btn_bg"
-        android:backgroundTint="@color/colorAccent"
         android:onClick="onBack"
+        android:background="@color/colorAccent"
+        android:backgroundTint="@color/colorAccent"
+        android:fontFamily="sans-serif-medium"
         android:text="@string/back"
-        android:textColor="@color/blanc" />
+        android:textColor="@color/noir" />
 
 
 </RelativeLayout>

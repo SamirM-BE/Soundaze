@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1.0"
             android:background="@color/blanc"
-            android:backgroundTint="@color/blanc"
+            android:backgroundTint="@color/noir"
             android:onClick="onClickWorkspace"
             android:text="@string/workspace"
             android:textColor="@color/colorBg"

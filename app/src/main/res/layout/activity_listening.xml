@@ -22,11 +22,12 @@
         android:id="@+id/btnFor"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:background="@color/colorAccent"
+        android:backgroundTint="@color/colorAccent"
+        android:fontFamily="sans-serif-medium"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="150dp"
         android:layout_toRightOf="@+id/btnPlay"
-        android:background="@drawable/btn_bg"
-        android:backgroundTint="@color/colorAccent"
         android:text="&gt;&gt;"
         android:textSize="20dp" />
 

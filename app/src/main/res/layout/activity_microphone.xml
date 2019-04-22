@@ -3,69 +3,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blanc"
     tools:context=".MicrophoneActivity">
-
     <Button
-        android:id="@+id/record"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="181dp"
-        android:layout_marginEnd="145dp"
-        android:backgroundTint="@color/colorBg"
+        android:background="@color/colorAccent"
+        android:backgroundTint="@color/colorAccent"
+        android:fontFamily="sans-serif-medium"
         android:text="Record"
-        android:textAlignment="textStart"
-        android:textColor="@color/colorBg"
-        android:textSize="20sp" />
-
+        android:textSize="20sp"
+        android:id="@+id/record"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        />
     <Button
-        android:id="@+id/stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="54dp"
-        android:layout_marginBottom="326dp"
-        android:background="@android:drawable/alert_light_frame"
-        android:backgroundTint="@color/blanc"
-        android:radius="100dp"
+        android:background="@color/colorAccent"
+        android:backgroundTint="@color/colorAccent"
+        android:fontFamily="sans-serif-medium"
         android:text="Stop"
-        android:textColor="@color/colorAccent"
-        android:textSize="20sp" />
-
+        android:textSize="20sp"
+        android:id="@+id/stop"
+        android:layout_below="@id/record"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        />
     <Button
-        android:id="@+id/play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="58dp"
-        android:layout_marginEnd="265dp"
-        android:layout_marginBottom="327dp"
-        android:background="@android:drawable/alert_dark_frame"
-        android:backgroundTint="@color/blanc"
+        android:background="@color/colorAccent"
+        android:backgroundTint="@color/colorAccent"
+        android:fontFamily="sans-serif-medium"
         android:text="Play"
-        android:textColor="@color/colorAccent"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:id="@+id/play"
+        android:layout_below="@id/stop"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        />
 
     <Button
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_gravity="center"
+        android:background="@color/colorAccent"
+        android:backgroundTint="@color/colorAccent"
+        android:fontFamily="sans-serif-medium"
         android:layout_marginLeft="150dp"
         android:layout_marginTop="490dp"
-        android:layout_marginEnd="156dp"
-        android:background="@drawable/btn_bg"
-        android:backgroundTint="@color/blanc"
         android:onClick="onBack"
-        android:text="@string/back"
-        android:textAllCaps="false"
-        android:textColor="@color/colorAccent" />
-
+        android:text="@string/back" />
 </RelativeLayout>
