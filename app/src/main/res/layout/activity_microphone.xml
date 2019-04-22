@@ -15,10 +15,10 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="103dp"
         android:layout_marginEnd="145dp"
-        android:backgroundTint="@color/colorAccent"
+        android:backgroundTint="@color/colorBg"
         android:text="Record"
         android:textAlignment="textStart"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorBg"
         android:textSize="20sp" />
 
     <Button
@@ -30,7 +30,7 @@
         android:layout_marginEnd="54dp"
         android:layout_marginBottom="326dp"
         android:background="@android:drawable/alert_light_frame"
-        android:backgroundTint="@color/colorAccent"
+        android:backgroundTint="@color/colorBg"
         android:radius="100dp"
         android:text="Stop"
         android:textColor="@color/blanc"
