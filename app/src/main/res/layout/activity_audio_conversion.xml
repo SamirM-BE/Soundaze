@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blanc"
     tools:context=".AudioConversionActivity">
 
     <TextView
@@ -11,7 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="71dp"
+        android:autoText="false"
+        android:background="@color/blanc"
         android:text="TextView"
+        android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,6 +37,7 @@
         android:layout_height="22dp"
         android:layout_marginStart="16dp"
         android:text="TextView"
+        android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -43,6 +48,7 @@
         android:layout_height="22dp"
         android:layout_marginEnd="153dp"
         android:text="To :"
+        android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -54,6 +60,7 @@
         android:layout_marginStart="14dp"
         android:layout_marginTop="6dp"
         android:layout_marginEnd="16dp"
+        android:background="@color/colorAccent"
         android:entries="@array/types_array"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView4"

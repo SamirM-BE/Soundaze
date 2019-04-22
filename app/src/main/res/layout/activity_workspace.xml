@@ -35,6 +35,7 @@
         android:layout_marginTop="59dp"
         android:backgroundTint="@color/colorAccent"
         android:cacheColorHint="@color/colorAccent"
+        android:textColor="@color/colorAccent"
         android:visibility="visible">
 
     </com.baoyz.swipemenulistview.SwipeMenuListView>
