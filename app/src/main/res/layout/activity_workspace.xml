@@ -33,6 +33,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="59dp"
+        android:backgroundTint="@color/colorAccent"
+        android:cacheColorHint="@color/colorAccent"
         android:visibility="visible">
 
     </com.baoyz.swipemenulistview.SwipeMenuListView>
@@ -50,7 +52,7 @@
         android:elevation="0dp"
         android:onClick="onClickLoadFile"
         android:text="@string/test_button"
-        android:textColor="@color/colorBg" />
+        android:textColor="@color/blanc" />
 
     <Button
         android:id="@+id/btnBack"
@@ -63,7 +65,7 @@
         android:backgroundTint="@color/colorAccent"
         android:onClick="onBack"
         android:text="@string/back"
-        android:textColor="@color/colorBg" />
+        android:textColor="@color/blanc" />
 
 
 </RelativeLayout>

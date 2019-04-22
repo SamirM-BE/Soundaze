@@ -111,7 +111,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClickConvert"
-            android:text="@string/btn_conv" />
+            android:text="@string/btn_conv"
+            android:textColorLink="@color/blanc" />
 
 
     </LinearLayout>
