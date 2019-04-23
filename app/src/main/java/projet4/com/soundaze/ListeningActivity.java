@@ -201,11 +201,22 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
 
     */
 
-    public void onClickConvert(View view) {
-        Intent intent = new Intent(this, AudioConversionActivity.class);
-        intent.putExtra("uriListenning", uri);
-        startActivity(intent);
-    }
+    private View.OnClickListener btn_EqlListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (mediaPlayer != null) {
+                mediaPlayer.stop();
+                mediaPlayer.release();
+                mediaPlayer = null;
+
+                if (handler != null) {
+                    handler.removeCallbacks(runnable);
+                }
+            }
+            onEqual(uri);
+
+        }
+    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -237,18 +248,20 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
                 REQUEST_ID_PERMISSIONS);
     }
 
-    private View.OnClickListener btn_EqlListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v)
-        {
-            if(mediaPlayer.isPlaying())
-            {
-                mediaPlayer.stop();
+    public void onClickConvert(View view) {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+            Toast.makeText(this, "Stop playing.", Toast.LENGTH_SHORT).show();
+            if (handler != null) {
+                handler.removeCallbacks(runnable);
             }
-            onEqual(uri);
-
         }
-    };
+        Intent intent = new Intent(this, AudioConversionActivity.class);
+        intent.putExtra("uriListenning", uri);
+        startActivity(intent);
+    }
 
     public void onEqual(Uri uri){
 
