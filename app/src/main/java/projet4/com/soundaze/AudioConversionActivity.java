@@ -27,7 +27,7 @@ public class AudioConversionActivity extends AppCompatActivity {
     String musicName;
     Uri uri;
     private TextView txtMusicNameConv;
-    private TextView txtFromConv;
+    private TextView txtInputFormat;
     private Spinner spinnerType;
 
     public static String getMimeType(Context context, Uri uri) {
@@ -58,11 +58,11 @@ public class AudioConversionActivity extends AppCompatActivity {
         musicName = getFileName(uri);
 
         txtMusicNameConv = findViewById(R.id.txtMusicNameConv);
-        txtFromConv = findViewById(R.id.txtFromConv);
+        txtInputFormat = findViewById(R.id.txtInputFormat);
 
 
         txtMusicNameConv.setText(musicName);
-        txtFromConv.setText("From : " + getMimeType(this, uri));
+        txtInputFormat.setText(getMimeType(this, uri));
 
 
     }
@@ -146,6 +146,13 @@ public class AudioConversionActivity extends AppCompatActivity {
                 .setFormat(format)
                 .setCallback(callback)
                 .convert();
+    }
+
+    public void onClickBack(View view) {
+        Intent intent = new Intent(this, ListeningActivity.class); //On prépare l'intent pour le passage à l'écran suivant
+        intent.putExtra("song", uri);
+        //mediaPlayer.release();
+        startActivity(intent);
     }
 }
 
