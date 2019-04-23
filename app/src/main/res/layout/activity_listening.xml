@@ -14,7 +14,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="150dp"
         android:background="@color/colorAccent"
-        android:backgroundTint="@color/colorAccent"
         android:text="||"
         android:textSize="20dp" />
 
@@ -23,7 +22,6 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@color/colorAccent"
-        android:backgroundTint="@color/colorAccent"
         android:fontFamily="sans-serif-medium"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="150dp"
@@ -39,7 +37,6 @@
         android:layout_marginRight="20dp"
         android:layout_toLeftOf="@+id/btnPlay"
         android:background="@color/colorAccent"
-        android:backgroundTint="@color/colorAccent"
         android:text="&gt;&gt;"
         android:textSize="20dp" />
 
@@ -60,10 +57,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="150dp"
-        android:layout_marginTop="345dp"
+        android:layout_centerInParent="true"
         android:background="@color/colorAccent"
-        android:backgroundTint="@color/colorAccent"
         android:fontFamily="sans-serif-medium"
         android:onClick="onBack"
         android:text="@string/back"
@@ -95,6 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorAccent"
+            android:layout_marginBottom="2dp"
             android:text="@string/btn_eql" />
 
         <!--
@@ -111,15 +107,12 @@
             android:id="@+id/btn_conv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginBottom="2dp"
             android:layout_weight="1"
             android:background="@color/colorAccent"
-            android:backgroundTint="@color/colorAccent"
-            android:elevation="0dp"
             android:onClick="onClickConvert"
-            android:text="@string/btn_conv"
-            android:textAlignment="center"
-            android:textColorLink="@color/blanc" />
+            android:text="@string/btn_conv" />
 
 
     </LinearLayout>

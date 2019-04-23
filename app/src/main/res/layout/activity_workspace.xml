@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blanc"
@@ -9,64 +11,74 @@
 
     <TextView
         android:id="@+id/workspace"
-        android:layout_width="match_parent"
-        android:layout_height="34sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
         android:text="@string/workspace"
-        android:textAlignment="center"
-        android:layout_centerHorizontal="true"
-        android:textAllCaps="false"
         android:textColor="@color/noir"
-        android:textSize="18sp" />
+        android:textSize="35sp"
+        app:layout_constraintBottom_toTopOf="@+id/imageWorkspace"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-
-    <TextView
-        android:id="@+id/text_title"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:textColor="@color/blanc" />
-
+    <ImageView
+        android:id="@+id/imageWorkspace"
+        android:layout_width="136dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="354dp"
+        android:src="@drawable/icon"
+        app:layout_constraintBottom_toTopOf="@+id/LoadFile_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/workspace" />
 
     <com.baoyz.swipemenulistview.SwipeMenuListView
         android:id="@+id/listView"
         android:layout_width="wrap_content"
         android:layout_height="269dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="59dp"
         android:textColor="@color/blanc"
-        android:visibility="visible">
-    </com.baoyz.swipemenulistview.SwipeMenuListView>
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/LoadFile_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageWorkspace"></com.baoyz.swipemenulistview.SwipeMenuListView>
 
 
     <Button
         android:id="@+id/LoadFile_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="150dp"
-        android:layout_marginTop="420dp"
-        android:elevation="0dp"
+        android:layout_marginBottom="16dp"
         android:background="@color/colorAccent"
-        android:backgroundTint="@color/colorAccent"
         android:fontFamily="sans-serif-medium"
         android:onClick="onClickLoadFile"
         android:text="@string/test_button"
-        android:textColor="@color/noir" />
+        android:textColor="@color/noir"
+        app:layout_constraintBottom_toTopOf="@+id/btnBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageWorkspace" />
 
     <Button
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="150dp"
-        android:layout_marginTop="490dp"
-        android:onClick="onBack"
+        android:layout_marginBottom="17dp"
         android:background="@color/colorAccent"
-        android:backgroundTint="@color/colorAccent"
         android:fontFamily="sans-serif-medium"
+        android:onClick="onBack"
         android:text="@string/back"
-        android:textColor="@color/noir" />
+        android:textColor="@color/noir"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LoadFile_button" />
 
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
