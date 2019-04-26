@@ -14,14 +14,15 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_ALL_DOWNLOADS" />
 
-
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".AudioConversionActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,11 +30,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EqualizerActivity"
+        <activity
+            android:name=".EqualizerActivity"
             android:parentActivityName=".WorkspaceActivity" />
-
-
-        <activity android:name=".MicrophoneActivity"/>
+        <activity android:name=".MicrophoneActivity" />
         <activity
             android:name=".PermissionActivity"
             android:parentActivityName=".MicrophoneActivity" />
@@ -55,9 +55,7 @@
             android:name=".AudioTrimmerActivity"
             android:theme="@style/Theme.Transparent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity android:name=".ListeningActivity" />
-
     </application>
 
 </manifest>

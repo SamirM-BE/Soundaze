@@ -103,7 +103,7 @@
                             android:layout_centerInParent="true"
                             android:layout_marginTop="15dp"
                             android:layout_marginBottom="25dp"
-                            android:background="@color/colorWaveformBg" />
+                            android:background="@color/colorAccent" />
 
                         <projet4.com.soundaze.customAudioViews.MarkerView
                             android:id="@+id/markerStart"

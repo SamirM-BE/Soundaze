@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blanc"
+    tools:context=".AudioConversionActivity">
+
+    <TextView
+        android:id="@+id/conversion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:fontFamily="cursive"
+        android:text="CONVERSION"
+        android:textColor="@color/noir"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtMusicNameConv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
+        android:background="@color/blanc"
+        android:text="TextView"
+        android:textColor="@color/noir"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <Button
+        android:id="@+id/btn_convertConv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginBottom="13dp"
+        android:onClick="onClickConvert"
+        android:text="CONVERT"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintStart_toStartOf="@+id/button" />
+
+    <TextView
+        android:id="@+id/txtFromConv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Audio input format :"
+        android:textColor="@color/noir"
+        app:layout_constraintBottom_toBottomOf="@+id/txtOutputFormat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txtOutputFormat" />
+
+    <TextView
+        android:id="@+id/txtOutputFormat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="143dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginBottom="144dp"
+        android:text="Select output format :"
+        android:textColor="@color/noir"
+        app:layout_constraintBottom_toTopOf="@+id/btn_convertConv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txtMusicNameConv" />
+
+    <Spinner
+        android:id="@+id/spinnerType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="9dp"
+        android:elevation="1dp"
+        android:entries="@array/types_array"
+        app:layout_constraintEnd_toEndOf="@+id/txtOutputFormat"
+        app:layout_constraintTop_toBottomOf="@+id/txtOutputFormat" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toStartOf="@+id/conversion"
+        app:layout_constraintTop_toBottomOf="@+id/conversion"
+        app:srcCompat="@drawable/convert" />
+
+    <TextView
+        android:id="@+id/txtInputFormat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="13dp"
+        android:textAllCaps="true"
+        android:textColor="@color/noir"
+        app:layout_constraintStart_toStartOf="@+id/txtFromConv"
+        app:layout_constraintTop_toBottomOf="@+id/txtFromConv" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="26dp"
+        android:onClick="onClickBack"
+        android:text="BACK"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,8 +13,7 @@
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="150dp"
-        android:background="@drawable/btn_bg"
-        android:backgroundTint="@color/colorAccent"
+        android:background="@color/colorAccent"
         android:text="||"
         android:textSize="20dp" />
 
@@ -22,11 +21,11 @@
         android:id="@+id/btnFor"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:background="@color/colorAccent"
+        android:fontFamily="sans-serif-medium"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="150dp"
         android:layout_toRightOf="@+id/btnPlay"
-        android:background="@drawable/btn_bg"
-        android:backgroundTint="@color/colorAccent"
         android:text="&gt;&gt;"
         android:textSize="20dp" />
 
@@ -37,8 +36,7 @@
         android:layout_marginTop="150dp"
         android:layout_marginRight="20dp"
         android:layout_toLeftOf="@+id/btnPlay"
-        android:background="@drawable/btn_bg"
-        android:backgroundTint="@color/colorAccent"
+        android:background="@color/colorAccent"
         android:text="&gt;&gt;"
         android:textSize="20dp" />
 
@@ -59,10 +57,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="150dp"
-        android:layout_marginTop="345dp"
-        android:background="@drawable/btn_bg"
-        android:backgroundTint="@color/colorAccent"
+        android:layout_centerInParent="true"
+        android:background="@color/colorAccent"
         android:fontFamily="sans-serif-medium"
         android:onClick="onBack"
         android:text="@string/back"
@@ -83,6 +79,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/colorBg"
         android:gravity="bottom"
         android:orientation="horizontal">
 
@@ -93,6 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorAccent"
+            android:layout_marginBottom="2dp"
             android:text="@string/btn_eql" />
 
         <!--
@@ -104,15 +102,19 @@
             android:layout_weight="1"
             android:onClick="onClickTrim"
             android:text="@string/btn_trim" />
-
+-->
         <Button
             android:id="@+id/btn_conv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginBottom="2dp"
             android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:onClick="onClickConvert"
             android:text="@string/btn_conv" />
 
-            -->
+
     </LinearLayout>
 
 </RelativeLayout>
