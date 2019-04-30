@@ -21,7 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-public class MainActivity extends AppCompatActivity /*implements View.OnClickListener*/ {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int ADD_AUDIO = 1001;
     private static final int REQUEST_ID_PERMISSIONS = 1;
@@ -38,19 +38,17 @@ public class MainActivity extends AppCompatActivity /*implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*partie liée au trim momentanément effacée
-        //btnAudioTrim = findViewById(R.id.btn_trim);
-        //btnAudioTrim.setOnClickListener(this);
 
-        */
+        btnAudioTrim = findViewById(R.id.btn_trim);
+        btnAudioTrim.setOnClickListener(this);
+
+
     }
 
     static final int AUDIO_SELECTED = 1;
     String pickedAudioPath;
     private ArrayList<MediaFile> mediaFiles = new ArrayList<>();
 
-
-    /* partie éliminée de la mainactivity pour le moment pour éviter que le prof click dessus
 
     //Clique sur le bouton "crop"
     @Override
@@ -109,7 +107,6 @@ public class MainActivity extends AppCompatActivity /*implements View.OnClickLis
         }
     }
 
-    */
 
     public void onClickWorkspace(View view) {
         Intent intent = new Intent(this, WorkspaceActivity.class);

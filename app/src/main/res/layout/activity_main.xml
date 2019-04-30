@@ -31,8 +31,6 @@
         android:layout_weight="1.0"
         android:orientation="horizontal" >
 
-        <!--
-
 
         <ImageButton
             android:id="@+id/btn_trim"
@@ -42,7 +40,6 @@
             android:layout_weight="1.0"
             android:src="@drawable/trim" />
 
-            -->
 
         <ImageButton
             android:id="@+id/btn_micro"
