@@ -1,24 +1,21 @@
 package projet4.com.soundaze;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.Canvas;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.jaiselrahman.filepicker.activity.FilePickerActivity;
 import com.jaiselrahman.filepicker.config.Configurations;
 import com.jaiselrahman.filepicker.model.MediaFile;
@@ -33,19 +30,31 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import projet4.com.soundaze.ListView.Music;
+import projet4.com.soundaze.ListView.MusicsDataAdapter;
+import projet4.com.soundaze.ListView.SwipeController;
+import projet4.com.soundaze.ListView.SwipeControllerActions;
 
 
 public class WorkspaceActivity extends AppCompatActivity {
 
+    //ListView
+    private MusicsDataAdapter mAdapter;
+    SwipeController swipeController = null;
+    List<Music> musics;
+
 
     /*******************Déclaration variables globales*************/
-
-
-    SwipeMenuListView listView;
+    //SwipeMenuListView listView;
     private static String yourRealPath;//va être utilisée pour le nom de la musique
     //les 2 ici pour la séletion de musiques
     //les 2 ici pour le oncreate lors de l'arrivée sur le worksapce
@@ -88,7 +97,13 @@ public class WorkspaceActivity extends AppCompatActivity {
         }
 
         //Appel de méthode configurant le display de la Listview avec les musique déjà présente en interne
-        setItem();
+        if(arrayListUriVal.size()!=0)
+        {
+            setItem(1);
+            setupRecyclerView();
+            Log.e("SAMIR", "different de 0");
+        }
+
     }
 
     /*
@@ -141,7 +156,7 @@ public class WorkspaceActivity extends AppCompatActivity {
      *
      */
 
-    public void setItem(){
+    public void setItem(int firstTime){
 
         //on fait tout ceci seulement si le readinternal renvoit une arraylist remplie de musique
         //en gros, il faut que arrayListUriVal ne soit pas empty
@@ -150,90 +165,68 @@ public class WorkspaceActivity extends AppCompatActivity {
 
                 // on stocke dans un uri temporaire l'uri en cours de lecture en le parsant de String vers Uri
                 Uri tmp = Uri.parse(arrayListUriVal.get(i));
-                arrayListUri.add(getFileName(tmp));
+                if(firstTime==1)
+                {
+                    arrayListUri.add(getFileName(tmp));
+                }
+
 
             }
 
-            //on utilise mnt la SwipeMenulistview
-            listView = findViewById(R.id.listView);
-            //on utilise l'arrayListUri à afficher car ce sont les noms qui intéressent l'user
-            arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, arrayListUri);
-            listView.setAdapter(arrayAdapter);
-            SwipeMenuCreator creator = new SwipeMenuCreator() {
-
-                @Override
-                public void create(SwipeMenu menu) {
-                    // on crée l'elément "delete"
-                    SwipeMenuItem deleteItem = new SwipeMenuItem(
-                            getApplicationContext());
-                    // on set le fond en rouge
-                    deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-                            0x3F, 0x25)));
-                    // on set la largeur de l'element
-                    deleteItem.setWidth(170);
-                    // on set l'icone de la poubelle
-                    deleteItem.setIcon(R.drawable.ic_delete_swipe);
-                    // on l'ajoue de menu du Swipe
-                    menu.addMenuItem(deleteItem);
-                }
-            };
-
-            listView.setMenuCreator(creator);
-
-            //on gère le listener si l'user click sur la poubelle
-            listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                    switch (index) {
-                        case 0:
-                            Toast.makeText(WorkspaceActivity.this, "song deleted", Toast.LENGTH_SHORT).show();
-
-                            //on doit supprimer de la Listview et du fichier interne l'élément sur lequel on a double click
-
-                            arrayListUri.remove(position); //suppression du nom dans la listView qui est affiché
-                            //supression de l'uri dans l'arraylist qui a lu lors de la création dans le fichier interne
-                            arrayListUriVal.remove(position);
-                            //on notifie un changement au niveau de la listView qui est affichée
-                            arrayAdapter.notifyDataSetChanged();
-
-                            Toast.makeText(WorkspaceActivity.this,"song deleted", Toast.LENGTH_SHORT).show();
-
-                            //en 1, je delete mon file existant, le "fileApp" contenant tous les uri sélectionnés
-                            deleteInternal();
-                            //ensuite, je recrée mon file avec la nouvelle arraylist mise à jour
-                            //je réenregistre un par un les uri qui sont encore d'actualité
-                            for(int i = 0;i<arrayListUriVal.size(); i++){
-                                save(arrayListUriVal.get(i)); // du pûre interne
-                            }
-
-                            //une fois que tout ceci est fait je peux refermer le SwipeMenu en sortant du case
-                            //break;
-                            return false;
-                        case 1:
-
-                            //je n'ai rien à faire dans ce cas car je n'ai qu'1 option dans mon menu
-
-                            break;
-                    }
-                    // false : ferme le menu; true : ne ferme pas le menu
-                    return false;
-                }
-            });
-
-            //je gère le listener dans le cas ou l'user click sur une musique qu'il souhaite jouer avec le player
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-            {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
-                    //je récupère la musique sélectionnée et je la lance dans le lecteur
-                    final Uri vr = Uri.parse(arrayListUriVal.get(position));
-                    onClickMusic(vr);
-                }
-            });
-
+            musics = new ArrayList<>(); //Liste des musiques
+            Iterator<String> iterator = arrayListUri.iterator();
+            while (iterator.hasNext()) {
+                Music music = new Music();
+                music.setMusicName(iterator.next());
+                musics.add(music);
+            }
+            mAdapter = new MusicsDataAdapter(musics);
         }
+    }
 
+    @SuppressLint("WrongConstant") //LIGNE AJOUTEE PAR MOI, très douteuse
+    private void setupRecyclerView() {
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(mAdapter);
+        swipeController = new SwipeController(new SwipeControllerActions() {
+            @Override
+            public void onRightClicked(int position) {
+                mAdapter.musics.remove(position);
+                mAdapter.notifyItemRemoved(position);
+                mAdapter.notifyItemRangeChanged(position, mAdapter.getItemCount());
+                arrayListUri.remove(position); //suppression du nom dans la listView qui est affiché
+                //supression de l'uri dans l'arraylist qui a lu lors de la création dans le fichier interne
+                arrayListUriVal.remove(position);
+                deleteInternal();
+                //ensuite, je recrée mon file avec la nouvelle arraylist mise à jour
+                //je réenregistre un par un les uri qui sont encore d'actualité
+                for(int i = 0;i<arrayListUriVal.size(); i++){
+                    save(arrayListUriVal.get(i)); // du pûre interne
+                }
+
+                Toast.makeText(WorkspaceActivity.this, "song deleted", Toast.LENGTH_SHORT).show();
+            }
+        });
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
+        itemTouchhelper.attachToRecyclerView(recyclerView);
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                swipeController.onDraw(c);
+            }
+        });
+    }
+
+
+
+   public void onClickMusicName(View view)
+    {
+        int position = (int) view.getTag();
+        Toast.makeText(view.getContext(),Integer.toString(position),Toast.LENGTH_SHORT).show();
+        final Uri vr = Uri.parse(arrayListUriVal.get(position));
+        onClickMusic(vr);
     }
 
     /************************Fin du Lancement de l'activité Worksapce**********************/
@@ -290,18 +283,14 @@ public class WorkspaceActivity extends AppCompatActivity {
                 //on récupère l'uri du son sélectionné par l'user
                 uri = Uri.fromFile(new File(pickedAudioPath));
 
-                alreadyLoaded = 1; // à éliminer éventuellement
 
                 //avant d'ajouter l'uri dans le fichier interne, on check s'il n'y est pas déjà
                 if (!containsInternal(uri)) {
                     arrayListUriVal.add(uri.toString()); //à enlever si problème
                 }
 
-
                 //on récupère le nom de a musique à partir de son uri
                 yourRealPath = getFileName(uri);
-
-
                 //on rempli déjà l'arraylist visuelle afin que lorsque l'user choisit une musique
                 //la musique vienne s'ajouter à une autre liste de musique déjà existante
 
@@ -323,91 +312,20 @@ public class WorkspaceActivity extends AppCompatActivity {
                     save(uri.toString());
                 }
 
-                //on utilise mnt la swipemenulistview
-                listView = findViewById(R.id.listView);
+                Music music = new Music();
+                music.setMusicName(getFileName(uri));
+                if(musics!=null)
+                {
+                    musics.add(music);
+                    mAdapter.updateList(musics);
+                }
+                else
+                {
+                    setItem(0);
+                    setupRecyclerView();
+                }
 
-                //je pourrais mettre l'arrayListUri n°2 à la place de l'arrayList
 
-                //avant arrayList
-
-                arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, arrayListUri);
-
-
-                listView.setAdapter(arrayAdapter);
-
-                SwipeMenuCreator creator = new SwipeMenuCreator() {
-
-                    @Override
-                    public void create(SwipeMenu menu) {
-                        // création de l'élément delete
-                        SwipeMenuItem deleteItem = new SwipeMenuItem(
-                                getApplicationContext());
-                        // on set l'arrière plan en rouge
-                        deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-                                0x3F, 0x25)));
-                        // on set la largeur de l'élément
-                        deleteItem.setWidth(170);
-                        // on set l'image de l'icone poubelle
-                        deleteItem.setIcon(R.drawable.ic_delete_swipe);
-                        // on l'ajoute au menu
-                        menu.addMenuItem(deleteItem);
-                    }
-                };
-
-                listView.setMenuCreator(creator);
-                listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                        switch (index) {
-                            case 0:
-
-                                Toast.makeText(WorkspaceActivity.this, "clické sur delete", Toast.LENGTH_SHORT).show();
-
-                                //on doit supprimer de l'arraylist et du fichier l'élément sur lequel on a double click
-
-                                //on doit supprimer de l'arraylist et du fichier l'élément sur lequel on a double click
-
-                                //je remove de mon arraylist de noms de musique
-                                arrayListUri.remove(position);//à supprimer si prob
-                                //je remove de mon arraylist de nom d'uri sous forme de String
-
-                                if (!(arrayListUriVal.get(position) == null)) {
-                                    arrayListUriVal.remove(position);//du pure interne
-                                }
-
-                                arrayAdapter.notifyDataSetChanged();
-
-                                Toast.makeText(WorkspaceActivity.this, "song deleted", Toast.LENGTH_SHORT).show();
-
-                                //restera pour demain qu'à supprimer dans le fichier
-
-                                //en 1, je delete mon file existant
-                                deleteInternal();
-                                //ensuite, je recrée mon file avec la nouvelle arraylist mise à jour
-
-                                for (int i = 0; i < arrayListUriVal.size(); i++) {
-                                    save(arrayListUriVal.get(i)); // du pûre interne
-                                }
-                                //break;
-                                return false;
-
-                            case 1:
-                                //je n'ai rien à faire dans ce cas car je n'ai qu'1 option dans mon menu
-                                break;
-                        }
-                        // false : ferme le menu; true : ne ferme pas le menu
-                        return false;
-                    }
-                });
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view,
-                                            int position, long id) {
-                        //je récupère la musique sélectionnée et je la lance dans le lecteur
-                        onClickMusic(uri);
-
-                    }
-                });
 
 
             }
@@ -575,5 +493,6 @@ public class WorkspaceActivity extends AppCompatActivity {
     }
 
     /****************************************Fin partie système de fichier****************************/
+
 
 }

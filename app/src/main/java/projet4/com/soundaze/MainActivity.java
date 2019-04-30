@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String pickedAudioPath;
     private String recordAudioFileName; // pour l'intent du micro
     private ArrayList<MediaFile> mediaFiles = new ArrayList<>();
-//ceci est un test
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
