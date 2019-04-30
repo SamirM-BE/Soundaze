@@ -10,7 +10,6 @@ import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -77,6 +76,7 @@ public class WorkspaceActivity extends AppCompatActivity {
             savedAudios = readInternal();
         }catch(FileNotFoundException e){
 
+
             ///TODO : pas oublier d'ajouter ici le cas ou le type aurait supprimer le fichier
             //Toast.makeText(WorkspaceActivity.this,"file app has been removed", Toast.LENGTH_SHORT).show();
         }
@@ -85,7 +85,7 @@ public class WorkspaceActivity extends AppCompatActivity {
         {
             setItem(1);
             setupRecyclerView();
-            Log.e("SAMIR", "different de 0");
+
         }
 
     }
@@ -141,6 +141,7 @@ public class WorkspaceActivity extends AppCompatActivity {
 
                 // on stocke dans un uri temporaire l'uri en cours de lecture en le parsant de String vers Uri
                 Uri tmp = Uri.parse(savedAudios.get(i));
+
                 if(firstTime==1)
                 {
                     displayedAudio.add(getFileName(tmp));
@@ -199,9 +200,10 @@ public class WorkspaceActivity extends AppCompatActivity {
         final Uri clickedMusicUri = Uri.parse(savedAudios.get(position));
         Intent intent = new Intent(this, ListeningActivity.class); //On prépare l'intent pour le passage à l'écran suivant
         // Add a Uri instance to an Intent
-        intent.putExtra("song", uri);
+        intent.putExtra("song", clickedMusicUri);
         if (containsInternal(uri)) {
             pickedAudioPath = uri.getPath();
+
         }
         intent.putExtra("pickedAudioPath", pickedAudioPath);
         startActivity(intent);
@@ -258,23 +260,23 @@ public class WorkspaceActivity extends AppCompatActivity {
                 //avant d'ajouter l'uri dans le fichier interne, on check s'il n'y est pas déjà
                 if (!containsInternal(uri)) {
                     savedAudios.add(uri.toString()); //à enlever si problème
-                    Log.e("SAMIR", "une fois max par musique");
+
                 }
 
                 //on récupère le nom de a musique à partir de son uri
                 yourRealPath = getFileName(uri);
 
+
                 //on ajoute la suite d'uri, mais avant d'ajouter, on vérifie si l'elem est pas déjà dans l'arraylist de ceux récemment ajouté
                 if (!(displayedAudio.contains(yourRealPath))) { //je peux utiliser displayedAudio utilisé en n°2
                     displayedAudio.add(yourRealPath); // on ajoute le son dans la liste
                     alreadyLoaded = 0;
-                    Log.e("SAMIR", "une fois max par musique3");
+
                 }
 
                 //on save l'uri seulement s'il n'est pas déjà dans le fichier, double check
 
                 if (!containsInternal(uri)) {
-                    Log.e("SAMIR", "une fois max par musique4");
                     save(uri.toString());
                 }
 
@@ -288,7 +290,7 @@ public class WorkspaceActivity extends AppCompatActivity {
                     alreadyLoaded = 1;
                 } else if (musics == null)
                 {
-                    Log.e("SAMIR", "UNE FOIS, pas DEUX AU TOTAL");
+
                     setItem(0);
                     setupRecyclerView();
                 }

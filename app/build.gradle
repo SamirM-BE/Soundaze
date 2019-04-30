@@ -37,4 +37,10 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
     implementation 'androidx.recyclerview:recyclerview:1.0.0-beta01'
     implementation 'androidx.cardview:cardview:1.0.0-beta01'
+
+    //equalizer
+    implementation 'com.github.mosamabinomar:AndroidEqualizer:2.0'
+
+    //recorder
+    compile 'com.github.adrielcafe:AndroidAudioRecorder:0.3.0'
 }

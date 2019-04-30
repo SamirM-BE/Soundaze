@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void onClick(DialogInterface dialog, int whichButton) {
 
                     recordAudioFileName = input.getText().toString();
-                    intent.putExtra("epuzzle", recordAudioFileName);
+                    intent.putExtra("recordedFileName", recordAudioFileName);
                     startActivity(intent); //Lancement du micro
                 }
             });

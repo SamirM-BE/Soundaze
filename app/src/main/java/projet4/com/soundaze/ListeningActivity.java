@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.provider.OpenableColumns;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -49,6 +50,10 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
         pickedAudioPath = intent.getStringExtra("pickedAudioPath");
         //on récupère le nom de a musique à partir de son uri
 
+        if(uri==null)
+        {
+            Log.e("Samir","uri null");
+        }
         musicName = getFileName(uri);
 
 
@@ -268,6 +273,7 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
         intent.putExtra("song", uri);
         //mediaPlayer.release();
         startActivity(intent);
+        finish();
     }
 
     /*public void openEqualizer()

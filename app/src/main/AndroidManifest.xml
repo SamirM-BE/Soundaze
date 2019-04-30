@@ -34,9 +34,6 @@
             android:name=".EqualizerActivity"
             android:parentActivityName=".WorkspaceActivity" />
         <activity android:name=".MicrophoneActivity" />
-        <activity
-            android:name=".PermissionActivity"
-            android:parentActivityName=".MicrophoneActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
