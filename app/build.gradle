@@ -31,4 +31,6 @@ dependencies {
 
     //conversion
     implementation 'com.github.adrielcafe:AndroidAudioConverter:0.0.8'
+    //permissions
+    implementation 'com.yanzhenjie.permission:x:2.0.1'
 }

@@ -47,7 +47,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1.0"
             android:background="@color/colorAccent"
-            android:onClick="onClickAudio"
+            android:onClick="onClickRecordAudio"
             android:src="@drawable/microphone" />
 
     </LinearLayout>
