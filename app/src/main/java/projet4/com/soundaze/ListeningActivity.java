@@ -275,7 +275,7 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
 
         //on passe dans l'activité de l'qualizer
         //je récupère la musique sélectionnée et je la lance dans le lecteur
-        final Uri vr = Uri.parse(arrayListUriVal.get(position));
+        final Uri vr = Uri.parse(savedAudios.get(position));
         onEqual(vr);
         Intent intent = new Intent(this,EqualizerActivity.class);
         startActivity(intent);

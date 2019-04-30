@@ -7,13 +7,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Canvas;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.jaiselrahman.filepicker.activity.FilePickerActivity;
@@ -47,37 +45,24 @@ import projet4.com.soundaze.ListView.SwipeControllerActions;
 
 public class WorkspaceActivity extends AppCompatActivity {
 
-    //ListView
-    private MusicsDataAdapter mAdapter;
-    SwipeController swipeController = null;
-    List<Music> musics;
-
-
-    /*******************Déclaration variables globales*************/
-    //SwipeMenuListView listView;
-    private static String yourRealPath;//va être utilisée pour le nom de la musique
-    //les 2 ici pour la séletion de musiques
-    //les 2 ici pour le oncreate lors de l'arrivée sur le worksapce
-    ArrayList<String> arrayListUri = new ArrayList<>(); // n°2 dans l'utilisation dans setItem(), contient les noms de musiques récupérer de l'arraylist des uri du fichier interne de arrayListUriVal
-    ArrayList<String> arrayListUriVal = new ArrayList<>(); // n°1 dans l'utilisation dans onCreate, contient les uri du fichier interne en String
-    //pour la listview
-    ArrayAdapter arrayAdapter;
+    static final int AUDIO_SELECTED = 1; //Cette variable sert à vérifier si l'user a choisi un son
     //je mets le fichier interne en public pour pouvoir l'utiliser dans les autres activités qui ont besoin du syst de fichier
     public static String filename = "fileApp.txt";
+    /*******************Déclaration variables globales*************/
+    private static String yourRealPath;//va être utilisée pour le nom de la musique
+    ArrayList<String> displayedAudio = new ArrayList<>(); // Musiques sensé être dans la ListView
+    ArrayList<String> savedAudios = new ArrayList<>(); // Musiques sauvegardés dans la mémoire interne
     int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
-
     //pour la sélection de fichier dans le load file
     String pickedAudioPath;
+    private MusicsDataAdapter mAdapter;
+    SwipeController swipeController = null; //Pour gérer les swipe
+    List<Music> musics; //Liste des musiques
+    Uri uri; //URI de l'audio séléctionné par l'user
+    int alreadyLoaded = 1;
     private ArrayList<MediaFile> mediaFiles = new ArrayList<>();
 
-
-    /*****************Fin déclaration variables globales*********************/
-
-
-
     /******************Quand l'activité Wroksapce se lance********************/
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,15 +74,14 @@ public class WorkspaceActivity extends AppCompatActivity {
 
         //on lit le contenu di fichier qu'on vient mettre dans l'arraylist
         try {
-            arrayListUriVal = readInternal();
+            savedAudios = readInternal();
         }catch(FileNotFoundException e){
 
-            //pas oublier d'ajouter ici le cas ou le type aurait supprimer le fichier
+            ///TODO : pas oublier d'ajouter ici le cas ou le type aurait supprimer le fichier
             //Toast.makeText(WorkspaceActivity.this,"file app has been removed", Toast.LENGTH_SHORT).show();
         }
-
         //Appel de méthode configurant le display de la Listview avec les musique déjà présente en interne
-        if(arrayListUriVal.size()!=0)
+        if (savedAudios.size() != 0)
         {
             setItem(1);
             setupRecyclerView();
@@ -113,17 +97,9 @@ public class WorkspaceActivity extends AppCompatActivity {
     */
     public void checkPermission(){
 
-        //check if we have the permission
-
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.MANAGE_DOCUMENTS)!= PackageManager.PERMISSION_GRANTED){
-            //Toast.makeText(WorkspaceActivity.this, "permission is not granted", Toast.LENGTH_SHORT).show();
-        }
-
         //request the permission
         // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.MANAGE_DOCUMENTS)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.MANAGE_DOCUMENTS) != PackageManager.PERMISSION_GRANTED) {
 
             // Permission is not granted
             // Should we show an explanation?
@@ -159,22 +135,19 @@ public class WorkspaceActivity extends AppCompatActivity {
     public void setItem(int firstTime){
 
         //on fait tout ceci seulement si le readinternal renvoit une arraylist remplie de musique
-        //en gros, il faut que arrayListUriVal ne soit pas empty
-        if(!(arrayListUriVal.isEmpty())) {
-            for (int i = 0; i < arrayListUriVal.size(); i++) {
+        //en gros, il faut que savedAudios ne soit pas empty
+        if (!(savedAudios.isEmpty())) {
+            for (int i = 0; i < savedAudios.size(); i++) {
 
                 // on stocke dans un uri temporaire l'uri en cours de lecture en le parsant de String vers Uri
-                Uri tmp = Uri.parse(arrayListUriVal.get(i));
+                Uri tmp = Uri.parse(savedAudios.get(i));
                 if(firstTime==1)
                 {
-                    arrayListUri.add(getFileName(tmp));
+                    displayedAudio.add(getFileName(tmp));
                 }
-
-
             }
-
             musics = new ArrayList<>(); //Liste des musiques
-            Iterator<String> iterator = arrayListUri.iterator();
+            Iterator<String> iterator = displayedAudio.iterator();
             while (iterator.hasNext()) {
                 Music music = new Music();
                 music.setMusicName(iterator.next());
@@ -184,9 +157,9 @@ public class WorkspaceActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("WrongConstant") //LIGNE AJOUTEE PAR MOI, très douteuse
+    @SuppressLint("WrongConstant")
     private void setupRecyclerView() {
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(mAdapter);
@@ -196,14 +169,14 @@ public class WorkspaceActivity extends AppCompatActivity {
                 mAdapter.musics.remove(position);
                 mAdapter.notifyItemRemoved(position);
                 mAdapter.notifyItemRangeChanged(position, mAdapter.getItemCount());
-                arrayListUri.remove(position); //suppression du nom dans la listView qui est affiché
+                displayedAudio.remove(position); //suppression du nom dans la listView qui est affiché
                 //supression de l'uri dans l'arraylist qui a lu lors de la création dans le fichier interne
-                arrayListUriVal.remove(position);
+                savedAudios.remove(position);
                 deleteInternal();
                 //ensuite, je recrée mon file avec la nouvelle arraylist mise à jour
                 //je réenregistre un par un les uri qui sont encore d'actualité
-                for(int i = 0;i<arrayListUriVal.size(); i++){
-                    save(arrayListUriVal.get(i)); // du pûre interne
+                for (int i = 0; i < savedAudios.size(); i++) {
+                    save(savedAudios.get(i)); // du pûre interne
                 }
 
                 Toast.makeText(WorkspaceActivity.this, "song deleted", Toast.LENGTH_SHORT).show();
@@ -219,23 +192,21 @@ public class WorkspaceActivity extends AppCompatActivity {
         });
     }
 
-
-
    public void onClickMusicName(View view)
     {
         int position = (int) view.getTag();
         Toast.makeText(view.getContext(),Integer.toString(position),Toast.LENGTH_SHORT).show();
-        final Uri vr = Uri.parse(arrayListUriVal.get(position));
-        onClickMusic(vr);
+        final Uri clickedMusicUri = Uri.parse(savedAudios.get(position));
+        Intent intent = new Intent(this, ListeningActivity.class); //On prépare l'intent pour le passage à l'écran suivant
+        // Add a Uri instance to an Intent
+        intent.putExtra("song", uri);
+        if (containsInternal(uri)) {
+            pickedAudioPath = uri.getPath();
+        }
+        intent.putExtra("pickedAudioPath", pickedAudioPath);
+        startActivity(intent);
+
     }
-
-    /************************Fin du Lancement de l'activité Worksapce**********************/
-
-
-    static final int AUDIO_SELECTED = 1; //Cette variable sert à vérifier si l'user a choisi un son
-    Uri uri; //URI de l'audio séléctionné par l'user
-    int alreadyLoaded = 0;
-
 
     /*
      *@pré -
@@ -286,73 +257,50 @@ public class WorkspaceActivity extends AppCompatActivity {
 
                 //avant d'ajouter l'uri dans le fichier interne, on check s'il n'y est pas déjà
                 if (!containsInternal(uri)) {
-                    arrayListUriVal.add(uri.toString()); //à enlever si problème
+                    savedAudios.add(uri.toString()); //à enlever si problème
+                    Log.e("SAMIR", "une fois max par musique");
                 }
 
                 //on récupère le nom de a musique à partir de son uri
                 yourRealPath = getFileName(uri);
-                //on rempli déjà l'arraylist visuelle afin que lorsque l'user choisit une musique
-                //la musique vienne s'ajouter à une autre liste de musique déjà existante
-
-                    for (int j = 0; j < arrayListUriVal.size(); j++) {
-                        //arrayListUriVal.contains etc. et arrayListUri en deuxième lieu
-                        if (!arrayListUri.contains(getFileName(Uri.parse(arrayListUriVal.get(j)))) && containsInternal(Uri.parse(arrayListUriVal.get(j)))) { // on triple check
-                            arrayListUri.add(getFileName(Uri.parse(arrayListUriVal.get(j))));
-                        }
-                    }
 
                 //on ajoute la suite d'uri, mais avant d'ajouter, on vérifie si l'elem est pas déjà dans l'arraylist de ceux récemment ajouté
-                if (!(arrayListUri.contains(yourRealPath))) { //je peux utiliser arrayListUri utilisé en n°2
-                    arrayListUri.add(yourRealPath); // on ajoute le son dans la liste
+                if (!(displayedAudio.contains(yourRealPath))) { //je peux utiliser displayedAudio utilisé en n°2
+                    displayedAudio.add(yourRealPath); // on ajoute le son dans la liste
+                    alreadyLoaded = 0;
+                    Log.e("SAMIR", "une fois max par musique3");
                 }
 
                 //on save l'uri seulement s'il n'est pas déjà dans le fichier, double check
 
                 if (!containsInternal(uri)) {
+                    Log.e("SAMIR", "une fois max par musique4");
                     save(uri.toString());
                 }
 
-                Music music = new Music();
-                music.setMusicName(getFileName(uri));
-                if(musics!=null)
+
+                if (musics != null && alreadyLoaded == 0)
                 {
+                    Music music = new Music();
+                    music.setMusicName(getFileName(uri));
                     musics.add(music);
                     mAdapter.updateList(musics);
-                }
-                else
+                    alreadyLoaded = 1;
+                } else if (musics == null)
                 {
+                    Log.e("SAMIR", "UNE FOIS, pas DEUX AU TOTAL");
                     setItem(0);
                     setupRecyclerView();
                 }
-
-
-
-
             }
         }
+
     }
 
     /*********************Partie sur les changement d'activité**************************/
 
-    /*
-     *@pré uri != null
-     * @post lance l'intent du player de musique en lui transmettant l'uri du song qui doit être joué
-     *
-     */
-    public void onClickMusic(Uri uri)
-    {
-        Intent intent = new Intent(this, ListeningActivity.class); //On prépare l'intent pour le passage à l'écran suivant
-        // Add a Uri instance to an Intent
-        intent.putExtra("song", uri);
-        if (containsInternal(uri)) {
-            pickedAudioPath = uri.getPath();
-        }
-        intent.putExtra("pickedAudioPath", pickedAudioPath);
-        startActivity(intent);
 
-
-    }
-
+    ///TODO: gérer stack
     /*
      *@pré -
      * @post méthode de retour vers la mainActivity
@@ -364,8 +312,6 @@ public class WorkspaceActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-    /******************************Fin partie sur les changements d'activité********************************/
 
 
 

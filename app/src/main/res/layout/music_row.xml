@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
     <!-- player_row.xml -->
-<androidx.cardview.widget.CardView
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:focusable="true"
-android:clickable="true"
-android:layout_margin="8dp"
-android:background="?android:attr/selectableItemBackground">
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:onClick="onClickMusicName">
 
 
 <LinearLayout
@@ -28,7 +29,6 @@ android:background="?android:attr/selectableItemBackground">
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onClickMusicName"
             tools:text="Robert Lewandowski"/>
 
         <!--<TextView

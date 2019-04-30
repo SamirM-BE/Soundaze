@@ -4,26 +4,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import projet4.com.soundaze.R;
-import projet4.com.soundaze.WorkspaceActivity;
 
 public class MusicsDataAdapter extends RecyclerView.Adapter<MusicsDataAdapter.MusicViewHolder> { // implements View.OnClickListener
     public List<Music> musics;
 
-    public class MusicViewHolder extends RecyclerView.ViewHolder {
-        private TextView musicName;//, duration;
-
-        public MusicViewHolder(View view) {
-            super(view);
-            musicName = (TextView) view.findViewById(R.id.musicName);
-            //musicName.setOnClickListener();
-            //duration = (TextView) view.findViewById(R.id.duration);
-        }
+    @Override
+    public void onBindViewHolder(MusicViewHolder holder, int position) {
+        Music music = musics.get(position);
+        holder.musicName.setText(music.getMusicName());
+        holder.cardView.setTag(position);
+        //holder.duration.setText(music.getDuration());
     }
 
     /*@Override
@@ -43,14 +39,17 @@ public class MusicsDataAdapter extends RecyclerView.Adapter<MusicsDataAdapter.Mu
         return new MusicViewHolder(itemView);
     }
 
+    public class MusicViewHolder extends RecyclerView.ViewHolder {
+        private TextView musicName;//, duration;
+        private CardView cardView;
 
-
-    @Override
-    public void onBindViewHolder(MusicViewHolder holder, int position) {
-        Music music = musics.get(position);
-        holder.musicName.setText(music.getMusicName());
-        holder.musicName.setTag(position);
-        //holder.duration.setText(music.getDuration());
+        public MusicViewHolder(View view) {
+            super(view);
+            musicName = view.findViewById(R.id.musicName);
+            //musicName.setOnClickListener();
+            //duration = (TextView) view.findViewById(R.id.duration);
+            cardView = view.findViewById(R.id.card_view1);
+        }
     }
 
     @Override
