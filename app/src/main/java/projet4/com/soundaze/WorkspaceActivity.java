@@ -211,7 +211,6 @@ public class WorkspaceActivity extends AppCompatActivity {
         }
         intent.putExtra("pickedAudioPath", pickedAudioPath);
         startActivity(intent);
-
     }
 
     /*

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blanc"
+    android:background="@color/noir"
     tools:context=".AudioConversionActivity">
 
     <TextView
@@ -13,11 +13,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="39dp"
         android:fontFamily="cursive"
         android:text="CONVERSION"
-        android:textColor="@color/noir"
+        android:textColor="@color/blanc"
         android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,24 +27,25 @@
         android:id="@+id/txtMusicNameConv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="26dp"
         android:layout_marginTop="18dp"
-        android:background="@color/blanc"
         android:text="TextView"
-        android:textColor="@color/noir"
+        android:textColor="@color/blanc"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/musicNameTitle" />
 
     <Button
         android:id="@+id/btn_convertConv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginBottom="13dp"
+        android:layout_marginBottom="87dp"
+        android:background="@color/presqueNoir3"
         android:onClick="onClickConvert"
         android:text="CONVERT"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintStart_toStartOf="@+id/button" />
+        android:textColor="@color/blanc"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/txtFromConv"
@@ -51,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="Audio input format :"
-        android:textColor="@color/noir"
+        android:textColor="@color/blanc"
         app:layout_constraintBottom_toBottomOf="@+id/txtOutputFormat"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/txtOutputFormat" />
@@ -60,32 +62,33 @@
         android:id="@+id/txtOutputFormat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="143dp"
-        android:layout_marginEnd="22dp"
+        android:layout_marginTop="145dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginBottom="144dp"
         android:text="Select output format :"
-        android:textColor="@color/noir"
+        android:textColor="@color/blanc"
         app:layout_constraintBottom_toTopOf="@+id/btn_convertConv"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/txtMusicNameConv" />
+        app:layout_constraintTop_toBottomOf="@+id/convertLogo" />
 
     <Spinner
         android:id="@+id/spinnerType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:layout_marginEnd="9dp"
+        android:layout_marginEnd="11dp"
         android:elevation="1dp"
         android:entries="@array/types_array"
+        android:theme="@style/mySpinnerItemStyle"
         app:layout_constraintEnd_toEndOf="@+id/txtOutputFormat"
         app:layout_constraintTop_toBottomOf="@+id/txtOutputFormat" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/convertLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="7dp"
         app:layout_constraintStart_toStartOf="@+id/conversion"
         app:layout_constraintTop_toBottomOf="@+id/conversion"
         app:srcCompat="@drawable/convert" />
@@ -97,18 +100,29 @@
         android:layout_marginStart="17dp"
         android:layout_marginTop="13dp"
         android:textAllCaps="true"
-        android:textColor="@color/noir"
+        android:textColor="@color/blanc"
         app:layout_constraintStart_toStartOf="@+id/txtFromConv"
         app:layout_constraintTop_toBottomOf="@+id/txtFromConv" />
 
-    <Button
-        android:id="@+id/button"
+    <ImageView
+        android:id="@+id/backButtonImageConv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="26dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:onClick="onClickBack"
-        android:text="BACK"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_arrow_back_white_36" />
+
+    <TextView
+        android:id="@+id/musicNameTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="7dp"
+        android:text="Musique :"
+        android:textColor="@color/blanc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/convertLogo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

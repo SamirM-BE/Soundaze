@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blanc"
+    android:background="@color/colorGrayAlpha"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.6"
-        android:background="@color/blanc"
+        android:background="@color/noir"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -103,7 +103,7 @@
                             android:layout_centerInParent="true"
                             android:layout_marginTop="15dp"
                             android:layout_marginBottom="25dp"
-                            android:background="@color/colorAccent" />
+                            android:background="@color/colorWaveformBg" />
 
                         <projet4.com.soundaze.customAudioViews.MarkerView
                             android:id="@+id/markerStart"

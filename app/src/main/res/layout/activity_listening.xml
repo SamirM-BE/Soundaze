@@ -1,32 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blanc"
-
+    android:background="@color/noir"
     tools:context="projet4.com.soundaze.ListeningActivity">
 
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:onClick="onBack"
+        app:srcCompat="@drawable/baseline_arrow_back_white_36" />
     <Button
         android:id="@+id/btnPlay"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="150dp"
-        android:background="@color/colorAccent"
+        android:background="@color/noir"
         android:text="||"
+        android:textColor="@color/blanc"
         android:textSize="20dp" />
 
     <Button
         android:id="@+id/btnFor"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@color/colorAccent"
+        android:background="@color/noir"
         android:fontFamily="sans-serif-medium"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="150dp"
         android:layout_toRightOf="@+id/btnPlay"
         android:text="&gt;&gt;"
+        android:textColor="@color/blanc"
         android:textSize="20dp" />
 
     <Button
@@ -36,8 +47,9 @@
         android:layout_marginTop="150dp"
         android:layout_marginRight="20dp"
         android:layout_toLeftOf="@+id/btnPlay"
-        android:background="@color/colorAccent"
+        android:background="@color/noir"
         android:text="&gt;&gt;"
+        android:textColor="@color/blanc"
         android:textSize="20dp" />
 
 
@@ -49,20 +61,10 @@
         android:layout_marginTop="100dp"
 
         android:layout_marginRight="20dp"
-        android:backgroundTint="@color/colorBlack"
-        android:progress="@color/noir"
         android:splitTrack="false"
-        android:thumbTint="@color/grisFonce" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@color/colorAccent"
-        android:fontFamily="sans-serif-medium"
-        android:onClick="onBack"
-        android:text="@string/back"
-        android:textColor="@color/noir" />
+        android:progressBackgroundTint="@color/blanc"
+        android:theme="@style/MySeekBarTheme"
+        android:thumbTint="@color/blanc" />
 
 
     <TextView
@@ -73,13 +75,13 @@
         android:layout_alignRight="@+id/seekbar"
         android:layout_alignBottom="@+id/seekbar"
         android:layout_marginBottom="53dp"
-        android:layout_toEndOf="@+id/btnBack" />
+        android:layout_toEndOf="@+id/btnBack"
+        android:textColor="@color/blanc" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="20dp"
-        android:backgroundTint="@color/colorBg"
         android:gravity="bottom"
         android:orientation="horizontal">
 
@@ -89,9 +91,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/colorAccent"
+            android:background="@color/presqueNoir1"
             android:layout_marginBottom="2dp"
-            android:text="@string/btn_eql" />
+            android:text="@string/btn_eql"
+            android:textColor="@color/blanc" />
 
         <!--
 
@@ -110,9 +113,10 @@
             android:layout_marginLeft="2dp"
             android:layout_marginBottom="2dp"
             android:layout_weight="1"
-            android:background="@color/colorAccent"
+            android:background="@color/presqueNoir1"
             android:onClick="onClickConvert"
-            android:text="@string/btn_conv" />
+            android:text="@string/btn_conv"
+            android:textColor="@color/blanc" />
 
 
     </LinearLayout>

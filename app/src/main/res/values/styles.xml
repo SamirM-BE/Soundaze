@@ -18,4 +18,15 @@
     </style>
 
     <style name="Base.AppTheme" parent="Theme.AppCompat.Light.DarkActionBar"></style>
+
+    <style name="MySeekBarTheme" parent="Widget.AppCompat.SeekBar">
+        <item name="colorAccent">#4caf50</item>
+    </style>
+
+    <style name="mySpinnerItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
+        <item name="android:textColor">@color/blanc</item>
+        <item name="android:background">@color/presqueNoir2</item>
+        <item name="android:colorBackgroundCacheHint">@color/presqueNoir3</item>
+    </style>
+
 </resources>

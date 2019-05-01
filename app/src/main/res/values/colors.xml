@@ -11,7 +11,7 @@
     <color name="noir">#000000</color>
     <color name="blanc">#FFFFFF</color>
     <color name="mauve">#7B1FA2</color>
-    <color name="vert">#004D40</color>
+    <color name="vert">#4caf50</color>
     <color name="primaryDark">#292b3d</color>
     <color name="graylight">#fafafa</color>
     <color name="startblue">#09c6df</color>
@@ -19,14 +19,16 @@
     <color name="transparent">#00000000</color>
     <color name="gradStart">#19AA8B</color>
     <color name="gradStop">#23A7D8</color>
-    <color name="noiraud">#282828</color>
+    <color name="presqueNoir0">#282828</color>
     <color name="gris">#606060</color>
     <color name="rouge">#6d071a</color>
     <color name="skyblue">#87CEEB</color>
     <color name="grisClair">#3d3d3d</color>
     <color name="grisFonce">#2e2e2e</color>
     <color name="darkGray">#FF444444</color>
-    <color name="presqueNoir">#181818</color>
+    <color name="presqueNoir1">#181818</color>
+    <color name="presqueNoir2">#1B1919</color>
+    <color name="presqueNoir3">#171515</color>
 
 
     <!--

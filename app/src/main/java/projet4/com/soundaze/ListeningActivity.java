@@ -111,6 +111,7 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
     }
 
     //s'il click sur l'option back, on relance la main qui va ouvrir l'explorateur de fichier
+    ///TODO : mal codé le stop
     public void onBack(View view) {
 
         //on arrête le médiaplayer courant
@@ -124,6 +125,7 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
 
         Intent intent = new Intent(this, WorkspaceActivity.class);
         startActivity(intent);
+        finish();
 
     }
 
