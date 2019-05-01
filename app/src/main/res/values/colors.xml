@@ -19,13 +19,14 @@
     <color name="transparent">#00000000</color>
     <color name="gradStart">#19AA8B</color>
     <color name="gradStop">#23A7D8</color>
-    <color name="noiraud">#2F1E0E</color>
+    <color name="noiraud">#282828</color>
     <color name="gris">#606060</color>
     <color name="rouge">#6d071a</color>
     <color name="skyblue">#87CEEB</color>
     <color name="grisClair">#3d3d3d</color>
     <color name="grisFonce">#2e2e2e</color>
     <color name="darkGray">#FF444444</color>
+    <color name="presqueNoir">#181818</color>
 
 
     <!--

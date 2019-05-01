@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent(this, WorkspaceActivity.class);
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
         startActivity(intent);
+        finish();
         ///TODO : Check ReadStoragePermission
     }
 

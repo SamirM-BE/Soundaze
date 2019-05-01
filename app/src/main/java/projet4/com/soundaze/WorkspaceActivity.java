@@ -12,7 +12,6 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -202,7 +201,6 @@ public class WorkspaceActivity extends AppCompatActivity {
 
     public void onClickMusicName(View view) {
         int position = (int) view.getTag();
-        Toast.makeText(view.getContext(), Integer.toString(position), Toast.LENGTH_SHORT).show();
         final Uri clickedMusicUri = Uri.parse(savedAudios.get(position));
         Intent intent = new Intent(this, ListeningActivity.class); //On prépare l'intent pour le passage à l'écran suivant
         // Add a Uri instance to an Intent
@@ -259,8 +257,6 @@ public class WorkspaceActivity extends AppCompatActivity {
                 mediaFiles.addAll(data.<MediaFile>getParcelableArrayListExtra(FilePickerActivity.MEDIA_FILES));
 
                 if (!(mediaFiles.isEmpty())) {
-                    Log.e("SAMIR", "audio pas choisi0");
-
 
                     MediaFile mediaFile = mediaFiles.get(0);
 
@@ -307,13 +303,8 @@ public class WorkspaceActivity extends AppCompatActivity {
                         setupRecyclerView();
                     }
                 }
-            } else {
-                Log.e("SAMIR", "audio pas choisi");
             }
-        } else {
-            Log.e("SAMIR", "audio pas choisi");
         }
-
     }
 
     public String getMusicDuration(Uri uri) {
@@ -341,6 +332,7 @@ public class WorkspaceActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, MainActivity.class); //On prépare l'intent pour le passage à l'écran suivant
         startActivity(intent);
+        finish();
     }
 
 

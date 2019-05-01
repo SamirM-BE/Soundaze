@@ -6,10 +6,12 @@
     android:id="@+id/card_view1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_margin="1dp"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
+    app:cardBackgroundColor="@color/presqueNoir"
+    app:cardElevation="5dp"
     android:onClick="onClickMusicName">
 
     <ImageView
@@ -38,7 +40,7 @@
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="3dp"
                 android:textSize="16sp"
-                android:textStyle="bold"
+                android:textColor="@color/blanc"
                 tools:text="Robert Lewandowski" />
             <!--
                 <TextView
@@ -61,6 +63,7 @@
                 android:id="@+id/duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/graylight"
                 tools:text="Bayern Munchen" />
 
         </LinearLayout>

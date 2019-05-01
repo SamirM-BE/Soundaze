@@ -5,7 +5,7 @@
     android:id="@+id/relativeLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blanc"
+    android:background="@color/noir"
     android:orientation="vertical"
     tools:context=".WorkspaceActivity">
 
@@ -14,11 +14,12 @@
         android:id="@+id/workspace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:fontFamily="cursive"
         android:text="@string/workspace"
-        android:textColor="@color/noir"
-        android:textSize="35sp"
-        app:layout_constraintBottom_toTopOf="@+id/imageWorkspace"
+        android:textColor="@color/blanc"
+        android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,10 +27,9 @@
     <ImageView
         android:id="@+id/imageWorkspace"
         android:layout_width="136dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="417dp"
+        android:layout_height="128dp"
+        android:layout_marginTop="11dp"
         android:src="@drawable/icon"
-        app:layout_constraintBottom_toTopOf="@+id/btnBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/workspace" />
@@ -37,36 +37,21 @@
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="345dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageWorkspace">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="223dp"
+            android:layout_height="match_parent"
             android:clipToPadding="false"
             android:orientation="horizontal"
             android:overScrollMode="never" />
     </FrameLayout>
-
-
-    <Button
-        android:id="@+id/btnBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="18dp"
-        android:background="@color/colorAccent"
-        android:fontFamily="sans-serif-medium"
-        android:onClick="onBack"
-        android:text="@string/back"
-        android:textColor="@color/noir"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageWorkspace" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -74,13 +59,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="74dp"
+        android:layout_marginBottom="26dp"
         android:foregroundGravity="right|bottom"
         android:onClick="onClickLoadFile"
-        android:src="@drawable/baseline_add_white_24"
+        android:backgroundTint="@color/blanc"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/baseline_add_black_24"
         tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="4dp"
+        android:onClick="onBack"
+        android:src="@drawable/baseline_arrow_back_white_36"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
