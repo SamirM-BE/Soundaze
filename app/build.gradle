@@ -42,5 +42,5 @@ dependencies {
     implementation 'com.github.mosamabinomar:AndroidEqualizer:2.0'
 
     //recorder
-    compile 'com.github.adrielcafe:AndroidAudioRecorder:0.3.0'
+    implementation 'com.github.adrielcafe:AndroidAudioRecorder:0.3.0'
 }

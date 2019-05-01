@@ -5,17 +5,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -29,6 +22,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import cafe.adriel.androidaudiorecorder.AndroidAudioRecorder;
 import cafe.adriel.androidaudiorecorder.model.AudioChannel;
 import cafe.adriel.androidaudiorecorder.model.AudioSampleRate;
@@ -66,6 +62,10 @@ public class MicrophoneActivity extends AppCompatActivity {
         if (requestCode == REQUEST_RECORD_AUDIO) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(this, "Audio recorded successfully!", Toast.LENGTH_SHORT).show();
+                audio = Uri.fromFile(new File(AUDIO_FILE_PATH));
+                if (!containsInternal(audio)) {
+                    save(audio.toString());
+                }
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Audio was not recorded", Toast.LENGTH_SHORT).show();
             }
@@ -93,10 +93,7 @@ public class MicrophoneActivity extends AppCompatActivity {
                 // Start recording
                 .record();
 
-        audio = Uri.fromFile(new File(AUDIO_FILE_PATH));
-        if(! containsInternal(audio) ){
-            save(audio.toString());
-        }
+
     }
 
     public static void requestPermission(Activity activity, String permission) {
