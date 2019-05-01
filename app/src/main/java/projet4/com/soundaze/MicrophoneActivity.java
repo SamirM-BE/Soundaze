@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -51,7 +52,7 @@ public class MicrophoneActivity extends AppCompatActivity {
         requestPermission(this, Manifest.permission.RECORD_AUDIO);
         requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         Intent intent = getIntent();
-        String recordedFileName = intent.getExtras().getString("recordedFileName");
+        String recordedFileName = Objects.requireNonNull(intent.getExtras()).getString("recordedFileName");
         AUDIO_FILE_PATH = Environment.getExternalStorageDirectory().getPath() + "/"+recordedFileName+".wav";
         recordAudio();
     }
@@ -68,6 +69,10 @@ public class MicrophoneActivity extends AppCompatActivity {
                 }
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Audio was not recorded", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, MainActivity.class); //On prépare l'intent pour le passage à l'écran suivant
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
             }
         }
         finish();
@@ -180,6 +185,17 @@ public class MicrophoneActivity extends AppCompatActivity {
         }
         return uri;
 
+
+    }
+
+
+    //si l'user appuye sur le bouton back du téléphone
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class); //On prépare l'intent pour le passage à l'écran suivant
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
 
     }
 

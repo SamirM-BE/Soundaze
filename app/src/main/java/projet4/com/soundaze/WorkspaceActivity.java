@@ -75,7 +75,7 @@ public class WorkspaceActivity extends AppCompatActivity {
         //on check les permission
         checkPermission();
 
-        //on lit le contenu di fichier qu'on vient mettre dans l'arraylist
+        //on lit le contenu du fichier qu'on vient mettre dans l'arraylist
         try {
             savedAudios = readInternal();
         } catch (FileNotFoundException e) {
@@ -106,25 +106,23 @@ public class WorkspaceActivity extends AppCompatActivity {
 
             // Permission is not granted
             // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.MANAGE_DOCUMENTS)) {
+                        // No explanation needed; request the permission
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.MANAGE_DOCUMENTS},
+                                MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+
+                        //Toast.makeText(WorkspaceActivity.this, "permission is granted", Toast.LENGTH_SHORT).show();
+
+                        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                        // app-defined int constant. The callback method gets the
+                        // result of the request.
+                    } else {
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
-            } else {
-                // No explanation needed; request the permission
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.MANAGE_DOCUMENTS},
-                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-
-                //Toast.makeText(WorkspaceActivity.this, "permission is granted", Toast.LENGTH_SHORT).show();
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
-        } else {
-            // Permission has already been granted
         }
     }
 
@@ -152,11 +150,10 @@ public class WorkspaceActivity extends AppCompatActivity {
             int i = 0;
             Uri tmp2;
             musics = new ArrayList<>(); //Liste des musiques
-            Iterator<String> iterator = displayedAudio.iterator();
-            while (iterator.hasNext()) {
+            for (String aDisplayedAudio : displayedAudio) {
                 tmp2 = Uri.parse(savedAudios.get(i));
                 Music music = new Music();
-                music.setMusicName(iterator.next());
+                music.setMusicName(aDisplayedAudio);
                 music.setDuration(getMusicDuration(tmp2));
                 musics.add(music);
             }
@@ -321,7 +318,6 @@ public class WorkspaceActivity extends AppCompatActivity {
     /*********************Partie sur les changement d'activité**************************/
 
 
-    ///TODO: gérer stack
     /*
      *@pré -
      * @post méthode de retour vers la mainActivity
@@ -330,8 +326,19 @@ public class WorkspaceActivity extends AppCompatActivity {
     public void onBack(View view) {
 
         Intent intent = new Intent(this, MainActivity.class); //On prépare l'intent pour le passage à l'écran suivant
+        intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+
+    //si l'user appuye sur le bouton back du téléphone
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class); //On prépare l'intent pour le passage à l'écran suivant
+        intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+
     }
 
 
@@ -342,13 +349,10 @@ public class WorkspaceActivity extends AppCompatActivity {
     public String getFileName(Uri uri) {
         String result = null;
         if (uri.getScheme().equals("content")) {
-            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-            try {
+            try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
                 if (cursor != null && cursor.moveToFirst()) {
                     result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                 }
-            } finally {
-                cursor.close();
             }
         }
         if (result == null) {

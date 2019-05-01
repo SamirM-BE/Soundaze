@@ -110,22 +110,42 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
         });
     }
 
-    //s'il click sur l'option back, on relance la main qui va ouvrir l'explorateur de fichier
-    ///TODO : mal codé le stop
+    /*
+     *@pré -
+     * @post méthode de retour vers la mainActivity
+     *
+     */
     public void onBack(View view) {
 
-        //on arrête le médiaplayer courant
-        //mediaPlayer.reset();
-        //mediaPlayer.prepare();
-        mediaPlayer.stop();
-        //mediaPlayer.release();
-        //mediaPlayer = null;
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+            if (handler != null) {
+                handler.removeCallbacks(runnable);
+            }
+        }
 
-        //on retourne sur l'écran précédent de la main
-
-        Intent intent = new Intent(this, WorkspaceActivity.class);
+        Intent intent = new Intent(this, WorkspaceActivity.class); //On prépare l'intent pour le passage à l'écran suivant
+        intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        finish();
+    }
+
+    //si l'user appuye sur le bouton back du téléphone
+    @Override
+    public void onBackPressed() {
+
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+            if (handler != null) {
+                handler.removeCallbacks(runnable);
+            }
+        }
+        Intent intent = new Intent(this, WorkspaceActivity.class); //On prépare l'intent pour le passage à l'écran suivant
+        intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
 
     }
 
@@ -190,21 +210,6 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    //on met la méthode en com pour la présentation de mardi
-
-
-    public void onClickTrim(View view) {
-        Intent intent = new Intent(this, AudioTrimmerActivity.class); //On prépare l'intent pour le passage à l'écran suivant
-        intent.putExtra("pickedAudioPath", pickedAudioPath);
-        //check storage permission before start trimming
-        if (checkStoragePermission()) {
-            startActivityForResult(intent, TRIMER);
-            overridePendingTransition(0, 0);
-        } else {
-            requestStoragePermission();
-        }
-
-    }
 
 
     private View.OnClickListener btn_EqlListener = new View.OnClickListener() {
@@ -278,14 +283,4 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
         finish();
     }
 
-    /*public void openEqualizer()
-    {
-
-        //on passe dans l'activité de l'qualizer
-        //je récupère la musique sélectionnée et je la lance dans le lecteur
-        final Uri vr = Uri.parse(savedAudios.get(position));
-        onEqual(vr);
-        Intent intent = new Intent(this,EqualizerActivity.class);
-        startActivity(intent);
-    }*/
 }
