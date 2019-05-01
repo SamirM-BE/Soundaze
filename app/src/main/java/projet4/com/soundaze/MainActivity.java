@@ -1,6 +1,7 @@
 package projet4.com.soundaze;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String pickedAudioPath;
     private String recordAudioFileName; // pour l'intent du micro
     private ArrayList<MediaFile> mediaFiles = new ArrayList<>();
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .setSelectedMediaFile(file)
                         .build());
                 startActivityForResult(intent, AUDIO_SELECTED);
+                dialog = ProgressDialog.show(MainActivity.this, "",
+                        "Loading. Please wait...", true);
                 //overridePendingTransition(0, 0);
             } else {
                 requestStoragePermission();
@@ -75,15 +79,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AUDIO_SELECTED) { //L'utilisateur a choisi un fichier à rogner
+            dialog.dismiss();
             mediaFiles.clear();
             mediaFiles.addAll(data.<MediaFile>getParcelableArrayListExtra(FilePickerActivity.MEDIA_FILES));
 
-            MediaFile mediaFile = mediaFiles.get(0);
-            pickedAudioPath = mediaFile.getPath(); //Chemin du fichier choisi
+            if (!(mediaFiles.isEmpty())) {
+                MediaFile mediaFile = mediaFiles.get(0);
+                pickedAudioPath = mediaFile.getPath(); //Chemin du fichier choisi
 
-            Intent intent = new Intent(this, AudioTrimmerActivity.class); //On lance le rognage
-            intent.putExtra("pickedAudioPath", pickedAudioPath); // On lui passe le chemin du fichier choisi par l'user
-            startActivityForResult(intent, ADD_AUDIO);
+                Intent intent = new Intent(this, AudioTrimmerActivity.class); //On lance le rognage
+                intent.putExtra("pickedAudioPath", pickedAudioPath); // On lui passe le chemin du fichier choisi par l'user
+                startActivityForResult(intent, ADD_AUDIO);
+            }
         } else if (requestCode == ADD_AUDIO) { //Rognage terminé
             if (resultCode == RESULT_OK) {
                 if (data != null) {
@@ -109,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final Intent intent = new Intent(this, MicrophoneActivity.class);
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
 
-        if(checkExternalStoragePermission()) {
+        if (checkExternalStoragePermission()) {
 
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -138,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             });
             alert.show();
-        }else{
+        } else {
             requestExternalStoragePermission();
             ///TODO : check les permissions.
         }

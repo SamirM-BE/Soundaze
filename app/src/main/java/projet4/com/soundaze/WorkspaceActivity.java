@@ -12,6 +12,7 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -78,15 +79,14 @@ public class WorkspaceActivity extends AppCompatActivity {
         //on lit le contenu di fichier qu'on vient mettre dans l'arraylist
         try {
             savedAudios = readInternal();
-        }catch(FileNotFoundException e){
+        } catch (FileNotFoundException e) {
 
 
             ///TODO : pas oublier d'ajouter ici le cas ou le type aurait supprimer le fichier
             //Toast.makeText(WorkspaceActivity.this,"file app has been removed", Toast.LENGTH_SHORT).show();
         }
         //Appel de méthode configurant le display de la Listview avec les musique déjà présente en interne
-        if (savedAudios.size() != 0)
-        {
+        if (savedAudios.size() != 0) {
             setItem(1);
             setupRecyclerView();
 
@@ -95,11 +95,11 @@ public class WorkspaceActivity extends AppCompatActivity {
     }
 
     /*
-    *@pré -
-    * @post méthode qui vérifie les permissions pour accéder aux uri
-    *
-    */
-    public void checkPermission(){
+     *@pré -
+     * @post méthode qui vérifie les permissions pour accéder aux uri
+     *
+     */
+    public void checkPermission() {
 
         //request the permission
         // Here, thisActivity is the current activity
@@ -136,7 +136,7 @@ public class WorkspaceActivity extends AppCompatActivity {
      *
      */
 
-    public void setItem(int firstTime){
+    public void setItem(int firstTime) {
 
         //on fait tout ceci seulement si le readinternal renvoit une arraylist remplie de musique
         //en gros, il faut que savedAudios ne soit pas empty
@@ -146,8 +146,7 @@ public class WorkspaceActivity extends AppCompatActivity {
                 // on stocke dans un uri temporaire l'uri en cours de lecture en le parsant de String vers Uri
                 Uri tmp = Uri.parse(savedAudios.get(i));
 
-                if(firstTime==1)
-                {
+                if (firstTime == 1) {
                     displayedAudio.add(getFileName(tmp));
                 }
             }
@@ -201,10 +200,9 @@ public class WorkspaceActivity extends AppCompatActivity {
         });
     }
 
-   public void onClickMusicName(View view)
-    {
+    public void onClickMusicName(View view) {
         int position = (int) view.getTag();
-        Toast.makeText(view.getContext(),Integer.toString(position),Toast.LENGTH_SHORT).show();
+        Toast.makeText(view.getContext(), Integer.toString(position), Toast.LENGTH_SHORT).show();
         final Uri clickedMusicUri = Uri.parse(savedAudios.get(position));
         Intent intent = new Intent(this, ListeningActivity.class); //On prépare l'intent pour le passage à l'écran suivant
         // Add a Uri instance to an Intent
@@ -223,8 +221,7 @@ public class WorkspaceActivity extends AppCompatActivity {
      * @post méthode qui va lancer le menu de sélection de fichier audio à l'aide de la lib externe FilePicker
      *
      */
-    public void onClickLoadFile(View view)
-    {
+    public void onClickLoadFile(View view) {
         Intent intent = new Intent(WorkspaceActivity.this, FilePickerActivity.class);
         MediaFile file = null;
         for (int i = 0; i < mediaFiles.size(); i++) {
@@ -261,52 +258,60 @@ public class WorkspaceActivity extends AppCompatActivity {
                 mediaFiles.clear();
                 mediaFiles.addAll(data.<MediaFile>getParcelableArrayListExtra(FilePickerActivity.MEDIA_FILES));
 
-                MediaFile mediaFile = mediaFiles.get(0);
-                pickedAudioPath = mediaFile.getPath();
-
-                //on récupère l'uri du son sélectionné par l'user
-                uri = Uri.fromFile(new File(pickedAudioPath));
+                if (!(mediaFiles.isEmpty())) {
+                    Log.e("SAMIR", "audio pas choisi0");
 
 
-                //avant d'ajouter l'uri dans le fichier interne, on check s'il n'y est pas déjà
-                if (!containsInternal(uri)) {
-                    savedAudios.add(uri.toString()); //à enlever si problème
+                    MediaFile mediaFile = mediaFiles.get(0);
 
+                    pickedAudioPath = mediaFile.getPath();
+
+                    //on récupère l'uri du son sélectionné par l'user
+                    uri = Uri.fromFile(new File(pickedAudioPath));
+
+
+                    //avant d'ajouter l'uri dans le fichier interne, on check s'il n'y est pas déjà
+                    if (!containsInternal(uri)) {
+                        savedAudios.add(uri.toString()); //à enlever si problème
+
+                    }
+
+                    //on récupère le nom de a musique à partir de son uri
+                    yourRealPath = getFileName(uri);
+
+
+                    //on ajoute la suite d'uri, mais avant d'ajouter, on vérifie si l'elem est pas déjà dans l'arraylist de ceux récemment ajouté
+                    if (!(displayedAudio.contains(yourRealPath))) { //je peux utiliser displayedAudio utilisé en n°2
+                        displayedAudio.add(yourRealPath); // on ajoute le son dans la liste
+                        alreadyLoaded = 0;
+
+                    }
+
+                    //on save l'uri seulement s'il n'est pas déjà dans le fichier, double check
+
+                    if (!containsInternal(uri)) {
+                        save(uri.toString());
+                    }
+
+
+                    if (musics != null && alreadyLoaded == 0) {
+                        Music music = new Music();
+                        music.setMusicName(getFileName(uri));
+                        music.setDuration(getMusicDuration(uri));
+                        musics.add(music);
+                        mAdapter.updateList(musics);
+                        alreadyLoaded = 1;
+                    } else if (musics == null) {
+
+                        setItem(0);
+                        setupRecyclerView();
+                    }
                 }
-
-                //on récupère le nom de a musique à partir de son uri
-                yourRealPath = getFileName(uri);
-
-
-                //on ajoute la suite d'uri, mais avant d'ajouter, on vérifie si l'elem est pas déjà dans l'arraylist de ceux récemment ajouté
-                if (!(displayedAudio.contains(yourRealPath))) { //je peux utiliser displayedAudio utilisé en n°2
-                    displayedAudio.add(yourRealPath); // on ajoute le son dans la liste
-                    alreadyLoaded = 0;
-
-                }
-
-                //on save l'uri seulement s'il n'est pas déjà dans le fichier, double check
-
-                if (!containsInternal(uri)) {
-                    save(uri.toString());
-                }
-
-
-                if (musics != null && alreadyLoaded == 0)
-                {
-                    Music music = new Music();
-                    music.setMusicName(getFileName(uri));
-                    music.setDuration(getMusicDuration(uri));
-                    musics.add(music);
-                    mAdapter.updateList(musics);
-                    alreadyLoaded = 1;
-                } else if (musics == null)
-                {
-
-                    setItem(0);
-                    setupRecyclerView();
-                }
+            } else {
+                Log.e("SAMIR", "audio pas choisi");
             }
+        } else {
+            Log.e("SAMIR", "audio pas choisi");
         }
 
     }
@@ -332,13 +337,11 @@ public class WorkspaceActivity extends AppCompatActivity {
      * @post méthode de retour vers la mainActivity
      *
      */
-    public void onBack(View view){
+    public void onBack(View view) {
 
         Intent intent = new Intent(this, MainActivity.class); //On prépare l'intent pour le passage à l'écran suivant
         startActivity(intent);
     }
-
-
 
 
     /******************************Partie système de fichier*************************************************/
@@ -379,13 +382,13 @@ public class WorkspaceActivity extends AppCompatActivity {
             FileInputStream fis = openFileInput(filename);
             BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
             String line;
-            while((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null) {
                 //on ajoute l'uri dans l'arraylist, attention de le reconvertir en uri valide
                 uri.add(line);
             }
             reader.close();
             return uri;
-        }catch(FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
             throw new FileNotFoundException();
         } catch (IOException e) {
@@ -398,10 +401,9 @@ public class WorkspaceActivity extends AppCompatActivity {
 
     //méthode pour supprimer le fichier filename qu'on a crée, on ne va pas l'utiliser mais pour mes test je vais le faire pour ne pas
     //surcharger la mémoire de mon téléphone
-    public void deleteInternal(){
+    public void deleteInternal() {
         //le contexte va localiser et supprimer le fichier en mémoire interne
         this.deleteFile(filename);
-
 
 
     }
@@ -412,14 +414,14 @@ public class WorkspaceActivity extends AppCompatActivity {
             FileInputStream fis = openFileInput(filename);
             BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
             String line;
-            while((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null) {
 
-                if(Uri.parse(line).equals(uri)){
+                if (Uri.parse(line).equals(uri)) {
                     return true;
                 }
             }
             return false;
-        }catch(FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
@@ -437,7 +439,7 @@ public class WorkspaceActivity extends AppCompatActivity {
 
         try {
             ch = readInternal();
-        }catch(FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             //Toast.makeText(WorkspaceActivity.this,"file app has been removed", Toast.LENGTH_SHORT).show();
         }
 
@@ -450,7 +452,7 @@ public class WorkspaceActivity extends AppCompatActivity {
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(fos), true);
             //on écrit l'arraylist dans le fichier
 
-            for(int i = 0; i<ch.size();i++) {
+            for (int i = 0; i < ch.size(); i++) {
 
                 writer.println(ch.get(i));
 
