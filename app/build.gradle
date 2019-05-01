@@ -43,4 +43,10 @@ dependencies {
 
     //recorder
     implementation 'com.github.adrielcafe:AndroidAudioRecorder:0.3.0'
+
+    //floating action buton
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0-beta01'
+
+
 }

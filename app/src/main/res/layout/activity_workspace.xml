@@ -9,6 +9,7 @@
     android:orientation="vertical"
     tools:context=".WorkspaceActivity">
 
+
     <TextView
         android:id="@+id/workspace"
         android:layout_width="wrap_content"
@@ -19,7 +20,6 @@
         android:textSize="35sp"
         app:layout_constraintBottom_toTopOf="@+id/imageWorkspace"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,18 +27,17 @@
         android:id="@+id/imageWorkspace"
         android:layout_width="136dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="354dp"
+        android:layout_marginBottom="417dp"
         android:src="@drawable/icon"
-        app:layout_constraintBottom_toTopOf="@+id/LoadFile_button"
+        app:layout_constraintBottom_toTopOf="@+id/btnBack"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/workspace" />
 
     <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/LoadFile_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,26 +54,10 @@
 
 
     <Button
-        android:id="@+id/LoadFile_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:background="@color/colorAccent"
-        android:fontFamily="sans-serif-medium"
-        android:onClick="onClickLoadFile"
-        android:text="@string/test_button"
-        android:textColor="@color/noir"
-        app:layout_constraintBottom_toTopOf="@+id/btnBack"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageWorkspace" />
-
-    <Button
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="17dp"
+        android:layout_marginBottom="18dp"
         android:background="@color/colorAccent"
         android:fontFamily="sans-serif-medium"
         android:onClick="onBack"
@@ -82,9 +65,22 @@
         android:textColor="@color/noir"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LoadFile_button" />
+        app:layout_constraintTop_toBottomOf="@+id/imageWorkspace" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="74dp"
+        android:foregroundGravity="right|bottom"
+        android:onClick="onClickLoadFile"
+        android:src="@drawable/baseline_add_white_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
