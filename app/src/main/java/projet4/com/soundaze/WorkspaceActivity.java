@@ -2,11 +2,13 @@ package projet4.com.soundaze;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Canvas;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
@@ -29,6 +31,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -60,6 +63,7 @@ public class WorkspaceActivity extends AppCompatActivity {
     Uri uri; //URI de l'audio séléctionné par l'user
     int alreadyLoaded = 1;
     private ArrayList<MediaFile> mediaFiles = new ArrayList<>();
+    ProgressDialog dialog;
 
     /******************Quand l'activité Wroksapce se lance********************/
 
@@ -147,11 +151,15 @@ public class WorkspaceActivity extends AppCompatActivity {
                     displayedAudio.add(getFileName(tmp));
                 }
             }
+            int i = 0;
+            Uri tmp2;
             musics = new ArrayList<>(); //Liste des musiques
             Iterator<String> iterator = displayedAudio.iterator();
             while (iterator.hasNext()) {
+                tmp2 = Uri.parse(savedAudios.get(i));
                 Music music = new Music();
                 music.setMusicName(iterator.next());
+                music.setDuration(getMusicDuration(tmp2));
                 musics.add(music);
             }
             mAdapter = new MusicsDataAdapter(musics);
@@ -233,6 +241,8 @@ public class WorkspaceActivity extends AppCompatActivity {
                 .setSelectedMediaFile(file)
                 .build());
         startActivityForResult(intent, AUDIO_SELECTED);
+        dialog = ProgressDialog.show(WorkspaceActivity.this, "",
+                "Loading. Please wait...", true);
 
     }
 
@@ -245,6 +255,7 @@ public class WorkspaceActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Vérifie à quelle requête nous sommes en train de répondre
         if (requestCode == AUDIO_SELECTED) {
+            dialog.dismiss();
             // On s'assure que la requête a été réussie
             if (resultCode == RESULT_OK) {
                 mediaFiles.clear();
@@ -285,6 +296,7 @@ public class WorkspaceActivity extends AppCompatActivity {
                 {
                     Music music = new Music();
                     music.setMusicName(getFileName(uri));
+                    music.setDuration(getMusicDuration(uri));
                     musics.add(music);
                     mAdapter.updateList(musics);
                     alreadyLoaded = 1;
@@ -297,6 +309,18 @@ public class WorkspaceActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    public String getMusicDuration(Uri uri) {
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        mmr.setDataSource(this, uri);
+        String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        int millSecond = Integer.parseInt(durationStr);
+        durationStr = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(millSecond) -
+                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millSecond)),
+                TimeUnit.MILLISECONDS.toSeconds(millSecond) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millSecond)));
+        return durationStr;
     }
 
     /*********************Partie sur les changement d'activité**************************/

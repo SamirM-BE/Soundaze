@@ -19,7 +19,7 @@ public class MusicsDataAdapter extends RecyclerView.Adapter<MusicsDataAdapter.Mu
         Music music = musics.get(position);
         holder.musicName.setText(music.getMusicName());
         holder.cardView.setTag(position);
-        //holder.duration.setText(music.getDuration());
+        holder.duration.setText(music.getDuration());
     }
 
     /*@Override
@@ -42,12 +42,13 @@ public class MusicsDataAdapter extends RecyclerView.Adapter<MusicsDataAdapter.Mu
     public class MusicViewHolder extends RecyclerView.ViewHolder {
         private TextView musicName;//, duration;
         private CardView cardView;
+        private TextView duration;
 
         public MusicViewHolder(View view) {
             super(view);
             musicName = view.findViewById(R.id.musicName);
             //musicName.setOnClickListener();
-            //duration = (TextView) view.findViewById(R.id.duration);
+            duration = view.findViewById(R.id.duration);
             cardView = view.findViewById(R.id.card_view1);
         }
     }
