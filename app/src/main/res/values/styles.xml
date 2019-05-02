@@ -24,9 +24,8 @@
     </style>
 
     <style name="mySpinnerItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
-        <item name="android:textColor">@color/blanc</item>
-        <item name="android:background">@color/presqueNoir2</item>
-        <item name="android:colorBackgroundCacheHint">@color/presqueNoir3</item>
+        <item name="android:textColor">@color/vert</item>
+
     </style>
 
 </resources>
