@@ -1,22 +1,14 @@
 package projet4.com.soundaze;
 
 import android.Manifest;
-import android.content.ContentValues;
+import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -29,286 +21,90 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
+import java.util.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import cafe.adriel.androidaudiorecorder.AndroidAudioRecorder;
+import cafe.adriel.androidaudiorecorder.model.AudioChannel;
+import cafe.adriel.androidaudiorecorder.model.AudioSampleRate;
+import cafe.adriel.androidaudiorecorder.model.AudioSource;
+
+import static android.graphics.Color.parseColor;
 
 public class MicrophoneActivity extends AppCompatActivity {
-
-    private Button play, stop, record;
-    private MediaRecorder myMicrophoneRecorder;
-    private String outputFile;
-    int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
-    Uri ff= null;
-    //private int isRecording = 0;
-
-
-    /************************************************************/
-    /***********************PERMISSIONS STRINGS******************/
-    /************************************************************/
-    private boolean permissionToRecordAccepted = false;
-    private boolean permissionToWriteAccepted = false;
-    private String [] permissions = {"android.permission.RECORD_AUDIO", "android.permission.WRITE_EXTERNAL_STORAGE"};
-    /************************************************************/
-
-
-
-    /************************************************************/
-    /***********************PERMISSIONS**************************/
-    /************************************************************/
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
-    {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode)
-        {
-            case 200:
-                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                permissionToWriteAccepted  = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                break;
-        }
-        if (!permissionToRecordAccepted ) MicrophoneActivity.super.finish();
-        if (!permissionToWriteAccepted ) MicrophoneActivity.super.finish();
-
-    }
-    /************************************************************/
+    private static final int REQUEST_RECORD_AUDIO = 0;
+    private static String AUDIO_FILE_PATH;
+    Uri audio;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_microphone);
 
-        // Add the following code to your onCreate
-        int requestCode = 200;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            requestPermissions(permissions, requestCode);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setBackgroundDrawable(
+                    new ColorDrawable(ContextCompat.getColor(this, R.color.colorPrimaryDark)));
         }
 
-        //on check les permission pour les uri et manage les doc
-        checkPermission();
-
-        //on récupère l'intent du nom du fichier choisi par l'user
-
+        requestPermission(this, Manifest.permission.RECORD_AUDIO);
+        requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         Intent intent = getIntent();
-        String easyPuzzle = intent.getExtras().getString("epuzzle");
+        String recordedFileName = Objects.requireNonNull(intent.getExtras()).getString("recordedFileName");
+        AUDIO_FILE_PATH = Environment.getExternalStorageDirectory().getPath() + "/"+recordedFileName+".wav";
+        recordAudio();
+    }
 
-
-
-        /**************/
-        /****Buttons***/
-        /**************/
-        play = findViewById(R.id.play);
-        stop = findViewById(R.id.stop);
-        record = findViewById(R.id.record);
-        stop.setEnabled(false);
-        play.setEnabled(false);
-        /**************************/
-        /****MicrophoneRecorder****/
-        /**************************/
-
-
-
-
-        String tmp = "/"+easyPuzzle;
-
-
-        outputFile = Environment.getExternalStorageDirectory().getAbsolutePath()+tmp;
-
-        ff = Uri.fromFile(new File(outputFile));
-
-        boolean so = ff==null;
-
-        String f = ff.toString();
-
-
-        myMicrophoneRecorder = new MediaRecorder();
-        try
-        {
-            myMicrophoneRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_RECORD_AUDIO) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(this, "Audio recorded successfully!", Toast.LENGTH_SHORT).show();
+                audio = Uri.fromFile(new File(AUDIO_FILE_PATH));
+                if (!containsInternal(audio)) {
+                    save(audio.toString());
+                }
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, "Audio was not recorded", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, MainActivity.class); //On prépare l'intent pour le passage à l'écran suivant
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }
         }
-        catch(Exception e)
-        {
-            openPermissionComfirmation();
-        }
-        myMicrophoneRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        myMicrophoneRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-        myMicrophoneRecorder.setOutputFile(outputFile);
-        /**********************/
-        /****RecordListener****/
-        /**********************/
-        record.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                try
-                {
-                    if(myMicrophoneRecorder == null){
-                        myMicrophoneRecorder = new MediaRecorder();
-                        try
-                        {
-                            myMicrophoneRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                        }
-                        catch(Exception e)
-                        {
-                            openPermissionComfirmation();
-                        }
-                        myMicrophoneRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                        myMicrophoneRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-                        myMicrophoneRecorder.setOutputFile(outputFile);
-                    }
-                    myMicrophoneRecorder.prepare();
-                    myMicrophoneRecorder.start();
-
-                    //on récupère l'uri seulement s'il appuye sur record, sinon ça sert à rien
+        finish();
+    }
 
 
+    public void recordAudio() {
 
-                    //on va ensuite save cet uri dans notre workspace via notre fichier interne dans la
-                    //class workSpaceActivity
 
-                    if(! containsInternal(ff) ){
-                        save(ff.toString());
-                    }
-                    Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
-                    Toast.makeText(getApplicationContext(), "Find your record in workspace", Toast.LENGTH_LONG).show();
-                }
-                catch (IllegalStateException ise)
-                {
-                    // make something ...
-                }
-                catch (IOException ioe)
-                {
-                    // make something
-                }
-                record.setEnabled(false);
-                play.setEnabled(false);
-                //isRecording = 1;
-                //on fait attendre 1 sec ici avant de rendre pause enable pour faire éviter de bugger
-                try {
-                    TimeUnit.SECONDS.sleep(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                stop.setEnabled(true);
+        AndroidAudioRecorder.with(this)
+                // Required
+                .setFilePath(AUDIO_FILE_PATH)
+                .setColor(parseColor("#111312")) /// COULEUR peut être a changer
+                .setRequestCode(REQUEST_RECORD_AUDIO)
 
-            }
-        });
-        /**********************/
-        /****StopListener******/
-        /**********************/
-        stop.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                myMicrophoneRecorder.stop();
-                myMicrophoneRecorder.release();
-                myMicrophoneRecorder = null;
-                //isRecording = 0;
-                record.setEnabled(true);
-                stop.setEnabled(false);
-                play.setEnabled(true);
-                Toast.makeText(getApplicationContext(), "Audio Recorder stopped", Toast.LENGTH_LONG).show();
+                // Optional
+                .setSource(AudioSource.MIC)
+                .setChannel(AudioChannel.STEREO)
+                .setSampleRate(AudioSampleRate.HZ_48000)
+                .setAutoStart(false)
+                .setKeepDisplayOn(true)
 
-            }
-        });
-        /**********************/
-        /******PlayListener****/
-        /**********************/
-        play.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                MediaPlayer mediaPlayer = new MediaPlayer();
-                try {
-                    mediaPlayer.setDataSource(outputFile);
-                    mediaPlayer.prepare();
-                    mediaPlayer.start();
-                    Toast.makeText(getApplicationContext(), "Playing Audio", Toast.LENGTH_LONG).show();
-                }
-                catch (Exception e)
-                {
-                    // make something
-                }
-            }
-        });
+                // Start recording
+                .record();
+
 
     }
 
-    public void openPermissionComfirmation()
-    {
-        Intent intent = new Intent(this,PermissionActivity.class);
-        startActivity(intent);
-
-    }
-
-    //click sur le bouton back
-    public void onBack(View view){
-
-        if(myMicrophoneRecorder != null){
-            //on fait attendre 1 sec ici avant de stop le tout
-
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            //if (isRecording == 1) myMicrophoneRecorder.stop();
-
-            //myMicrophoneRecorder.stop();
-            myMicrophoneRecorder.release();
-            myMicrophoneRecorder = null;
-        }
-        Intent intent = new Intent(this, MainActivity.class); //On prépare l'intent pour le passage à l'écran suivant
-        startActivity(intent);
-    }
-
-    //cette méthode check les permission pour les uri
-    public void checkPermission(){
-
-        //check if we have the permission
-
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)!= PackageManager.PERMISSION_GRANTED){
-            //Toast.makeText(WorkspaceActivity.this, "permission is not granted", Toast.LENGTH_SHORT).show();
-        }
-
-        //request the permission
-        // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.RECORD_AUDIO)
+    public static void requestPermission(Activity activity, String permission) {
+        if (ContextCompat.checkSelfPermission(activity, permission)
                 != PackageManager.PERMISSION_GRANTED) {
-
-            // Permission is not granted
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.RECORD_AUDIO)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-            } else {
-                // No explanation needed; request the permission
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.RECORD_AUDIO},
-                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-
-                //Toast.makeText(WorkspaceActivity.this, "permission is granted", Toast.LENGTH_SHORT).show();
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-        } else {
-            // Permission has already been granted
+            ActivityCompat.requestPermissions(activity, new String[]{permission}, 0);
         }
     }
 
@@ -338,20 +134,13 @@ public class MicrophoneActivity extends AppCompatActivity {
 
         //je fais un readline pour récupérer la liste déjà existante
         ArrayList<String> ch = new ArrayList<>();
-
-
         try {
             ch = readInternal();
         }catch(FileNotFoundException e){
             //Toast.makeText(WorkspaceActivity.this,"file app has been removed", Toast.LENGTH_SHORT).show();
         }
-
-
         //on ajoute le nouveau string à ajouter à ceux déjà existant
         ch.add(string);
-
-
-
         try {
 
             FileOutputStream fos = openFileOutput(WorkspaceActivity.filename, Context.MODE_PRIVATE);
@@ -366,13 +155,9 @@ public class MicrophoneActivity extends AppCompatActivity {
             //on ferme le writer
             writer.close();
 
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-
-
     }
 
     //méthode pour lire dans un fichier interne au téléphone l'arraylist d'uri
@@ -403,5 +188,15 @@ public class MicrophoneActivity extends AppCompatActivity {
 
     }
 
+
+    //si l'user appuye sur le bouton back du téléphone
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class); //On prépare l'intent pour le passage à l'écran suivant
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+
+    }
 
 }

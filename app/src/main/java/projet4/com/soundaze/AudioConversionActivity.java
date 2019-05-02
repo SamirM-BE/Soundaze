@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
@@ -60,6 +61,8 @@ public class AudioConversionActivity extends AppCompatActivity {
         txtMusicNameConv = findViewById(R.id.txtMusicNameConv);
         txtInputFormat = findViewById(R.id.txtInputFormat);
 
+        spinnerType = findViewById(R.id.spinnerType);
+        spinnerType.getBackground().setColorFilter(getResources().getColor(R.color.blanc), PorterDuff.Mode.SRC_ATOP);
 
         txtMusicNameConv.setText(musicName);
         txtInputFormat.setText(getMimeType(this, uri));
@@ -92,8 +95,10 @@ public class AudioConversionActivity extends AppCompatActivity {
     }
 
     public void onClickConvert(View view) throws URISyntaxException {
-        spinnerType = findViewById(R.id.spinnerType);
+
+
         String type = String.valueOf(spinnerType.getSelectedItem());
+
 
 /**
  *  Update with a valid audio file!
@@ -154,6 +159,8 @@ public class AudioConversionActivity extends AppCompatActivity {
         //mediaPlayer.release();
         startActivity(intent);
     }
+
+
 }
 
 

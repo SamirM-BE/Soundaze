@@ -273,6 +273,10 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
                 mediaFiles.clear();
                 mediaFiles.addAll(data.<MediaFile>getParcelableArrayListExtra(FilePickerActivity.MEDIA_FILES));
 
+                if(mediaFiles.isEmpty())
+                {
+                    Log.e("SAMIR","ici");
+                }
                 MediaFile mediaFile = mediaFiles.get(0);
                 loadFromFile(mediaFile.getPath());
 
@@ -282,8 +286,12 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
                 markerEnd.setVisibility(View.VISIBLE);
                 markerStart.setVisibility(View.VISIBLE);
             }
+
         }
+
     }
+
+
 
     @Override
     public void onClick(View view) {

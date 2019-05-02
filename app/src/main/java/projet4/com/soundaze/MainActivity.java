@@ -1,10 +1,12 @@
 package projet4.com.soundaze;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,36 +23,26 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-public class MainActivity extends AppCompatActivity /*implements View.OnClickListener*/ {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final int ADD_AUDIO = 1001;
-    private static final int REQUEST_ID_PERMISSIONS = 1;
+    static final int AUDIO_SELECTED = 1;
+    private static final int REQUEST_ID_PERMISSIONS = 1; //Code utilisé pour le choix du fichier à rogner
     private ImageView btnAudioTrim;
-
-    private String dia; // pour l'intent du micro
-
-    private boolean clickedOk = false; //pour ma méthode handle pour savoir quand l'user a clické sur ok
-    private boolean clickedCancel = false; //pour savoir si l'user a cliqué sur canceled sur le pop up
-    private boolean hand = false; //variable pour vérifier qu'on appelle hand seulement 1 seule fois
+    private static final int ADD_AUDIO = 1001; //Code utilisé pour récupérer le son rogné
+    String pickedAudioPath;
+    private String recordAudioFileName; // pour l'intent du micro
+    private ArrayList<MediaFile> mediaFiles = new ArrayList<>();
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*partie liée au trim momentanément effacée
-        //btnAudioTrim = findViewById(R.id.btn_trim);
-        //btnAudioTrim.setOnClickListener(this);
+        btnAudioTrim = findViewById(R.id.btn_trim);
+        btnAudioTrim.setOnClickListener(this);
 
-        */
     }
-
-    static final int AUDIO_SELECTED = 1;
-    String pickedAudioPath;
-    private ArrayList<MediaFile> mediaFiles = new ArrayList<>();
-
-
-    /* partie éliminée de la mainactivity pour le moment pour éviter que le prof click dessus
 
     //Clique sur le bouton "crop"
     @Override
@@ -58,14 +50,14 @@ public class MainActivity extends AppCompatActivity /*implements View.OnClickLis
         if (view == btnAudioTrim) {
             //check storage permission before start trimming
             if (checkStoragePermission()) {
-                //startActivityForResult(new Intent(MainActivity.this, AudioTrimmerActivity.class), ADD_AUDIO); //écran suivant
-                Intent intent = new Intent(MainActivity.this, FilePickerActivity.class);
+                Intent intent = new Intent(MainActivity.this, FilePickerActivity.class); //Choix fichier pour rognage
                 MediaFile file = null;
                 for (int i = 0; i < mediaFiles.size(); i++) {
                     if (mediaFiles.get(i).getMediaType() == MediaFile.TYPE_AUDIO) {
                         file = mediaFiles.get(i);
                     }
                 }
+                //FilePicker, set des options
                 intent.putExtra(FilePickerActivity.CONFIGS, new Configurations.Builder()
                         .setCheckPermission(true)
                         .setShowImages(false)
@@ -75,6 +67,8 @@ public class MainActivity extends AppCompatActivity /*implements View.OnClickLis
                         .setSelectedMediaFile(file)
                         .build());
                 startActivityForResult(intent, AUDIO_SELECTED);
+                dialog = ProgressDialog.show(MainActivity.this, "",
+                        "Loading. Please wait...", true);
                 //overridePendingTransition(0, 0);
             } else {
                 requestStoragePermission();
@@ -82,50 +76,51 @@ public class MainActivity extends AppCompatActivity /*implements View.OnClickLis
         }
     }
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_AUDIO) {
+        if (requestCode == AUDIO_SELECTED) { //L'utilisateur a choisi un fichier à rogner
+            dialog.dismiss();
+            if (resultCode == RESULT_OK) {
+                mediaFiles.clear();
+                mediaFiles.addAll(data.<MediaFile>getParcelableArrayListExtra(FilePickerActivity.MEDIA_FILES));
+
+                if (!(mediaFiles.isEmpty())) {
+                    MediaFile mediaFile = mediaFiles.get(0);
+                    pickedAudioPath = mediaFile.getPath(); //Chemin du fichier choisi
+
+                    Intent intent = new Intent(this, AudioTrimmerActivity.class); //On lance le rognage
+                    intent.putExtra("pickedAudioPath", pickedAudioPath); // On lui passe le chemin du fichier choisi par l'user
+                    startActivityForResult(intent, ADD_AUDIO);
+                }
+            }
+        } else if (requestCode == ADD_AUDIO) { //Rognage terminé
             if (resultCode == RESULT_OK) {
                 if (data != null) {
-                    //audio trim result will be saved at below path
                     String path = data.getExtras().getString("INTENT_AUDIO_FILE");
                     Toast.makeText(MainActivity.this, "Audio stored at " + path, Toast.LENGTH_LONG).show();
                 }
             }
-        } else if (requestCode == AUDIO_SELECTED) {
-            mediaFiles.clear();
-            mediaFiles.addAll(data.<MediaFile>getParcelableArrayListExtra(FilePickerActivity.MEDIA_FILES));
-
-            MediaFile mediaFile = mediaFiles.get(0);
-            pickedAudioPath = mediaFile.getPath();
-
-            Intent intent = new Intent(this, AudioTrimmerActivity.class); //On prépare l'intent pour le passage à l'écran suivant
-            intent.putExtra("pickedAudioPath", pickedAudioPath);
-            startActivityForResult(intent, ADD_AUDIO);
-
         }
     }
 
-    */
 
+    //Bouton workspace
     public void onClickWorkspace(View view) {
         Intent intent = new Intent(this, WorkspaceActivity.class);
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
         startActivity(intent);
-        requestAudioPermission();
-
+        finish();
+        ///TODO : Check ReadStoragePermission
     }
 
-    //click pour record un audio
-    public void onClickAudio(View view){
+    //Bouton micro
+    public void onClickRecordAudio(View view) {
 
         final Intent intent = new Intent(this, MicrophoneActivity.class);
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
 
-        if(checkExternalStoragePermission()) {
+        if (checkExternalStoragePermission()) {
 
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -142,34 +137,27 @@ public class MainActivity extends AppCompatActivity /*implements View.OnClickLis
             alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
 
-                    // Do something with value!
-
-
-                    dia = input.getText().toString();
-
-                    intent.putExtra("epuzzle", dia);
-                    startActivity(intent);
-                    clickedOk = true;
-
-
+                    recordAudioFileName = input.getText().toString();
+                    intent.putExtra("recordedFileName", recordAudioFileName);
+                    startActivity(intent); //Lancement du micro
                 }
             });
-
             alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     // Canceled.
-                    clickedCancel = true;
+                    ///TODO : Réaction au cancel ???
                 }
             });
-
             alert.show();
-
-        }else{
+        } else {
             requestExternalStoragePermission();
+            ///TODO : check les permissions.
         }
 
     }
 
+
+    ///TODO : Permissions génériques
     private void requestStoragePermission() {
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -223,4 +211,6 @@ public class MainActivity extends AppCompatActivity /*implements View.OnClickLis
             }
         }
     }
+
+
 }

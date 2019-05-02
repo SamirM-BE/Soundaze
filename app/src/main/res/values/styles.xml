@@ -17,4 +17,15 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
+    <style name="Base.AppTheme" parent="Theme.AppCompat.Light.DarkActionBar"></style>
+
+    <style name="MySeekBarTheme" parent="Widget.AppCompat.SeekBar">
+        <item name="colorAccent">#4caf50</item>
+    </style>
+
+    <style name="mySpinnerItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
+        <item name="android:textColor">@color/vert</item>
+
+    </style>
+
 </resources>
