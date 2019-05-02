@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -80,16 +81,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AUDIO_SELECTED) { //L'utilisateur a choisi un fichier à rogner
             dialog.dismiss();
-            mediaFiles.clear();
-            mediaFiles.addAll(data.<MediaFile>getParcelableArrayListExtra(FilePickerActivity.MEDIA_FILES));
+            if (resultCode == RESULT_OK) {
+                mediaFiles.clear();
+                mediaFiles.addAll(data.<MediaFile>getParcelableArrayListExtra(FilePickerActivity.MEDIA_FILES));
 
-            if (!(mediaFiles.isEmpty())) {
-                MediaFile mediaFile = mediaFiles.get(0);
-                pickedAudioPath = mediaFile.getPath(); //Chemin du fichier choisi
+                if (!(mediaFiles.isEmpty())) {
+                    MediaFile mediaFile = mediaFiles.get(0);
+                    pickedAudioPath = mediaFile.getPath(); //Chemin du fichier choisi
 
-                Intent intent = new Intent(this, AudioTrimmerActivity.class); //On lance le rognage
-                intent.putExtra("pickedAudioPath", pickedAudioPath); // On lui passe le chemin du fichier choisi par l'user
-                startActivityForResult(intent, ADD_AUDIO);
+                    Intent intent = new Intent(this, AudioTrimmerActivity.class); //On lance le rognage
+                    intent.putExtra("pickedAudioPath", pickedAudioPath); // On lui passe le chemin du fichier choisi par l'user
+                    startActivityForResult(intent, ADD_AUDIO);
+                }
             }
         } else if (requestCode == ADD_AUDIO) { //Rognage terminé
             if (resultCode == RESULT_OK) {
@@ -208,4 +211,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+
+
 }
