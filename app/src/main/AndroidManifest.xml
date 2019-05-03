@@ -22,14 +22,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".AudioConversionActivity"></activity>
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".LaunchActivity"
+            android:label="Soundaze">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AudioConversionActivity" />
         <activity
             android:name=".EqualizerActivity"
             android:parentActivityName=".WorkspaceActivity" />
@@ -53,6 +55,7 @@
             android:theme="@style/Theme.Transparent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".ListeningActivity" />
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

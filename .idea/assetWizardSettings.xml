@@ -29,10 +29,24 @@
                                           </PersistentState>
                                         </value>
                                       </entry>
+                                      <entry key="image">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="color" value="000000" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
                                     </map>
                                   </option>
                                   <option name="values">
                                     <map>
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="imageAsset" value="C:\Users\Djafarou\Desktop\GitHub\dj_back.jpg" />
+                                      <entry key="outputName" value="dj_back" />
                                       <entry key="theme" value="HOLO_DARK" />
                                       <entry key="themeColor" value="ffffff" />
                                     </map>
@@ -74,8 +88,6 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundColor" value="000000" />
-                                      <entry key="backgroundImage" value="$PROJECT_DIR$/../../University/SINF/SINF13BA/Quadrimestre 2/Projet 4 (en Informatique) (LFSAB1509)/SOUNDAZE/Logo/SOUNDAZE_LOGO_Trans.png" />
-                                      <entry key="foregroundImage" value="$PROJECT_DIR$/../../University/SINF/SINF13BA/Quadrimestre 2/Projet 4 (en Informatique) (LFSAB1509)/SOUNDAZE/Logo/SOUNDAZE_LOGO_Trans_1000px.png" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -123,6 +135,11 @@
                                 </PersistentState>
                               </value>
                             </entry>
+                          </map>
+                        </option>
+                        <option name="values">
+                          <map>
+                            <entry key="outputIconType" value="ACTIONBAR" />
                           </map>
                         </option>
                       </PersistentState>

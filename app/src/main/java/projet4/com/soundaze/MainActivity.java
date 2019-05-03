@@ -6,10 +6,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.jaiselrahman.filepicker.activity.FilePickerActivity;
@@ -34,10 +37,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<MediaFile> mediaFiles = new ArrayList<>();
     ProgressDialog dialog;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.d("djaf", "caca");
 
         btnAudioTrim = findViewById(R.id.btn_trim);
         btnAudioTrim.setOnClickListener(this);
@@ -112,6 +118,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
         finish();
         ///TODO : Check ReadStoragePermission
+    }
+
+    //si l'user appuye sur le bouton back du téléphone
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, LaunchActivity.class); //On prépare l'intent pour le passage à l'écran suivant
+        intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+
     }
 
     //Bouton micro
