@@ -70,8 +70,9 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
-                    android:text="Edit Audio"
+                    android:text="AUDIO TRIMMER"
                     android:textColor="@color/blanc"
+                    android:textStyle="bold"
                     android:textSize="14sp" />
 
                 <LinearLayout
@@ -179,7 +180,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="5dp"
-                        android:background="@color/colorBlue"
+                        android:background="@color/noir"
                         android:gravity="center"
                         android:orientation="horizontal"
                         android:padding="5dp">
@@ -188,33 +189,33 @@
                             android:id="@+id/txtAudioPlay"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/play" />
+                            android:background="@drawable/baseline_play_circle_outline_white_48" />
 
                         <TextView
                             android:id="@+id/txtAudioCrop"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/edit" />
+                            android:background="@drawable/outline_edit_white_48" />
 
                         <TextView
                             android:id="@+id/txtAudioDone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/scissors"
+                            android:background="@drawable/baseline_crop_white_48"
                             android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/txtAudioReset"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/reset" />
+                            android:background="@drawable/baseline_restore_white_48" />
 
 
-                        <Button
+                        <ImageView
                             android:id="@+id/btn_upload"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="UPLOAD" />
+                            android:src="@drawable/baseline_save_alt_white_48" />
                     </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>

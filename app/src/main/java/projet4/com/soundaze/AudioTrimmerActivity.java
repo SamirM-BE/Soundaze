@@ -26,6 +26,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -56,7 +57,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
     Uri audio;
     String audioPath;
     private TextView txtAudioCancel;
-    private TextView txtAudioUpload;
+    private ImageView txtAudioUpload;
     private TextView txtStartPosition;
     private TextView txtEndPosition;
     private RelativeLayout rlAudioEdit;
@@ -299,9 +300,9 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             finish();
         } else if (view == txtAudioPlay) { //Bouton play
             if (!mIsPlaying) {
-                txtAudioPlay.setBackgroundResource(R.drawable.ic_pause_btn);
+                txtAudioPlay.setBackgroundResource(R.drawable.baseline_pause_circle_outline_white_48);
             } else {
-                txtAudioPlay.setBackgroundResource(R.drawable.play);
+                txtAudioPlay.setBackgroundResource(R.drawable.baseline_play_circle_outline_white_48);
             }
             onPlay(mStartPos);
         } else if (view == txtAudioDone) { //Rognage
@@ -1080,7 +1081,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
     }
 
     private synchronized void handlePause() {
-        txtAudioPlay.setBackgroundResource(R.drawable.play);
+        txtAudioPlay.setBackgroundResource(R.drawable.baseline_play_circle_outline_white_48);
         if (mPlayer != null && mPlayer.isPlaying()) {
             mPlayer.pause();
         }

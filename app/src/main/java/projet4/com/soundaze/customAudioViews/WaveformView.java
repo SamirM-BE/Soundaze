@@ -87,13 +87,13 @@ public class WaveformView extends View {
         mGridPaint.setColor(res.getColor(R.color.colorGridLine));
         mSelectedLinePaint = new Paint();
         mSelectedLinePaint.setAntiAlias(false);
-        mSelectedLinePaint.setColor(res.getColor(R.color.waveformSelected));
+        mSelectedLinePaint.setColor(res.getColor(R.color.vert));
         mUnselectedLinePaint = new Paint();
         mUnselectedLinePaint.setAntiAlias(false);
-        mUnselectedLinePaint.setColor(res.getColor(R.color.waveformUnselected));
+        mUnselectedLinePaint.setColor(res.getColor(R.color.rouge));
         mUnselectedBkgndLinePaint = new Paint();
         mUnselectedBkgndLinePaint.setAntiAlias(false);
-        mUnselectedBkgndLinePaint.setColor(res.getColor(R.color.waveformUnselectedBackground));
+        mUnselectedBkgndLinePaint.setColor(res.getColor(R.color.presqueNoir2));
         mBorderLinePaint = new Paint();
         mBorderLinePaint.setAntiAlias(true);
         mBorderLinePaint.setStrokeWidth(6f);
