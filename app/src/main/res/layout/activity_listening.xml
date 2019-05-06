@@ -79,46 +79,34 @@
         android:textColor="@color/blanc" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="20dp"
-        android:gravity="bottom"
-        android:orientation="horizontal">
+        android:id="@+id/test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="0dp"
+        android:orientation="vertical">
 
 
-        <Button
+        <ImageButton
             android:id="@+id/btn_eql"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/presqueNoir1"
-            android:layout_marginBottom="2dp"
-            android:text="@string/btn_eql"
-            android:textColor="@color/blanc" />
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@color/presqueNoir3"
+            android:elevation="10sp"
+            android:src="@drawable/baseline_equalizer_white_48" />
 
-        <!--
 
-        <Button
-            android:id="@+id/btn_rog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClickTrim"
-            android:text="@string/btn_trim" />
--->
-        <Button
+        <ImageButton
             android:id="@+id/btn_conv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:layout_marginBottom="2dp"
-            android:layout_weight="1"
-            android:background="@color/presqueNoir1"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="10dp"
             android:onClick="onClickConvert"
-            android:text="@string/btn_conv"
-            android:textColor="@color/blanc" />
+            android:background="@color/presqueNoir3"
+            android:src="@drawable/baseline_compare_arrows_white_48" />
 
 
     </LinearLayout>
+
 
 </RelativeLayout>

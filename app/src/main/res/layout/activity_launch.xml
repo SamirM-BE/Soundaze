@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -39,7 +38,8 @@
                 android:fontFamily="sans-serif-light"
                 android:text="Click on Workspace to find your audio"
                 android:textColor="@color/blanc"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/linlay1"
@@ -61,7 +61,8 @@
                         android:fontFamily="sans-serif-light"
                         android:text="Click on the bottom left to trim your audio"
                         android:textColor="@color/blanc"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
 
                 </LinearLayout>
@@ -79,7 +80,8 @@
                         android:fontFamily="sans-serif-light"
                         android:text="Click on the bottom right to record an audio"
                         android:textColor="@color/blanc"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 

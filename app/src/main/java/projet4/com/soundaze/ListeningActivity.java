@@ -14,6 +14,7 @@ import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +25,7 @@ import androidx.core.app.ActivityCompat;
 public class ListeningActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button btnPlay, btnBack, btnFor;
-    private Button btnEql;
+    private ImageButton btnEql;
     private SeekBar seekBar;
     private MediaPlayer mediaPlayer;
     private Runnable runnable;
@@ -127,7 +128,7 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
         }
 
         Intent intent = new Intent(this, WorkspaceActivity.class); //On prépare l'intent pour le passage à l'écran suivant
-        intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
@@ -144,10 +145,11 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
             }
         }
         Intent intent = new Intent(this, WorkspaceActivity.class); //On prépare l'intent pour le passage à l'écran suivant
-        intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
 
     }
+
 
     //on récupère le nom de la musique via son uri
     public String getFileName(Uri uri) {
@@ -282,5 +284,6 @@ public class ListeningActivity extends AppCompatActivity implements View.OnClick
         startActivity(intent);
         finish();
     }
+
 
 }

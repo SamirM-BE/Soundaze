@@ -24,14 +24,18 @@
         android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".LaunchActivity"
-            android:label="Soundaze">
+            android:label="Soundaze"
+            android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AudioConversionActivity" />
+        <activity
+            android:name=".AudioConversionActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".EqualizerActivity"
             android:parentActivityName=".WorkspaceActivity" />
@@ -49,13 +53,20 @@
             <grant-uri-permission android:path="com.android.providers.media.MediaDocumentsProvider" />
         </provider>
 
-        <activity android:name=".WorkspaceActivity" />
+        <activity
+            android:name=".WorkspaceActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AudioTrimmerActivity"
             android:theme="@style/Theme.Transparent"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".ListeningActivity" />
-        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".ListeningActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
