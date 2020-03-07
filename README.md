@@ -1,4 +1,4 @@
-# Soundaze
+# Soundaze [Deprecated]
 As part of  one of our courses,  me (@[SamirM-BE](https://github.com/SamirM-BE "SamirM-BE")) and @[Djafa](https://github.com/Djafa "Djafa") we created an android application allowing to modify, process and convert audio files being on a smartphone and we also added the possibility of recording audio.
 
 ## Motivation : 
